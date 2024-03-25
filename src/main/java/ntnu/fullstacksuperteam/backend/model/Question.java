@@ -8,19 +8,19 @@ public class Question {
     private String text;
     private List<Answer> answers;
     private List<Tag> tags;
-    private Mutimedia multimedia;
+    private String multimediaUrl;
     private Date createdAt;
     private Date updatedAt;
     private int points;
 
     public Question() {}
 
-    public Question(long id, String text, List<Answer> answers, List<Tag> tags, Mutimedia multimedia, Date createdAt, Date updatedAt, int points) {
+    public Question(long id, String text, List<Answer> answers, List<Tag> tags, String multimediaUrl, Date createdAt, Date updatedAt, int points) {
         this.id = id;
         this.text = text;
         this.answers = answers;
         this.tags = tags;
-        this.multimedia = multimedia;
+        this.multimediaUrl = multimediaUrl;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.points = points;
@@ -58,12 +58,12 @@ public class Question {
         this.tags = tags;
     }
 
-    public Mutimedia getMultimedia() {
-        return multimedia;
+    public String getMultimedia() {
+        return multimediaUrl;
     }
 
-    public void setMultimedia(Mutimedia multimedia) {
-        this.multimedia = multimedia;
+    public void setMultimedia(String multimediaUrl) {
+        this.multimediaUrl = multimediaUrl;
     }
 
     public Date getCreatedAt() {
