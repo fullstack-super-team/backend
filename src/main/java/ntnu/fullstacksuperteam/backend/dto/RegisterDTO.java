@@ -1,29 +1,37 @@
 package ntnu.fullstacksuperteam.backend.dto;
 
 public class RegisterDTO {
-    private final String name;
+    private final String firstName;
+    private final String lastName;
     private final String username;
+    private final String email;
     private final String password;
 
-    public RegisterDTO(String name, String username, String password) {
-        this.name = name;
+    public RegisterDTO(String firstName, String lastName, String username, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
+        this.email = email;
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEmail() {
+        return email;
     }
 
-    public String toString() {
-        return getName() + getUsername() + getPassword();
+    public String getPassword() {
+        return password;
     }
 }

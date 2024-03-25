@@ -1,5 +1,7 @@
 package ntnu.fullstacksuperteam.backend.security;
 
+import ntnu.fullstacksuperteam.backend.service.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,6 +16,8 @@ import java.util.Arrays;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
+    @Autowired
+    private TokenService tokenService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -33,7 +37,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Use stateless sessions
                 )
-                .addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class); // Register your custom filter
+                .addFilterBefore(new JWTAuthorizationFilter(tokenService), UsernamePasswordAuthenticationFilter.class); // Register your custom filter
 
         return http.build();
     }

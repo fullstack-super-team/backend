@@ -61,6 +61,6 @@ public class Score {
 
     @Override
     public String toString() {
-        return "Congratulations " + user.getName() + "! You scored " + points + "/" + quiz.getLength() + "correct answers on the quiz" + quiz.getTitle() + "!";
+        return "Congratulations " + user.getFirstName() + "! You scored " + points + "/" + quiz.getLength() + "correct answers on the quiz" + quiz.getTitle() + "!";
     }
 }

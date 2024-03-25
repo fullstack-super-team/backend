@@ -17,27 +17,27 @@ public class AuthService {
     private UserRepository userRepository;
     @Autowired
     private TokenService tokenService;
-    public Token register(RegisterDTO registerDTO) {
-        try {
-            // Check if user already exists
-
-            // If not then save
-            User savedUser = userRepository.save(new User(registerDTO));
-            return new Token(tokenService.generateToken(savedUser.getUserId()));
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Something went wrong...");
+    public Token register(RegisterDTO registerDTO) throws ResponseStatusException {
+        // Check if user already exists
+        User existingUser = userRepository.findByEmail(registerDTO.getEmail());
+        if (existingUser != null) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists...");
         }
+
+        // If not then save
+        User savedUser = userRepository.save(new User(registerDTO));
+        return new Token(tokenService.generateToken(savedUser.getId()));
     }
 
-    public Token login(LoginDTO loginDTO) {
+    public Token login(LoginDTO loginDTO) throws ResponseStatusException {
         // Check if username and password is correct
-        User user = userRepository.findByUsername(loginDTO.getUsername());
+        User user = userRepository.findByEmail(loginDTO.getEmail());
         if (user == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Wrong credentials...");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Could not find user...");
         }
         if (!user.getPassword().equals(loginDTO.getPassword())) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Wrong credentials...");
         }
-        return new Token(tokenService.generateToken(user.getUserId()));
+        return new Token(tokenService.generateToken(user.getId()));
     }
 }
