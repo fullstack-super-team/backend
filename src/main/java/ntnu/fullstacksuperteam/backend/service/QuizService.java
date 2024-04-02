@@ -36,7 +36,7 @@ public class QuizService {
         Quiz quiz = new Quiz();
         quiz.setAuthor(author);
         quiz.setTitle(createQuizDTO.getTitle());
-        //quiz.setCategory(createQuizDTO.getCategory());
+        quiz.setCategory(createQuizDTO.getCategory());
         quiz.setDifficultyLevel(createQuizDTO.getDifficultyLevel());
         quiz.setDescription(createQuizDTO.getDescription());
 

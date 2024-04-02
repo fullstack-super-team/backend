@@ -1,15 +1,13 @@
 package ntnu.fullstacksuperteam.backend.dto;
 
-public class CreateQuizDTO {
-    private final String title;
-    private final String description;
-    private final int difficultyLevel;
+import ntnu.fullstacksuperteam.backend.model.Category;
+import ntnu.fullstacksuperteam.backend.model.DifficultyLevel;
 
-    public CreateQuizDTO(String title, String description, int difficultyLevel) {
-        this.title = title;
-        this.description = description;
-        this.difficultyLevel = difficultyLevel;
-    }
+public class CreateQuizDTO {
+    private String title;
+    private String description;
+    private DifficultyLevel difficultyLevel;
+    private Category category;
 
     public String getTitle() {
         return title;
@@ -19,7 +17,11 @@ public class CreateQuizDTO {
         return description;
     }
 
-    public int getDifficultyLevel() {
+    public DifficultyLevel getDifficultyLevel() {
         return difficultyLevel;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 }

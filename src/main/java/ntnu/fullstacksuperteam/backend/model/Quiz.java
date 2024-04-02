@@ -18,12 +18,11 @@ public class Quiz {
     @Column(name = "id")
     private long id;
     private String title;
-
     @JsonIgnore
     @OneToMany
     private List<Question> questions;
     private Category category;
-    private int difficultyLevel;
+    private DifficultyLevel difficultyLevel;
     private String description;
     @ManyToOne
     @JoinColumn(name = "author_id")
@@ -74,11 +73,11 @@ public class Quiz {
         this.category = category;
     }
 
-    public int getDifficultyLevel() {
+    public DifficultyLevel getDifficultyLevel() {
         return difficultyLevel;
     }
 
-    public void setDifficultyLevel(int difficultyLevel) {
+    public void setDifficultyLevel(DifficultyLevel difficultyLevel) {
         this.difficultyLevel = difficultyLevel;
     }
 
