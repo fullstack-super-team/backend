@@ -1,66 +1,51 @@
 package ntnu.fullstacksuperteam.backend.model;
 
+import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.util.Date;
 
+@Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Score {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
     private int points;
+
+    @ManyToOne
+    @JoinColumn(name = "quiz_id")
     private Quiz quiz;
-    private Date date;
+
+    @Column(nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
+    private Date createdAt;
 
     public Score() {}
 
-    public Score(long id, User user, int points, Quiz quiz, Date date) {
-        this.id = id;
-        this.user = user;
-        this.points = points;
-        this.quiz = quiz;
-        this.date = date;
-    }
-
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public int getPoints() {
         return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
     }
 
     public Quiz getQuiz() {
         return quiz;
     }
 
-    public void setQuiz(Quiz quiz) {
-        this.quiz = quiz;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    @Override
-    public String toString() {
-        return "Congratulations " + user.getFirstName() + "! You scored " + points + "/" + quiz.getLength() + "correct answers on the quiz" + quiz.getTitle() + "!";
+    public Date getCreatedAt() {
+        return createdAt;
     }
 }

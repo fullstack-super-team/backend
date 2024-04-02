@@ -1,5 +1,6 @@
 package ntnu.fullstacksuperteam.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import ntnu.fullstacksuperteam.backend.dto.RegisterDTO;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,10 +17,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String firstName;
-
     private String lastName;
     private String username;
     private String email;
+
+    @JsonIgnore
     private String password;
 
     @Column(nullable = false, updatable = false)

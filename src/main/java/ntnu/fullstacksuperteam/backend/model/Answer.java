@@ -1,13 +1,20 @@
 package ntnu.fullstacksuperteam.backend.model;
 
-public class Answer {
+import jakarta.persistence.*;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "answer_type", discriminatorType = DiscriminatorType.STRING)
+public abstract class Answer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    public Answer() {}
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    private Question question;
 
-    public Answer(long id) {
-        this.id = id;
-    }
+    public Answer() {}
 
     public long getId() {
         return id;

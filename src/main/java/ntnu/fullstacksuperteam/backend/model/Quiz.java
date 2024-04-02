@@ -1,35 +1,46 @@
 package ntnu.fullstacksuperteam.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import ntnu.fullstacksuperteam.backend.dto.CreateQuizDTO;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.util.Date;
 import java.util.List;
 
+@Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Quiz {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
     private String title;
+
+    @JsonIgnore
+    @OneToMany
     private List<Question> questions;
     private Category category;
-    private String difficultyLevel;
+    private int difficultyLevel;
     private String description;
+    @ManyToOne
+    @JoinColumn(name = "author_id")
     private User author;
-    private List<User> coAuthors;
-    private Date UpdatedAt;
+    //private List<User> coAuthors;
+    @Column(nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreatedDate
     private Date createdAt;
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @LastModifiedDate
+    private Date updatedAt;
 
 
     public Quiz() {}
-
-    public Quiz(long id, String title, List<Question> questions, Category category, String difficultyLevel, String description, User author, List<User> coAuthors, Date UpdatedAt, Date createdAt) {
-        this.id = id;
-        this.title = title;
-        this.questions = questions;
-        this.category = category;
-        this.difficultyLevel = difficultyLevel;
-        this.description = description;
-        this.author = author;
-        this.coAuthors = coAuthors;
-        this.UpdatedAt = UpdatedAt;
-        this.createdAt = createdAt;
-    }
 
     public long getId() {
         return id;
@@ -63,11 +74,11 @@ public class Quiz {
         this.category = category;
     }
 
-    public String getDifficultyLevel() {
+    public int getDifficultyLevel() {
         return difficultyLevel;
     }
 
-    public void setDifficultyLevel(String difficultyLevel) {
+    public void setDifficultyLevel(int difficultyLevel) {
         this.difficultyLevel = difficultyLevel;
     }
 
@@ -87,22 +98,6 @@ public class Quiz {
         this.author = author;
     }
 
-    public List<User> getCoAuthors() {
-        return coAuthors;
-    }
-
-    public void setCoAuthors(List<User> coAuthors) {
-        this.coAuthors = coAuthors;
-    }
-
-    public Date getUpdatedAt() {
-        return UpdatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        UpdatedAt = updatedAt;
-    }
-
     public Date getCreatedAt() {
         return createdAt;
     }
@@ -111,7 +106,11 @@ public class Quiz {
         this.createdAt = createdAt;
     }
 
-    public int getLength() {
-        return questions.size();
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
