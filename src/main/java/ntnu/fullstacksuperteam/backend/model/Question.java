@@ -8,7 +8,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -24,6 +23,8 @@ public class Question {
     @ManyToOne()
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
+
+    private Category category;
 
     private int points;
     private String multimediaUrl;

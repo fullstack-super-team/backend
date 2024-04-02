@@ -2,7 +2,6 @@ package ntnu.fullstacksuperteam.backend.service;
 
 import ntnu.fullstacksuperteam.backend.dto.*;
 import ntnu.fullstacksuperteam.backend.model.*;
-import ntnu.fullstacksuperteam.backend.repository.AnswerRepository;
 import ntnu.fullstacksuperteam.backend.repository.QuestionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +14,6 @@ import java.util.List;
 public class QuestionService {
     @Autowired
     private QuestionRepository questionRepository;
-
-    @Autowired
-    private AnswerRepository answerRepository;
 
     @Autowired
     private QuizService quizService;
@@ -37,9 +33,11 @@ public class QuestionService {
             return createTextQuestion(quiz, (CreateTextQuestionDTO) createQuestionDTO);
         } else if (createQuestionDTO instanceof CreateSlideQuestionDTO) {
             return createSlideQuestion(quiz, (CreateSlideQuestionDTO) createQuestionDTO);
+        } else if (createQuestionDTO instanceof CreateTrueOrFalseQuestionDTO) {
+            return createTrueOrFalseQuestion(quiz, (CreateTrueOrFalseQuestionDTO) createQuestionDTO);
+        } else {
+            throw new IllegalArgumentException("Unknown question type");
         }
-
-        return new Question();
     }
 
     private Question createTextQuestion(Quiz quiz, CreateTextQuestionDTO createTextQuestionDTO) {
@@ -52,6 +50,7 @@ public class QuestionService {
             TextAnswer textAnswer = new TextAnswer();
             textAnswer.setText(textAnswerDTO.getText());
             textAnswer.setCorrect(textAnswerDTO.isCorrect());
+            textAnswer.setQuestion(textQuestion);
             textQuestion.addAnswer(textAnswer);
         }
 
@@ -70,8 +69,23 @@ public class QuestionService {
         slideAnswer.setMin(slideAnswerDTO.getMin());
         slideAnswer.setMax(slideAnswerDTO.getMax());
         slideAnswer.setSteps(slideAnswerDTO.getSteps());
+        slideAnswer.setQuestion(slideQuestion);
         slideQuestion.setAnswer(slideAnswer);
 
         return questionRepository.save(slideQuestion);
+    }
+
+    private Question createTrueOrFalseQuestion(Quiz quiz, CreateTrueOrFalseQuestionDTO createTrueOrFalseQuestionDTO) {
+        TrueOrFalseQuestion trueOrFalseQuestion = new TrueOrFalseQuestion();
+        trueOrFalseQuestion.setQuiz(quiz);
+        trueOrFalseQuestion.setText(createTrueOrFalseQuestionDTO.getText());
+        trueOrFalseQuestion.setPoints(createTrueOrFalseQuestionDTO.getPoints());
+
+        for (TrueOrFalseAnswer trueOrFalseAnswer : createTrueOrFalseQuestionDTO.getTextAnswerDTOS()) {
+            trueOrFalseAnswer.setQuestion(trueOrFalseQuestion);
+            trueOrFalseQuestion.addAnswer(trueOrFalseAnswer);
+        }
+
+        return questionRepository.save(trueOrFalseQuestion);
     }
 }
