@@ -24,8 +24,6 @@ public class Question {
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
 
-    private Category category;
-
     private int points;
     private String multimediaUrl;
 
