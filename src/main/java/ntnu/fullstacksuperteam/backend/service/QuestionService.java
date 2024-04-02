@@ -2,6 +2,7 @@ package ntnu.fullstacksuperteam.backend.service;
 
 import ntnu.fullstacksuperteam.backend.dto.*;
 import ntnu.fullstacksuperteam.backend.model.*;
+import ntnu.fullstacksuperteam.backend.repository.AnswerRepository;
 import ntnu.fullstacksuperteam.backend.repository.QuestionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,12 +17,17 @@ public class QuestionService {
     private QuestionRepository questionRepository;
 
     @Autowired
+    private AnswerRepository answerRepository;
+
+    @Autowired
     private QuizService quizService;
 
     private final Logger logger = LoggerFactory.getLogger(QuestionService.class);
 
     public List<Question> getQuestionsByQuizId(long quizId) {
-        return questionRepository.findByQuizId(quizId);
+        logger.info("Getting questions by quiz id: " + quizId);
+        List<Question> questions = questionRepository.findByQuizId(quizId);
+        return questions;
     }
 
     public Question createQuestion(long quizId, CreateQuestionDTO createQuestionDTO) {

@@ -1,5 +1,6 @@
 package ntnu.fullstacksuperteam.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -8,6 +9,8 @@ import jakarta.persistence.Entity;
 public class SlideAnswer extends Answer {
     private int min;
     private int max;
+
+    @JsonIgnore
     private int correctValue;
     private int steps;
 

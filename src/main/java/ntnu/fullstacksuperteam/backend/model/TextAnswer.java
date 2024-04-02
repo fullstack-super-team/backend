@@ -1,5 +1,6 @@
 package ntnu.fullstacksuperteam.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
@@ -7,6 +8,8 @@ import jakarta.persistence.Entity;
 @DiscriminatorValue("TEXT")
 public class TextAnswer extends Answer {
     private String text;
+
+    @JsonIgnore
     private boolean correct;
 
     public TextAnswer() {}

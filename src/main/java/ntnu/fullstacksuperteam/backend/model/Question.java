@@ -1,5 +1,6 @@
 package ntnu.fullstacksuperteam.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -18,6 +19,7 @@ public class Question {
     private long id;
     private String text;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "quiz_id")
     private Quiz quiz;
