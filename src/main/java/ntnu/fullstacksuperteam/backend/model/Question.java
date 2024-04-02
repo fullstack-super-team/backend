@@ -1,6 +1,7 @@
 package ntnu.fullstacksuperteam.backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -26,6 +27,10 @@ public class Question {
 
     private int points;
     private String multimediaUrl;
+
+    @Column(name = "question_type", insertable = false, updatable = false)
+    @JsonView()
+    private String type;
 
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
