@@ -40,6 +40,49 @@ public class QuestionService {
         }
     }
 
+    public SubmittedAnswerDTO<?> submitAnswer(long questionId, SubmitAnswerDTO submitAnswerDTO) {
+        Question question = questionRepository.findById(questionId).orElseThrow();
+
+        if (question instanceof TextQuestion textQuestion) {
+            String answer = submitAnswerDTO.getAnswer();
+            String correctAnswer = textQuestion.getAnswers().stream()
+                    .filter(TextAnswer::isCorrect)
+                    .map(TextAnswer::getText)
+                    .findFirst()
+                    .orElseThrow();
+
+            if (answer.equals(correctAnswer)) {
+                return new SubmittedAnswerDTO<>(answer, correctAnswer, textQuestion.getPoints());
+            }
+
+            return new SubmittedAnswerDTO<>(answer, correctAnswer, 0);
+        } else if (question instanceof SlideQuestion slideQuestion) {
+            int answer = Integer.parseInt(submitAnswerDTO.getAnswer());
+            int correctAnswer = slideQuestion.getAnswer().getCorrectValue();
+
+            if (answer == correctAnswer) {
+                return new SubmittedAnswerDTO<>(answer, correctAnswer, slideQuestion.getPoints());
+            }
+
+            return new SubmittedAnswerDTO<>(answer, correctAnswer, 0);
+        } else if (question instanceof TrueOrFalseQuestion trueOrFalseQuestion) {
+            String answer = submitAnswerDTO.getAnswer();
+            String correctAnswer = trueOrFalseQuestion.getAnswers().stream()
+                    .filter(TrueOrFalseAnswer::isCorrect)
+                    .map(TrueOrFalseAnswer::getText)
+                    .findFirst()
+                    .orElseThrow();
+
+            if (answer.equals(correctAnswer)) {
+                return new SubmittedAnswerDTO<>(answer, correctAnswer, trueOrFalseQuestion.getPoints());
+            }
+
+            return new SubmittedAnswerDTO<>(answer, correctAnswer, 0);
+        } else {
+            throw new IllegalArgumentException("Unknown question type");
+        }
+    }
+
     private Question createTextQuestion(Quiz quiz, CreateTextQuestionDTO createTextQuestionDTO) {
         TextQuestion textQuestion = new TextQuestion();
         textQuestion.setQuiz(quiz);
