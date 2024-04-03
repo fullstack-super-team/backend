@@ -10,9 +10,9 @@ public enum DifficultyLevel {
     @JsonCreator
     public static DifficultyLevel fromInt(int difficultyLevel) {
         return switch (difficultyLevel) {
-            case 0 -> EASY;
-            case 1 -> MEDIUM;
-            case 2 -> HARD;
+            case 1 -> EASY;
+            case 2 -> MEDIUM;
+            case 3 -> HARD;
             default -> throw new IllegalArgumentException("Invalid difficulty level");
         };
     }
