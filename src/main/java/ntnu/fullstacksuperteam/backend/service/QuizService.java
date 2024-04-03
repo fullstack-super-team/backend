@@ -23,6 +23,15 @@ public class QuizService {
         return quizRepository.findAll();
     }
 
+    public List<Quiz> searchQuizzes(String query) {
+        return quizRepository.findAllByTitleContaining(query);
+    }
+
+    public List<Quiz> getMyQuizzes(long id) {
+        User user = userService.getUserById(id);
+        return quizRepository.findAllByAuthor(user);
+    }
+
     public Quiz getQuizById(long id) {
         Quiz quiz = quizRepository.findById(id).orElse(null);
         if (quiz == null) {

@@ -18,8 +18,8 @@ public class Quiz {
     @Column(name = "id")
     private long id;
     private String title;
-    @JsonIgnore
-    @OneToMany
+
+    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
     private List<Question> questions;
     private Category category;
     private DifficultyLevel difficultyLevel;
