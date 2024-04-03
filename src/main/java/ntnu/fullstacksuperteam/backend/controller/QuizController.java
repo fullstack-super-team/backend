@@ -45,6 +45,11 @@ public class QuizController {
 
     @GetMapping("/{quizId}")
     public ResponseEntity<?> getQuizById(@PathVariable long quizId) {
-        return ResponseEntity.status(HttpStatus.OK).body(quizService.getQuizById(quizId));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(quizService.getQuizById(quizId));
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+        }
     }
 }
