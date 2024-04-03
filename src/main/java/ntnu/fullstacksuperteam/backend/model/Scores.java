@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Score {
+public class Scores {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -27,7 +27,7 @@ public class Score {
     @CreatedDate
     private Date createdAt;
 
-    public Score() {}
+    public Scores() {}
 
     public long getId() {
         return id;
