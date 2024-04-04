@@ -1,13 +1,11 @@
 package ntnu.fullstacksuperteam.backend.repository;
 
-import ntnu.fullstacksuperteam.backend.model.Scores;
-import ntnu.fullstacksuperteam.backend.model.User;
-import ntnu.fullstacksuperteam.backend.model.Quiz;
+import ntnu.fullstacksuperteam.backend.model.Score;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ScoresRepository extends JpaRepository<Scores, Long> {
-    List<Scores> findAllByUserIdAndQuizId(long user, long quizId);
-    List<Scores> findAllByQuizId(long quizId);
+public interface ScoresRepository extends JpaRepository<Score, Long> {
+    List<Score> findAllByUserIdAndQuizId(long user, long quizId);
+    List<Score> findAllByQuizId(long quizId);
 }

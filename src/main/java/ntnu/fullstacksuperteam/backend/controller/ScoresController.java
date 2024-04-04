@@ -1,6 +1,6 @@
 package ntnu.fullstacksuperteam.backend.controller;
 
-import ntnu.fullstacksuperteam.backend.model.Scores;
+import ntnu.fullstacksuperteam.backend.model.Score;
 import ntnu.fullstacksuperteam.backend.service.ScoresService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ public class ScoresController {
     @GetMapping()
     public ResponseEntity<?> getScoresByQuizId(@PathVariable long quizId) {
         try {
-            List<Scores> scores = new ArrayList<>();
+            List<Score> scores = new ArrayList<>();
             return ResponseEntity.status(HttpStatus.OK).body(scores);
         } catch (Exception exception) {
             logger.error(exception.getMessage());
@@ -39,7 +39,7 @@ public class ScoresController {
     public ResponseEntity<?> getScoresByUserAndQuizId(Authentication authentication, @PathVariable long quizId) {
         try {
             long userId = Long.parseLong((String) authentication.getPrincipal());
-            List<Scores> scores = new ArrayList<>();
+            List<Score> scores = new ArrayList<>();
             return ResponseEntity.status(HttpStatus.OK).body(scores);
         } catch (Exception exception) {
             logger.error(exception.getMessage());
