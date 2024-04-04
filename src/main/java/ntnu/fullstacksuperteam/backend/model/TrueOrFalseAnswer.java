@@ -10,7 +10,7 @@ public class TrueOrFalseAnswer extends Answer {
     private String text;
 
     @JsonIgnore
-    private boolean correct;
+    private boolean isCorrect;
 
     public TrueOrFalseAnswer() {}
 
@@ -22,11 +22,11 @@ public class TrueOrFalseAnswer extends Answer {
         this.text = text;
     }
 
-    public boolean isCorrect() {
-        return correct;
+    public boolean isIsCorrect() {
+        return isCorrect;
     }
 
-    public void setCorrect(boolean correct) {
-        this.correct = correct;
+    public void setIsCorrect(boolean correct) {
+        this.isCorrect = correct;
     }
 }

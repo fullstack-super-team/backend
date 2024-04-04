@@ -2,7 +2,7 @@ package ntnu.fullstacksuperteam.backend.dto;
 
 public class TextAnswerDTO {
     private String text;
-    private boolean correct;
+    private boolean isCorrect;
 
     public TextAnswerDTO() {}
 
@@ -11,13 +11,13 @@ public class TextAnswerDTO {
     }
 
     public boolean isCorrect() {
-        return correct;
+        return isCorrect;
     }
 
     public String toString() {
         return "TextAnswerDTO{" +
                 "text='" + text + '\'' +
-                ", correct=" + correct +
+                ", correct=" + isCorrect +
                 '}';
     }
 }

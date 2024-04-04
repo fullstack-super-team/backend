@@ -10,7 +10,7 @@ public class TextAnswer extends Answer {
     private String text;
 
     @JsonIgnore
-    private boolean correct;
+    private boolean isCorrect;
 
     public TextAnswer() {}
 
@@ -22,12 +22,12 @@ public class TextAnswer extends Answer {
         this.text = text;
     }
 
-    public boolean isCorrect() {
-        return correct;
+    public boolean isIsCorrect() {
+        return isCorrect;
     }
 
-    public void setCorrect(boolean correct) {
-        this.correct = correct;
+    public void setIsCorrect(boolean correct) {
+        this.isCorrect = correct;
     }
 
     public String toString() {
@@ -35,7 +35,7 @@ public class TextAnswer extends Answer {
         stringBuilder.append("TextAnswer{");
         stringBuilder.append("text=").append(this.text);
         stringBuilder.append(", ");
-        stringBuilder.append("correct=").append(this.correct);
+        stringBuilder.append("correct=").append(this.isCorrect);
         stringBuilder.append("}");
 
         return stringBuilder.toString();
