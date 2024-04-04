@@ -1,5 +1,7 @@
 package ntnu.fullstacksuperteam.backend.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import ntnu.fullstacksuperteam.backend.dto.*;
 import ntnu.fullstacksuperteam.backend.model.*;
 import ntnu.fullstacksuperteam.backend.repository.QuestionRepository;
@@ -15,8 +17,8 @@ public class QuestionService {
     @Autowired
     private QuestionRepository questionRepository;
 
-    @Autowired
-    private QuizService quizService;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private final Logger logger = LoggerFactory.getLogger(QuestionService.class);
 
@@ -27,8 +29,7 @@ public class QuestionService {
     }
 
     public Question createQuestion(long quizId, CreateQuestionDTO createQuestionDTO) {
-        Quiz quiz = quizService.getQuizById(quizId);
-
+        Quiz quiz = entityManager.getReference(Quiz.class, quizId);
         if (createQuestionDTO instanceof CreateTextQuestionDTO) {
             return createTextQuestion(quiz, (CreateTextQuestionDTO) createQuestionDTO);
         } else if (createQuestionDTO instanceof CreateSlideQuestionDTO) {
@@ -46,7 +47,7 @@ public class QuestionService {
         if (question instanceof TextQuestion textQuestion) {
             String answer = submitAnswerDTO.getAnswer();
             String correctAnswer = textQuestion.getAnswers().stream()
-                    .filter(TextAnswer::isCorrect)
+                    .filter(TextAnswer::isIsCorrect)
                     .map(TextAnswer::getText)
                     .findFirst()
                     .orElseThrow();
@@ -68,7 +69,7 @@ public class QuestionService {
         } else if (question instanceof TrueOrFalseQuestion trueOrFalseQuestion) {
             String answer = submitAnswerDTO.getAnswer();
             String correctAnswer = trueOrFalseQuestion.getAnswers().stream()
-                    .filter(TrueOrFalseAnswer::isCorrect)
+                    .filter(TrueOrFalseAnswer::isIsCorrect)
                     .map(TrueOrFalseAnswer::getText)
                     .findFirst()
                     .orElseThrow();
@@ -92,7 +93,7 @@ public class QuestionService {
         for (TextAnswerDTO textAnswerDTO : createTextQuestionDTO.getTextAnswerDTOS()) {
             TextAnswer textAnswer = new TextAnswer();
             textAnswer.setText(textAnswerDTO.getText());
-            textAnswer.setCorrect(textAnswerDTO.isCorrect());
+            textAnswer.setIsCorrect(textAnswerDTO.isCorrect());
             textAnswer.setQuestion(textQuestion);
             textQuestion.addAnswer(textAnswer);
         }
@@ -111,7 +112,7 @@ public class QuestionService {
         slideAnswer.setCorrectValue(slideAnswerDTO.getCorrectValue());
         slideAnswer.setMin(slideAnswerDTO.getMin());
         slideAnswer.setMax(slideAnswerDTO.getMax());
-        slideAnswer.setSteps(slideAnswerDTO.getSteps());
+        slideAnswer.setStepSize(slideAnswerDTO.getStepSize());
         slideAnswer.setQuestion(slideQuestion);
         slideQuestion.setAnswer(slideAnswer);
 
