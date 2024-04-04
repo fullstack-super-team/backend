@@ -4,7 +4,7 @@ public class SlideAnswerDTO {
     private int min;
     private int max;
     private int correctValue;
-    private int steps;
+    private int stepSize;
 
     public SlideAnswerDTO() {}
 
@@ -20,8 +20,8 @@ public class SlideAnswerDTO {
         return correctValue;
     }
 
-    public int getSteps() {
-        return steps;
+    public int getStepSize() {
+        return stepSize;
     }
 
     public String toString() {
@@ -33,7 +33,7 @@ public class SlideAnswerDTO {
         stringBuilder.append(", ");
         stringBuilder.append("correctValue=").append(this.correctValue);
         stringBuilder.append(", ");
-        stringBuilder.append("steps=").append(this.steps);
+        stringBuilder.append("steps=").append(this.stepSize);
         stringBuilder.append("}");
 
         return stringBuilder.toString();

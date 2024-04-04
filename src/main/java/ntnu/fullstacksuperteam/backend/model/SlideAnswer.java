@@ -12,7 +12,7 @@ public class SlideAnswer extends Answer {
 
     @JsonIgnore
     private int correctValue;
-    private int steps;
+    private int stepSize;
 
     public SlideAnswer() {}
 
@@ -40,11 +40,11 @@ public class SlideAnswer extends Answer {
         this.correctValue = correctValue;
     }
 
-    public int getSteps() {
-        return steps;
+    public int getStepSize() {
+        return stepSize;
     }
 
-    public void setSteps(int steps) {
-        this.steps = steps;
+    public void setStepSize(int steps) {
+        this.stepSize = steps;
     }
 }
