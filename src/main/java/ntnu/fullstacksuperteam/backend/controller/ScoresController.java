@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +24,21 @@ public class ScoresController {
 
     private final Logger logger = LoggerFactory.getLogger(ScoresController.class);
 
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<?> getScoresByQuizId(@PathVariable long quizId) {
         try {
+            List<Scores> scores = new ArrayList<>();
+            return ResponseEntity.status(HttpStatus.OK).body(scores);
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+        }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getScoresByUserAndQuizId(Authentication authentication, @PathVariable long quizId) {
+        try {
+            long userId = Long.parseLong((String) authentication.getPrincipal());
             List<Scores> scores = new ArrayList<>();
             return ResponseEntity.status(HttpStatus.OK).body(scores);
         } catch (Exception exception) {
