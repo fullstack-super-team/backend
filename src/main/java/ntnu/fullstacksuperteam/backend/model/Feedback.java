@@ -9,6 +9,7 @@ import java.util.Date;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "feedbacks")
 public class Feedback {
 
     @Id

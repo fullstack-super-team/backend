@@ -12,6 +12,7 @@ import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "quizzes")
 public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
