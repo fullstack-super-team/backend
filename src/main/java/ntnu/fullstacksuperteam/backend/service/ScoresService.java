@@ -1,7 +1,13 @@
 package ntnu.fullstacksuperteam.backend.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import ntnu.fullstacksuperteam.backend.model.Quiz;
 import ntnu.fullstacksuperteam.backend.model.Score;
+import ntnu.fullstacksuperteam.backend.model.User;
 import ntnu.fullstacksuperteam.backend.repository.ScoresRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,13 +15,13 @@ import java.util.List;
 
 @Service
 public class ScoresService {
-
-    private final ScoresRepository scoresRepository;
-
     @Autowired
-    public ScoresService(ScoresRepository scoresRepository) {
-        this.scoresRepository = scoresRepository;
-    }
+    private ScoresRepository scoresRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    private Logger logger = LoggerFactory.getLogger(ScoresService.class);
 
     public List<Score> getScoresByUserAndQuizId(long userId, long quizId) {
         return scoresRepository.findAllByUserIdAndQuizId(userId, quizId);
@@ -25,7 +31,11 @@ public class ScoresService {
         return scoresRepository.findAllByQuizId(quizId);
     }
 
-    public Score saveScores(Score score) {
+    public Score saveScore(long userId, long quizId, Score score) {
+        User user = entityManager.getReference(User.class, userId);
+        Quiz quiz = entityManager.getReference(Quiz.class, quizId);
+        score.setUser(user);
+        score.setQuiz(quiz);
         return scoresRepository.save(score);
     }
 }
