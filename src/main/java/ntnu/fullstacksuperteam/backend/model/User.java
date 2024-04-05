@@ -25,7 +25,8 @@ public class User {
     @JsonIgnore
     private String password;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Score> scoreList;
 
     @Column(nullable = false, updatable = false)
@@ -77,5 +78,9 @@ public class User {
 
     public Date getUpdatedAt() {
         return updatedAt;
+    }
+
+    public List<Score> getScoreList() {
+        return scoreList;
     }
 }

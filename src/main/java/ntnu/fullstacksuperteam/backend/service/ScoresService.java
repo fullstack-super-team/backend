@@ -18,6 +18,9 @@ public class ScoresService {
     @Autowired
     private ScoresRepository scoresRepository;
 
+    @Autowired
+    private UserService userService;
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -32,7 +35,7 @@ public class ScoresService {
     }
 
     public Score saveScore(long userId, long quizId, Score score) {
-        User user = entityManager.getReference(User.class, userId);
+        User user = this.userService.getUserById(userId);
         Quiz quiz = entityManager.getReference(Quiz.class, quizId);
         score.setUser(user);
         score.setQuiz(quiz);
