@@ -50,7 +50,7 @@ public class QuestionService {
                     .filter(TextAnswer::isIsCorrect)
                     .map(TextAnswer::getText)
                     .findFirst()
-                    .orElseThrow();
+                    .orElse("No correct answer found");
 
             if (answer.equals(correctAnswer)) {
                 return new SubmittedAnswerDTO<>(answer, correctAnswer, textQuestion.getPoints());
@@ -72,7 +72,7 @@ public class QuestionService {
                     .filter(TrueOrFalseAnswer::isIsCorrect)
                     .map(TrueOrFalseAnswer::getText)
                     .findFirst()
-                    .orElseThrow();
+                    .orElse("No correct answer found");
 
             if (answer.equals(correctAnswer)) {
                 return new SubmittedAnswerDTO<>(answer, correctAnswer, trueOrFalseQuestion.getPoints());
