@@ -9,8 +9,6 @@ import jakarta.persistence.Entity;
 public class SlideAnswer extends Answer {
     private int min;
     private int max;
-
-    @JsonIgnore
     private int correctValue;
     private int stepSize;
 

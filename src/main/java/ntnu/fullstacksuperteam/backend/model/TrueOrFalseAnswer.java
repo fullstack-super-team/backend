@@ -8,8 +8,6 @@ import jakarta.persistence.Entity;
 @DiscriminatorValue("TRUE_OR_FALSE")
 public class TrueOrFalseAnswer extends Answer {
     private String text;
-
-    @JsonIgnore
     private boolean isCorrect;
 
     public TrueOrFalseAnswer() {}

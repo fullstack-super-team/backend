@@ -9,7 +9,6 @@ import jakarta.persistence.Entity;
 public class TextAnswer extends Answer {
     private String text;
 
-    @JsonIgnore
     private boolean isCorrect;
 
     public TextAnswer() {}
