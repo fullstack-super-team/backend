@@ -1,6 +1,6 @@
 package ntnu.fullstacksuperteam.backend.controller;
 
-import ntnu.fullstacksuperteam.backend.dto.CreateQuizDTO;
+import ntnu.fullstacksuperteam.backend.dto.QuizDTO;
 import ntnu.fullstacksuperteam.backend.service.QuizService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,9 +38,21 @@ public class QuizController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createQuiz(Authentication authentication, @RequestBody CreateQuizDTO createQuizDTO) {
+    public ResponseEntity<?> createQuiz(Authentication authentication, @RequestBody QuizDTO quizDTO) {
         long userId = Long.parseLong((String) authentication.getPrincipal());
-        return ResponseEntity.status(HttpStatus.CREATED).body(quizService.createQuiz(userId, createQuizDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(quizService.createQuiz(userId, quizDTO));
+    }
+
+    @PutMapping("/{quizId}")
+    public ResponseEntity<?> updateQuiz(Authentication authentication, @PathVariable long quizId, @RequestBody QuizDTO quizDTO) {
+        logger.info("Updating quiz with id: " + quizId);
+        try {
+            long userId = Long.parseLong((String) authentication.getPrincipal());
+            return ResponseEntity.status(HttpStatus.CREATED).body(quizService.updateQuiz(userId, quizId, quizDTO));
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+        }
     }
 
     @GetMapping("/{quizId}")

@@ -5,7 +5,7 @@ import ntnu.fullstacksuperteam.backend.model.DifficultyLevel;
 
 import java.util.List;
 
-public class CreateQuizDTO {
+public class QuizDTO {
     private String title;
     private String description;
     private DifficultyLevel difficultyLevel;
