@@ -1,12 +1,17 @@
 package ntnu.fullstacksuperteam.backend.dto;
 
 public class SlideAnswerDTO {
+    private long id;
     private int min;
     private int max;
     private int correctValue;
     private int stepSize;
 
     public SlideAnswerDTO() {}
+
+    public long getId() {
+        return id;
+    }
 
     public int getMin() {
         return min;
