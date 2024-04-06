@@ -56,6 +56,13 @@ public class QuizController {
         }
     }
 
+    @GetMapping("/recent")
+    public ResponseEntity<?> getRecentlyPlayedQuizzes(Authentication authentication) {
+        long userId = Long.parseLong((String) authentication.getPrincipal());
+        logger.info("Getting all recently played quizzes");
+        return ResponseEntity.status(HttpStatus.OK).body(quizService.getRecentlyPlayedQuizzes(userId));
+    }
+
     @GetMapping("/{quizId}")
     public ResponseEntity<?> getQuizById(@PathVariable long quizId) {
         try {
@@ -64,12 +71,5 @@ public class QuizController {
             logger.error(exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
         }
-    }
-
-    @GetMapping("/recent")
-    public ResponseEntity<?> getRecentlyPlayedQuizzes(Authentication authentication) {
-        long userId = Long.parseLong((String) authentication.getPrincipal());
-        logger.info("Getting all recently played quizzes");
-        return ResponseEntity.status(HttpStatus.OK).body(quizService.getRecentlyPlayedQuizzes(userId));
     }
 }
