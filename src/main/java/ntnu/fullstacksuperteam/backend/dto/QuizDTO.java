@@ -8,6 +8,7 @@ import java.util.List;
 public class QuizDTO {
     private String title;
     private String description;
+    private boolean randomize;
     private DifficultyLevel difficultyLevel;
     private Category category;
     private List<QuestionDTO> questions;
@@ -18,6 +19,10 @@ public class QuizDTO {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean getRandomize() {
+        return randomize;
     }
 
     public DifficultyLevel getDifficultyLevel() {

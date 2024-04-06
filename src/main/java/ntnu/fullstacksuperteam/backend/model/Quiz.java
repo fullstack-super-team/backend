@@ -23,6 +23,7 @@ public class Quiz {
     private Category category;
     private DifficultyLevel difficultyLevel;
     private String description;
+    private boolean randomize;
     @ManyToOne
     @JoinColumn(name = "author_id")
     private User author;
@@ -90,6 +91,14 @@ public class Quiz {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean getRandomize() {
+        return randomize;
+    }
+
+    public void setRandomize(boolean randomize) {
+        this.randomize = randomize;
     }
 
     public User getAuthor() {

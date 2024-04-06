@@ -62,6 +62,7 @@ public class QuizService {
         quiz.setCategory(quizDTO.getCategory());
         quiz.setDifficultyLevel(quizDTO.getDifficultyLevel());
         quiz.setDescription(quizDTO.getDescription());
+        quiz.setRandomize(quizDTO.getRandomize());
 
         Quiz savedQuiz = quizRepository.save(quiz);
 
@@ -87,6 +88,7 @@ public class QuizService {
         quiz.setCategory(quizDTO.getCategory());
         quiz.setDifficultyLevel(quizDTO.getDifficultyLevel());
         quiz.setDescription(quizDTO.getDescription());
+        quiz.setRandomize(quizDTO.getRandomize());
 
         // Temporarily hold updated and new questions
         List<Question> updatedQuestions = new ArrayList<>();
