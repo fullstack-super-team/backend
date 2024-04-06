@@ -4,6 +4,7 @@ import ntnu.fullstacksuperteam.backend.dto.QuestionDTO;
 import ntnu.fullstacksuperteam.backend.dto.QuizDTO;
 import ntnu.fullstacksuperteam.backend.model.Question;
 import ntnu.fullstacksuperteam.backend.model.Quiz;
+import ntnu.fullstacksuperteam.backend.model.Score;
 import ntnu.fullstacksuperteam.backend.model.User;
 import ntnu.fullstacksuperteam.backend.repository.QuizRepository;
 import org.slf4j.Logger;
@@ -20,6 +21,9 @@ import java.util.List;
 public class QuizService {
     @Autowired
     private QuizRepository quizRepository;
+
+    @Autowired
+    private ScoresService scoresService;
 
     @Autowired
     private UserService userService;
@@ -108,5 +112,19 @@ public class QuizService {
         }
 
         return quizRepository.save(quiz);
+    }
+
+    public List<Quiz> getRecentlyPlayedQuizzes(long userId) {
+        User user = userService.getUserById(userId);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+        List<Score> scores = scoresService.getScoresByUserId(userId);
+        List<Score> recentScores = scores.subList(0, Math.min(scores.size(), 3));
+        List<Quiz> quizzes = new ArrayList<>();
+        for (Score score : recentScores) {
+            quizzes.add(score.getQuiz());
+        }
+        return quizzes;
     }
 }
