@@ -11,10 +11,15 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("TRUE_OR_FALSE")
 public class TrueOrFalseQuestion extends Question {
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TrueOrFalseAnswer> answers;
 
     public TrueOrFalseQuestion() {
+        this.answers = new ArrayList<>();
+    }
+
+    public TrueOrFalseQuestion(Question question) {
+        super(question);
         this.answers = new ArrayList<>();
     }
 

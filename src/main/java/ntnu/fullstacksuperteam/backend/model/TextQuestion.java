@@ -11,10 +11,15 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("TEXT")
 public class TextQuestion extends Question {
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "question", cascade = { CascadeType.ALL, CascadeType.REMOVE}, orphanRemoval = true)
     private List<TextAnswer> answers;
 
     public TextQuestion() {
+        this.answers = new ArrayList<>();
+    }
+
+    public TextQuestion(Question question) {
+        super(question);
         this.answers = new ArrayList<>();
     }
 
