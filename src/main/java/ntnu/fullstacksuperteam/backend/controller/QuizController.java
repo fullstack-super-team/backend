@@ -46,9 +46,10 @@ public class QuizController {
     @PutMapping("/{quizId}")
     public ResponseEntity<?> updateQuiz(Authentication authentication, @PathVariable long quizId, @RequestBody QuizDTO quizDTO) {
         logger.info("Updating quiz with id: " + quizId);
+
         try {
             long userId = Long.parseLong((String) authentication.getPrincipal());
-            return ResponseEntity.status(HttpStatus.CREATED).body(quizService.updateQuiz(userId, quizId, quizDTO));
+            return ResponseEntity.status(HttpStatus.OK).body(quizService.updateQuiz(userId, quizId, quizDTO));
         } catch (Exception exception) {
             logger.error(exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
