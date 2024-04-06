@@ -2,12 +2,12 @@ package ntnu.fullstacksuperteam.backend.dto;
 
 public class SubmittedAnswerDTO<T> {
     private T submittedAnswer;
-    private T correctAnswer;
+    private T correctAnswers;
     private int pointsGiven;
 
-    public SubmittedAnswerDTO(T submittedAnswer, T correctAnswer, int pointsGiven) {
+    public SubmittedAnswerDTO(T submittedAnswer, T correctAnswers, int pointsGiven) {
         this.submittedAnswer = submittedAnswer;
-        this.correctAnswer = correctAnswer;
+        this.correctAnswers = correctAnswers;
         this.pointsGiven = pointsGiven;
     }
 
@@ -15,8 +15,8 @@ public class SubmittedAnswerDTO<T> {
         return submittedAnswer;
     }
 
-    public T getCorrectAnswer() {
-        return correctAnswer;
+    public T getCorrectAnswers() {
+        return correctAnswers;
     }
 
     public int getPointsGiven() {

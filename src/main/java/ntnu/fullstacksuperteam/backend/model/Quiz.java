@@ -27,6 +27,10 @@ public class Quiz {
     @JoinColumn(name = "author_id")
     private User author;
     //private List<User> coAuthors;
+
+    @OneToMany(mappedBy = "quiz", cascade = { CascadeType.ALL, CascadeType.PERSIST, CascadeType.REMOVE }, orphanRemoval = true)
+    private List<Score> scores;
+
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate

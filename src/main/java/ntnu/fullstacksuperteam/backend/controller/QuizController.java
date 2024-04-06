@@ -56,10 +56,29 @@ public class QuizController {
         }
     }
 
+    @GetMapping("/recent")
+    public ResponseEntity<?> getRecentlyPlayedQuizzes(Authentication authentication) {
+        long userId = Long.parseLong((String) authentication.getPrincipal());
+        logger.info("Getting all recently played quizzes");
+        return ResponseEntity.status(HttpStatus.OK).body(quizService.getRecentlyPlayedQuizzes(userId));
+    }
+
     @GetMapping("/{quizId}")
     public ResponseEntity<?> getQuizById(@PathVariable long quizId) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(quizService.getQuizById(quizId));
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+        }
+    }
+
+    @DeleteMapping("/{quizId}")
+    public ResponseEntity<?> deleteQuiz(Authentication authentication, @PathVariable long quizId) {
+        try {
+            long userId = Long.parseLong((String) authentication.getPrincipal());
+            quizService.deleteQuiz(userId, quizId);
+            return ResponseEntity.status(HttpStatus.OK).body("Quiz deleted");
         } catch (Exception exception) {
             logger.error(exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");

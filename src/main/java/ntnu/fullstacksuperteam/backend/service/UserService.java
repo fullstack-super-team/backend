@@ -22,4 +22,22 @@ public class UserService {
         }
         return user.get();
     }
+
+    public User updateUser(long userId, User newUserInfo) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+        User user = userOptional.get();
+        Optional<User> existingUser = userRepository.findFirstByUsernameOrEmail(newUserInfo.getUsername(), newUserInfo.getEmail());
+        if (existingUser.isPresent() && existingUser.get().getId() != userId) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Username or email already exists");
+        }
+        System.out.println(newUserInfo.getFirstName());
+        user.setFirstName(newUserInfo.getFirstName());
+        user.setLastName(newUserInfo.getLastName());
+        user.setUsername(newUserInfo.getUsername());
+        user.setEmail(newUserInfo.getEmail());
+        return userRepository.save(user);
+    }
 }

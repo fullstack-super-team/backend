@@ -41,4 +41,8 @@ public class ScoresService {
         score.setQuiz(quiz);
         return scoresRepository.save(score);
     }
+
+    public List<Score> getScoresByUserId(long userId) {
+        return scoresRepository.findAllByUserIdOrderByDateDesc(userId);
+    }
 }
