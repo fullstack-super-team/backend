@@ -41,14 +41,6 @@ public class User {
 
     public User() {}
 
-    public User(RegisterDTO registerDTO) {
-        this.firstName = registerDTO.getFirstName();
-        this.lastName = registerDTO.getLastName();
-        this.username = registerDTO.getUsername();
-        this.email = registerDTO.getEmail();
-        this.password = registerDTO.getPassword();
-    }
-
     public Long getId() {
         return id;
     }
@@ -82,5 +74,33 @@ public class User {
 
     public List<Score> getScoreList() {
         return scoreList;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setScoreList(List<Score> scoreList) {
+        this.scoreList = scoreList;
     }
 }

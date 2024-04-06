@@ -36,4 +36,24 @@ public class QuestionDTO {
     public String getType() {
         return type;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public void setMultimediaUrl(String multimediaUrl) {
+        this.multimediaUrl = multimediaUrl;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

@@ -25,7 +25,13 @@ public class AuthService {
         }
 
         // If not then save
-        User savedUser = userRepository.save(new User(registerDTO));
+        User newUser = new User();
+        newUser.setFirstName(registerDTO.getFirstName());
+        newUser.setLastName(registerDTO.getLastName());
+        newUser.setUsername(registerDTO.getUsername());
+        newUser.setEmail(registerDTO.getEmail());
+        newUser.setPassword(registerDTO.getPassword());
+        User savedUser = userRepository.save(newUser);
         return new Token(tokenService.generateToken(savedUser.getId()));
     }
 

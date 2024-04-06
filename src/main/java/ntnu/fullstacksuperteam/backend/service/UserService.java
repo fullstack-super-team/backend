@@ -15,14 +15,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserDTO me(long id) {
-        User user = userRepository.findById(id).orElse(null);
-        if (user == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-        }
-        return new UserDTO(user);
-    }
-
     public User getUserById(long id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
