@@ -25,7 +25,9 @@ public class ScoresController {
     public ResponseEntity<?> getScoresByQuizId(@PathVariable long quizId) {
         try {
             List<Score> scores = this.scoresService.getScoresByQuizId(quizId);
-            return ResponseEntity.status(HttpStatus.OK).body(scores);
+            int endIndex = Math.min(scores.size(), 10);
+            List<Score> topTenRecentScores = scores.subList(0, endIndex);
+            return ResponseEntity.status(HttpStatus.OK).body(topTenRecentScores);
         } catch (Exception exception) {
             logger.error(exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
@@ -36,8 +38,10 @@ public class ScoresController {
     public ResponseEntity<?> getScoresByUserAndQuizId(Authentication authentication, @PathVariable long quizId) {
         try {
             long userId = Long.parseLong((String) authentication.getPrincipal());
-            List<Score> scores = new ArrayList<>();
-            return ResponseEntity.status(HttpStatus.OK).body(scores);
+            List<Score> scores = this.scoresService.getScoresByUserAndQuizId(userId, quizId);
+            int endIndex = Math.min(scores.size(), 5);
+            List<Score> recentFiveScores = scores.subList(0, endIndex);
+            return ResponseEntity.status(HttpStatus.OK).body(recentFiveScores);
         } catch (Exception exception) {
             logger.error(exception.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");

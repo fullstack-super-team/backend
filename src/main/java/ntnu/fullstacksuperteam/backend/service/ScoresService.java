@@ -27,11 +27,11 @@ public class ScoresService {
     private Logger logger = LoggerFactory.getLogger(ScoresService.class);
 
     public List<Score> getScoresByUserAndQuizId(long userId, long quizId) {
-        return scoresRepository.findAllByUserIdAndQuizId(userId, quizId);
+        return scoresRepository.findAllByUserIdAndQuizIdOrderByDateDesc(userId, quizId);
     }
 
     public List<Score> getScoresByQuizId(long quizId) {
-        return scoresRepository.findAllByQuizId(quizId);
+        return scoresRepository.findAllByQuizIdOrderByPointsDescDateDesc(quizId);
     }
 
     public Score saveScore(long userId, long quizId, Score score) {

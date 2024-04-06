@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ScoresRepository extends JpaRepository<Score, Long> {
-    List<Score> findAllByUserIdAndQuizId(long user, long quizId);
-    List<Score> findAllByQuizId(long quizId);
+    List<Score> findAllByUserIdAndQuizIdOrderByDateDesc(long user, long quizId);
+    List<Score> findAllByQuizIdOrderByPointsDescDateDesc(long quizId);
 }
