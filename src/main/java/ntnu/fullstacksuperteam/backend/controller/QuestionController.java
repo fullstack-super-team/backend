@@ -1,10 +1,9 @@
 package ntnu.fullstacksuperteam.backend.controller;
 
-import ntnu.fullstacksuperteam.backend.dto.CreateQuestionDTO;
+import ntnu.fullstacksuperteam.backend.dto.QuestionDTO;
 import ntnu.fullstacksuperteam.backend.dto.SubmitAnswerDTO;
 import ntnu.fullstacksuperteam.backend.model.Question;
 import ntnu.fullstacksuperteam.backend.service.QuestionService;
-import org.h2.util.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +34,8 @@ public class QuestionController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createQuestion(@PathVariable long quizId, @RequestBody CreateQuestionDTO createQuestionDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(questionService.createQuestion(quizId, createQuestionDTO));
+    public ResponseEntity<?> createQuestion(@PathVariable long quizId, @RequestBody QuestionDTO questionDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(questionService.createQuestion(quizId, questionDTO));
     }
 
     @PostMapping("/{questionId}/submit-answer")

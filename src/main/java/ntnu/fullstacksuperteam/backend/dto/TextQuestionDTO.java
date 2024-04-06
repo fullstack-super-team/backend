@@ -2,7 +2,7 @@ package ntnu.fullstacksuperteam.backend.dto;
 
 import java.util.List;
 
-public class CreateTextQuestionDTO extends CreateQuestionDTO {
+public class TextQuestionDTO extends QuestionDTO {
     private List<TextAnswerDTO> answers;
 
     public List<TextAnswerDTO> getTextAnswerDTOS() {
@@ -17,5 +17,4 @@ public class CreateTextQuestionDTO extends CreateQuestionDTO {
                 "answers=" + answers +
                 '}';
     }
-
 }

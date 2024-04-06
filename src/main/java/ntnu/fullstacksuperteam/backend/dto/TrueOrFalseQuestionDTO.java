@@ -1,17 +1,17 @@
 package ntnu.fullstacksuperteam.backend.dto;
 
-import ntnu.fullstacksuperteam.backend.model.TrueOrFalseAnswer;
+import ntnu.fullstacksuperteam.backend.dto.TrueOrFalseAnswerDTO;
 
 import java.util.List;
 
-public class CreateTrueOrFalseQuestionDTO extends CreateQuestionDTO {
-    private List<TrueOrFalseAnswer> answers;
+public class TrueOrFalseQuestionDTO extends QuestionDTO {
+    private List<TrueOrFalseAnswerDTO> answers;
 
-    public List<TrueOrFalseAnswer> getTextAnswerDTOS() {
+    public List<TrueOrFalseAnswerDTO> getTextAnswerDTOS() {
         return answers;
     }
 
-    public void setAnswers(List<TrueOrFalseAnswer> answers) {
+    public void setAnswers(List<TrueOrFalseAnswerDTO> answers) {
         if (answers.size() != 2) {
             throw new IllegalArgumentException("True or false questions must have exactly two answers");
         }

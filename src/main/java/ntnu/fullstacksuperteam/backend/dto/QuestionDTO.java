@@ -6,16 +6,20 @@ import ntnu.fullstacksuperteam.backend.model.Category;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = CreateTextQuestionDTO.class, name = "TEXT"),
-        @JsonSubTypes.Type(value = CreateSlideQuestionDTO.class, name = "SLIDE"),
-        @JsonSubTypes.Type(value = CreateTrueOrFalseQuestionDTO.class, name = "TRUE_OR_FALSE")
+        @JsonSubTypes.Type(value = TextQuestionDTO.class, name = "TEXT"),
+        @JsonSubTypes.Type(value = SlideQuestionDTO.class, name = "SLIDE"),
+        @JsonSubTypes.Type(value = TrueOrFalseQuestionDTO.class, name = "TRUE_OR_FALSE")
 })
-public class CreateQuestionDTO {
+public class QuestionDTO {
+    private long id;
     private String text;
-    private Category category;
     private int points;
     private String multimediaUrl;
     private String type;
+
+    public long getId() {
+        return id;
+    }
 
     public String getText() {
         return text;

@@ -1,6 +1,6 @@
 package ntnu.fullstacksuperteam.backend.dto;
 
-public class CreateSlideQuestionDTO extends CreateQuestionDTO {
+public class SlideQuestionDTO extends QuestionDTO {
     private SlideAnswerDTO answer;
 
     public SlideAnswerDTO getSlideAnswerDTO() {
