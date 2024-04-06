@@ -31,7 +31,7 @@ public class SecurityConfig {
                     return config;
                 })) // Configure CORS as needed, if at all
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/auth/login", "/auth/register").permitAll() // Allow access to /token without authentication
+                        .requestMatchers("/auth/login", "/auth/register", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll() // Allow access to /token without authentication
                         .anyRequest().authenticated() // Require authentication for all other requests
                 )
                 .sessionManagement(session -> session
