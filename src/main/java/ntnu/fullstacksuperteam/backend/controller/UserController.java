@@ -24,7 +24,8 @@ public class UserController {
     ResponseEntity<?> me(Authentication authentication) {
         try {
             System.out.println(authentication.getPrincipal());
-            return ResponseEntity.ok(this.userService.me(Long.parseLong((String) authentication.getPrincipal())));
+            long userId = Long.parseLong((String) authentication.getPrincipal());
+            return ResponseEntity.ok(this.userService.getUserById(userId));
         } catch (ResponseStatusException responseStatusException) {
             logger.error("Error getting user info: {}", responseStatusException.getReason());
             return ResponseEntity.status(responseStatusException.getStatusCode()).body(responseStatusException.getReason());
