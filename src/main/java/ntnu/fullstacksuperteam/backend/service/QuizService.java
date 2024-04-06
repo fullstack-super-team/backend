@@ -84,23 +84,29 @@ public class QuizService {
         quiz.setDifficultyLevel(quizDTO.getDifficultyLevel());
         quiz.setDescription(quizDTO.getDescription());
 
-        Quiz savedQuiz = quizRepository.save(quiz);
-
-        List<Question> questions = new ArrayList<>();
-        // Update existing questions
+        // Temporarily hold updated and new questions
+        List<Question> updatedQuestions = new ArrayList<>();
         for (QuestionDTO questionDTO : quizDTO.getQuestions()) {
-            questions.add(this.questionService.updateQuestion(quizId, questionDTO));
+            if (questionDTO.getId() > 0) {
+                // Update existing question
+                Question updatedQuestion = questionService.updateQuestion(questionDTO);
+                updatedQuestions.add(updatedQuestion);
+                continue;
+            }
+            Question updatedOrNewQuestion = questionService.createQuestion(quizId, questionDTO);
+            updatedQuestions.add(updatedOrNewQuestion);
         }
 
-        // Remove deleted questions
-        for (Question question : savedQuiz.getQuestions()) {
-            if (!questions.contains(question)) {
-                // Delete question
-                logger.info("Deleting question with id: " + question.getId());
-                questionService.deleteQuestion(question.getId());
+        // Remove questions not in the updated list
+        quiz.getQuestions().removeIf(question -> !updatedQuestions.contains(question));
+
+        // Add or update questions
+        for (Question question : updatedQuestions) {
+            if (!quiz.getQuestions().contains(question)) {
+                quiz.getQuestions().add(question);
             }
         }
 
-        return savedQuiz;
+        return quizRepository.save(quiz);
     }
 }

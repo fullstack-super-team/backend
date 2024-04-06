@@ -18,7 +18,7 @@ public class Quiz {
     private long id;
     private String title;
 
-    @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "quiz", cascade = { CascadeType.ALL, CascadeType.PERSIST, CascadeType.REMOVE }, orphanRemoval = true)
     private List<Question> questions;
     private Category category;
     private DifficultyLevel difficultyLevel;

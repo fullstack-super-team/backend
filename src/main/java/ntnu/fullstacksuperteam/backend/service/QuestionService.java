@@ -33,62 +33,40 @@ public class QuestionService {
         Quiz quiz = entityManager.getReference(Quiz.class, quizId);
         Question question = new Question();
         question.setQuiz(quiz);
-        question.setId(questionDTO.getId());
         question.setText(questionDTO.getText());
         question.setPoints(questionDTO.getPoints());
         if (questionDTO instanceof TextQuestionDTO) {
             TextQuestion textQuestion = new TextQuestion(question);
-            return createTextQuestion(textQuestion, (TextQuestionDTO) questionDTO);
+            question = createTextQuestion(textQuestion, (TextQuestionDTO) questionDTO);
         } else if (questionDTO instanceof SlideQuestionDTO) {
             SlideQuestion slideQuestion = new SlideQuestion(question);
-            return createSlideQuestion(slideQuestion, (SlideQuestionDTO) questionDTO);
+            question = createSlideQuestion(slideQuestion, (SlideQuestionDTO) questionDTO);
         } else if (questionDTO instanceof TrueOrFalseQuestionDTO) {
             TrueOrFalseQuestion trueOrFalseQuestion = new TrueOrFalseQuestion(question);
-            return createTrueOrFalseQuestion(trueOrFalseQuestion, (TrueOrFalseQuestionDTO) questionDTO);
+            question = createTrueOrFalseQuestion(trueOrFalseQuestion, (TrueOrFalseQuestionDTO) questionDTO);
         } else {
             throw new IllegalArgumentException("Unknown question type");
         }
+        return this.questionRepository.save(question);
     }
 
-    public Question updateQuestion(long quizId, QuestionDTO questionDTO) {
-        Quiz quiz = entityManager.getReference(Quiz.class, quizId);
+    public Question updateQuestion(QuestionDTO questionDTO) {
         Question question = questionRepository.findById(questionDTO.getId()).orElseThrow();
+        question.setText(questionDTO.getText());
+        question.setPoints(questionDTO.getPoints());
         if (questionDTO instanceof TextQuestionDTO) {
             TextQuestion textQuestion = new TextQuestion(question);
-            return createTextQuestion(textQuestion, (TextQuestionDTO) questionDTO);
+            question = createTextQuestion(textQuestion, (TextQuestionDTO) questionDTO);
         } else if (questionDTO instanceof SlideQuestionDTO) {
             SlideQuestion slideQuestion = new SlideQuestion(question);
-            return createSlideQuestion(slideQuestion, (SlideQuestionDTO) questionDTO);
+            question = createSlideQuestion(slideQuestion, (SlideQuestionDTO) questionDTO);
         } else if (questionDTO instanceof TrueOrFalseQuestionDTO) {
             TrueOrFalseQuestion trueOrFalseQuestion = new TrueOrFalseQuestion(question);
-            return createTrueOrFalseQuestion(trueOrFalseQuestion, (TrueOrFalseQuestionDTO) questionDTO);
+            question = createTrueOrFalseQuestion(trueOrFalseQuestion, (TrueOrFalseQuestionDTO) questionDTO);
         } else {
             throw new IllegalArgumentException("Unknown question type");
         }
-    }
-
-    @Transactional
-    public void deleteQuestion(long questionId) {
-        logger.info("Deleting question with id: " + questionId);
-        Question question = questionRepository.findById(questionId).orElseThrow();
-        if (question instanceof TextQuestion textQuestion) {
-            textQuestion.getAnswers().forEach(this::deleteAnswer);
-        } else if (question instanceof SlideQuestion slideQuestion) {
-            SlideAnswer slideAnswer = entityManager.find(SlideAnswer.class, slideQuestion.getAnswer().getId());
-            if (slideAnswer != null) {
-                deleteAnswer(slideAnswer);
-            }
-        } else if (question instanceof TrueOrFalseQuestion trueOrFalseQuestion) {
-            trueOrFalseQuestion.getAnswers().forEach(this::deleteAnswer);
-        }
-
-        questionRepository.delete(question);
-    }
-
-    @Transactional
-    public void deleteAnswer(Answer answer) {
-        logger.info("Deleting answer with id: " + answer.getId());
-        entityManager.remove(answer);
+        return this.questionRepository.save(question);
     }
 
     public SubmittedAnswerDTO<?> submitAnswer(long questionId, SubmitAnswerDTO submitAnswerDTO) {

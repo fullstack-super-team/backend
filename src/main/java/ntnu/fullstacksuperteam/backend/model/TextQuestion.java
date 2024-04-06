@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("TEXT")
 public class TextQuestion extends Question {
-    @OneToMany(mappedBy = "question", cascade = { CascadeType.ALL, CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "question", cascade = { CascadeType.ALL, CascadeType.PERSIST, CascadeType.REMOVE }, orphanRemoval = true)
     private List<TextAnswer> answers;
 
     public TextQuestion() {
