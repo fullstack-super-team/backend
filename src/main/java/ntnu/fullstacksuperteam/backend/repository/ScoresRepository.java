@@ -8,4 +8,5 @@ import java.util.List;
 public interface ScoresRepository extends JpaRepository<Score, Long> {
     List<Score> findAllByUserIdAndQuizIdOrderByDateDesc(long user, long quizId);
     List<Score> findAllByQuizIdOrderByPointsDescDateDesc(long quizId);
+    List<Score> findAllByUserIdOrderByDateDesc(long userId);
 }

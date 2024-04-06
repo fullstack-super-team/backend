@@ -65,4 +65,11 @@ public class QuizController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
         }
     }
+
+    @GetMapping("/recent")
+    public ResponseEntity<?> getRecentlyPlayedQuizzes(Authentication authentication) {
+        long userId = Long.parseLong((String) authentication.getPrincipal());
+        logger.info("Getting all recently played quizzes");
+        return ResponseEntity.status(HttpStatus.OK).body(quizService.getRecentlyPlayedQuizzes(userId));
+    }
 }
