@@ -74,17 +74,14 @@ public class QuestionService {
 
         if (question instanceof TextQuestion textQuestion) {
             String answer = submitAnswerDTO.getAnswer();
-            String correctAnswer = textQuestion.getAnswers().stream()
-                    .filter(TextAnswer::isIsCorrect)
-                    .map(TextAnswer::getText)
-                    .findFirst()
-                    .orElse("No correct answer found");
+            List<String> correctAnswers = textQuestion.getAnswers().stream()
+                    .filter(TextAnswer::isIsCorrect).map(TextAnswer::getText).toList();
 
-            if (answer.equals(correctAnswer)) {
-                return new SubmittedAnswerDTO<>(answer, correctAnswer, textQuestion.getPoints());
+            if (correctAnswers.contains(answer)) {
+                return new SubmittedAnswerDTO<>(answer, correctAnswers, textQuestion.getPoints());
             }
 
-            return new SubmittedAnswerDTO<>(answer, correctAnswer, 0);
+            return new SubmittedAnswerDTO<>(answer, correctAnswers, 0);
         } else if (question instanceof SlideQuestion slideQuestion) {
             int answer = Integer.parseInt(submitAnswerDTO.getAnswer());
             int correctAnswer = slideQuestion.getAnswer().getCorrectValue();
