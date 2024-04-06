@@ -114,6 +114,17 @@ public class QuizService {
         return quizRepository.save(quiz);
     }
 
+    public void deleteQuiz(long userId, long quizId) {
+        Quiz quiz = quizRepository.findById(quizId).orElse(null);
+        if (quiz == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Quiz not found");
+        }
+        if (quiz.getAuthor().getId() != userId) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not the author of this quiz");
+        }
+        quizRepository.delete(quiz);
+    }
+
     public List<Quiz> getRecentlyPlayedQuizzes(long userId) {
         User user = userService.getUserById(userId);
         if (user == null) {
@@ -123,7 +134,9 @@ public class QuizService {
         List<Score> recentScores = scores.subList(0, Math.min(scores.size(), 3));
         List<Quiz> quizzes = new ArrayList<>();
         for (Score score : recentScores) {
-            quizzes.add(score.getQuiz());
+            if (!quizzes.contains(score.getQuiz())) {
+                quizzes.add(score.getQuiz());
+            }
         }
         return quizzes;
     }
