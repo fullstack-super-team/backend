@@ -1,6 +1,6 @@
 package ntnu.fullstacksuperteam.backend.service;
 
-import ntnu.fullstacksuperteam.backend.dto.CreateQuestionDTO;
+import ntnu.fullstacksuperteam.backend.dto.QuestionDTO;
 import ntnu.fullstacksuperteam.backend.dto.QuizDTO;
 import ntnu.fullstacksuperteam.backend.model.Question;
 import ntnu.fullstacksuperteam.backend.model.Quiz;
@@ -62,8 +62,8 @@ public class QuizService {
         Quiz savedQuiz = quizRepository.save(quiz);
 
         List<Question> questions = new ArrayList<>();
-        for (CreateQuestionDTO createQuestionDTO : quizDTO.getQuestions()) {
-            questions.add(this.questionService.createQuestion(savedQuiz.getId(), createQuestionDTO));
+        for (QuestionDTO questionDTO : quizDTO.getQuestions()) {
+            questions.add(this.questionService.createQuestion(savedQuiz.getId(), questionDTO));
         }
         savedQuiz.setQuestions(questions);
 
@@ -84,13 +84,23 @@ public class QuizService {
         quiz.setDifficultyLevel(quizDTO.getDifficultyLevel());
         quiz.setDescription(quizDTO.getDescription());
 
-        // Update the questions
-        List<Question> questions = new ArrayList<>();
-        for (CreateQuestionDTO createQuestionDTO : quizDTO.getQuestions()) {
-            questions.add(this.questionService.createQuestion(quizId, createQuestionDTO));
-        }
-        quiz.setQuestions(questions);
+        Quiz savedQuiz = quizRepository.save(quiz);
 
-        return quizRepository.save(quiz);
+        List<Question> questions = new ArrayList<>();
+        // Update existing questions
+        for (QuestionDTO questionDTO : quizDTO.getQuestions()) {
+            questions.add(this.questionService.updateQuestion(quizId, questionDTO));
+        }
+
+        // Remove deleted questions
+        for (Question question : savedQuiz.getQuestions()) {
+            if (!questions.contains(question)) {
+                // Delete question
+                logger.info("Deleting question with id: " + question.getId());
+                questionService.deleteQuestion(question.getId());
+            }
+        }
+
+        return savedQuiz;
     }
 }

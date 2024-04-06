@@ -10,7 +10,7 @@ public class QuizDTO {
     private String description;
     private DifficultyLevel difficultyLevel;
     private Category category;
-    private List<CreateQuestionDTO> questions;
+    private List<QuestionDTO> questions;
 
     public String getTitle() {
         return title;
@@ -28,7 +28,7 @@ public class QuizDTO {
         return category;
     }
 
-    public List<CreateQuestionDTO> getQuestions() {
+    public List<QuestionDTO> getQuestions() {
         return questions;
     }
 }

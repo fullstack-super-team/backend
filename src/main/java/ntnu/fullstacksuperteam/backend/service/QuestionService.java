@@ -2,6 +2,7 @@ package ntnu.fullstacksuperteam.backend.service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import ntnu.fullstacksuperteam.backend.dto.*;
 import ntnu.fullstacksuperteam.backend.model.*;
 import ntnu.fullstacksuperteam.backend.repository.QuestionRepository;
@@ -28,17 +29,66 @@ public class QuestionService {
         return questions;
     }
 
-    public Question createQuestion(long quizId, CreateQuestionDTO createQuestionDTO) {
+    public Question createQuestion(long quizId, QuestionDTO questionDTO) {
         Quiz quiz = entityManager.getReference(Quiz.class, quizId);
-        if (createQuestionDTO instanceof CreateTextQuestionDTO) {
-            return createTextQuestion(quiz, (CreateTextQuestionDTO) createQuestionDTO);
-        } else if (createQuestionDTO instanceof CreateSlideQuestionDTO) {
-            return createSlideQuestion(quiz, (CreateSlideQuestionDTO) createQuestionDTO);
-        } else if (createQuestionDTO instanceof CreateTrueOrFalseQuestionDTO) {
-            return createTrueOrFalseQuestion(quiz, (CreateTrueOrFalseQuestionDTO) createQuestionDTO);
+        Question question = new Question();
+        question.setQuiz(quiz);
+        question.setId(questionDTO.getId());
+        question.setText(questionDTO.getText());
+        question.setPoints(questionDTO.getPoints());
+        if (questionDTO instanceof TextQuestionDTO) {
+            TextQuestion textQuestion = new TextQuestion(question);
+            return createTextQuestion(textQuestion, (TextQuestionDTO) questionDTO);
+        } else if (questionDTO instanceof SlideQuestionDTO) {
+            SlideQuestion slideQuestion = new SlideQuestion(question);
+            return createSlideQuestion(slideQuestion, (SlideQuestionDTO) questionDTO);
+        } else if (questionDTO instanceof TrueOrFalseQuestionDTO) {
+            TrueOrFalseQuestion trueOrFalseQuestion = new TrueOrFalseQuestion(question);
+            return createTrueOrFalseQuestion(trueOrFalseQuestion, (TrueOrFalseQuestionDTO) questionDTO);
         } else {
             throw new IllegalArgumentException("Unknown question type");
         }
+    }
+
+    public Question updateQuestion(long quizId, QuestionDTO questionDTO) {
+        Quiz quiz = entityManager.getReference(Quiz.class, quizId);
+        Question question = questionRepository.findById(questionDTO.getId()).orElseThrow();
+        if (questionDTO instanceof TextQuestionDTO) {
+            TextQuestion textQuestion = new TextQuestion(question);
+            return createTextQuestion(textQuestion, (TextQuestionDTO) questionDTO);
+        } else if (questionDTO instanceof SlideQuestionDTO) {
+            SlideQuestion slideQuestion = new SlideQuestion(question);
+            return createSlideQuestion(slideQuestion, (SlideQuestionDTO) questionDTO);
+        } else if (questionDTO instanceof TrueOrFalseQuestionDTO) {
+            TrueOrFalseQuestion trueOrFalseQuestion = new TrueOrFalseQuestion(question);
+            return createTrueOrFalseQuestion(trueOrFalseQuestion, (TrueOrFalseQuestionDTO) questionDTO);
+        } else {
+            throw new IllegalArgumentException("Unknown question type");
+        }
+    }
+
+    @Transactional
+    public void deleteQuestion(long questionId) {
+        logger.info("Deleting question with id: " + questionId);
+        Question question = questionRepository.findById(questionId).orElseThrow();
+        if (question instanceof TextQuestion textQuestion) {
+            textQuestion.getAnswers().forEach(this::deleteAnswer);
+        } else if (question instanceof SlideQuestion slideQuestion) {
+            SlideAnswer slideAnswer = entityManager.find(SlideAnswer.class, slideQuestion.getAnswer().getId());
+            if (slideAnswer != null) {
+                deleteAnswer(slideAnswer);
+            }
+        } else if (question instanceof TrueOrFalseQuestion trueOrFalseQuestion) {
+            trueOrFalseQuestion.getAnswers().forEach(this::deleteAnswer);
+        }
+
+        questionRepository.delete(question);
+    }
+
+    @Transactional
+    public void deleteAnswer(Answer answer) {
+        logger.info("Deleting answer with id: " + answer.getId());
+        entityManager.remove(answer);
     }
 
     public SubmittedAnswerDTO<?> submitAnswer(long questionId, SubmitAnswerDTO submitAnswerDTO) {
@@ -84,31 +134,28 @@ public class QuestionService {
         }
     }
 
-    private Question createTextQuestion(Quiz quiz, CreateTextQuestionDTO createTextQuestionDTO) {
-        TextQuestion textQuestion = new TextQuestion();
-        textQuestion.setQuiz(quiz);
-        textQuestion.setText(createTextQuestionDTO.getText());
-        textQuestion.setPoints(createTextQuestionDTO.getPoints());
-
-        for (TextAnswerDTO textAnswerDTO : createTextQuestionDTO.getTextAnswerDTOS()) {
+    private Question createTextQuestion(TextQuestion textQuestion, TextQuestionDTO textQuestionDTO) {
+        for (TextAnswerDTO textAnswerDTO : textQuestionDTO.getTextAnswerDTOS()) {
             TextAnswer textAnswer = new TextAnswer();
+            if (textAnswerDTO.getId() != 0) {
+                textAnswer.setId(textAnswerDTO.getId());
+            }
             textAnswer.setText(textAnswerDTO.getText());
-            textAnswer.setIsCorrect(textAnswerDTO.isCorrect());
+            textAnswer.setIsCorrect(textAnswerDTO.getIsCorrect());
             textAnswer.setQuestion(textQuestion);
+            logger.info(textAnswer.toString());
             textQuestion.addAnswer(textAnswer);
         }
 
         return questionRepository.save(textQuestion);
     }
 
-    private Question createSlideQuestion(Quiz quiz, CreateSlideQuestionDTO createSlideQuestionDTO) {
-        SlideQuestion slideQuestion = new SlideQuestion();
-        slideQuestion.setQuiz(quiz);
-        slideQuestion.setText(createSlideQuestionDTO.getText());
-        slideQuestion.setPoints(createSlideQuestionDTO.getPoints());
-
+    private Question createSlideQuestion(SlideQuestion slideQuestion, SlideQuestionDTO createSlideQuestionDTO) {
         SlideAnswerDTO slideAnswerDTO = createSlideQuestionDTO.getSlideAnswerDTO();
         SlideAnswer slideAnswer = new SlideAnswer();
+        if (slideAnswerDTO.getId() != 0) {
+            slideAnswer.setId(slideAnswerDTO.getId());
+        }
         slideAnswer.setCorrectValue(slideAnswerDTO.getCorrectValue());
         slideAnswer.setMin(slideAnswerDTO.getMin());
         slideAnswer.setMax(slideAnswerDTO.getMax());
@@ -119,13 +166,14 @@ public class QuestionService {
         return questionRepository.save(slideQuestion);
     }
 
-    private Question createTrueOrFalseQuestion(Quiz quiz, CreateTrueOrFalseQuestionDTO createTrueOrFalseQuestionDTO) {
-        TrueOrFalseQuestion trueOrFalseQuestion = new TrueOrFalseQuestion();
-        trueOrFalseQuestion.setQuiz(quiz);
-        trueOrFalseQuestion.setText(createTrueOrFalseQuestionDTO.getText());
-        trueOrFalseQuestion.setPoints(createTrueOrFalseQuestionDTO.getPoints());
-
-        for (TrueOrFalseAnswer trueOrFalseAnswer : createTrueOrFalseQuestionDTO.getTextAnswerDTOS()) {
+    private Question createTrueOrFalseQuestion(TrueOrFalseQuestion trueOrFalseQuestion, TrueOrFalseQuestionDTO createTrueOrFalseQuestionDTO) {
+        for (TrueOrFalseAnswerDTO trueOrFalseAnswerDTO : createTrueOrFalseQuestionDTO.getTextAnswerDTOS()) {
+            TrueOrFalseAnswer trueOrFalseAnswer = new TrueOrFalseAnswer();
+            if (trueOrFalseAnswerDTO.getId() != 0) {
+                trueOrFalseAnswer.setId(trueOrFalseAnswerDTO.getId());
+            }
+            trueOrFalseAnswer.setText(trueOrFalseAnswerDTO.getText());
+            trueOrFalseAnswer.setIsCorrect(trueOrFalseAnswerDTO.getIsCorrect());
             trueOrFalseAnswer.setQuestion(trueOrFalseQuestion);
             trueOrFalseQuestion.addAnswer(trueOrFalseAnswer);
         }
