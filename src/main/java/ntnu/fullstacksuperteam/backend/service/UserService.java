@@ -29,7 +29,7 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
         User user = userOptional.get();
-        Optional<User> existingUser = userRepository.findByUsernameOrEmail(newUserInfo.getUsername(), newUserInfo.getEmail());
+        Optional<User> existingUser = userRepository.findFirstByUsernameOrEmail(newUserInfo.getUsername(), newUserInfo.getEmail());
         if (existingUser.isPresent() && existingUser.get().getId() != userId) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Username or email already exists");
         }
