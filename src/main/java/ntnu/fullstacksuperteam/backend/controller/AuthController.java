@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * The {@code AuthController} class handles authentication requests, including registration and login functionalities.
+ */
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -21,6 +24,12 @@ public class AuthController {
 
     private final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
+    /**
+     * Registers a new user in the system.
+     *
+     * @param registerDTO The data transfer object containing user registration information.
+     * @return A {@code ResponseEntity} with a status of {@code CREATED} if registration is successful, or an appropriate error response otherwise.
+     */
     @PostMapping("/register")
     @ResponseStatus(value = HttpStatus.CREATED)
     ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) {
@@ -34,6 +43,12 @@ public class AuthController {
         }
     }
 
+    /**
+     * Authenticates a user and logs them into the system.
+     *
+     * @param loginDTO The data transfer object containing user login credentials.
+     * @return A {@code ResponseEntity} with a status of {@code OK} if login is successful, or an appropriate error response otherwise.
+     */
     @PostMapping("/login")
     ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
         logger.info("Login {}", loginDTO);

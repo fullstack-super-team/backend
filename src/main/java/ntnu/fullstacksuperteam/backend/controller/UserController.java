@@ -11,6 +11,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * The {@code UserController} class is responsible for user-related operations,
+ */
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -19,6 +22,12 @@ public class UserController {
     private UserService userService;
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
+    /**
+     * Retrieves the current user's information.
+     *
+     * @param authentication The security context that contains details about the current user.
+     * @return A {@code ResponseEntity} with the current user's information or an error message.
+     */
     @GetMapping("/me")
     ResponseEntity<?> me(Authentication authentication) {
         try {
@@ -31,6 +40,13 @@ public class UserController {
         }
     }
 
+    /**
+     * Updates the current user's information.
+     *
+     * @param authentication The security context that contains details about the current user.
+     * @param newUserInfo The new user information to update.
+     * @return A {@code ResponseEntity} with the updated user information or an error message.
+     */
     @PutMapping("/me")
     ResponseEntity<?> updateMe(Authentication authentication, @RequestBody User newUserInfo) {
         try {
