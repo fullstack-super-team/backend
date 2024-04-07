@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TrueOrFalseAnswerDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend</a> &gt; <a href="index.source.html" class="el_package">ntnu.fullstacksuperteam.backend.dto</a> &gt; <span class="el_source">TrueOrFalseAnswerDTO.java</span></div><h1>TrueOrFalseAnswerDTO.java</h1><pre class="source lang-java linenums">package ntnu.fullstacksuperteam.backend.dto;
+
+/**
+ * The {@code TrueOrFalseAnswerDTO} class represents a data transfer object for answers to true or false questions.
+ */
+public class TrueOrFalseAnswerDTO {
+    private long id;
+    private String text;
+    private boolean isCorrect;
+
+    /**
+     * Default constructor for {@code TrueOrFalseAnswerDTO}.
+     */
+<span class="fc" id="L14">    public TrueOrFalseAnswerDTO() {}</span>
+
+    /**
+     * Gets the identifier of the true or false answer.
+     *
+     * @return The identifier of the answer.
+     */
+    public long getId() {
+<span class="fc" id="L22">        return id;</span>
+    }
+
+    /**
+     * Gets the text of the answer. While this may simply be &quot;true&quot; or &quot;false&quot;,
+     * it allows for additional clarification or context to be provided in the answer text.
+     *
+     * @return The text of the answer.
+     */
+    public String getText() {
+<span class="fc" id="L32">        return text;</span>
+    }
+
+    /**
+     * Checks if the answer is marked as correct.
+     *
+     * @return {@code true} if the answer is correct, otherwise {@code false}.
+     */
+    public boolean getIsCorrect() {
+<span class="fc" id="L41">        return isCorrect;</span>
+    }
+
+    /**
+     * Sets the identifier of the true or false answer.
+     *
+     * @param id The new identifier for the answer.
+     */
+    public void setId(long id) {
+<span class="fc" id="L50">        this.id = id;</span>
+<span class="fc" id="L51">    }</span>
+
+    /**
+     * Sets the text of the answer.
+     *
+     * @param text The new text for the answer.
+     */
+    public void setText(String text) {
+<span class="fc" id="L59">        this.text = text;</span>
+<span class="fc" id="L60">    }</span>
+
+    /**
+     * Marks the answer as correct or incorrect.
+     *
+     * @param correct {@code true} to mark the answer as correct, otherwise {@code false}.
+     */
+    public void setCorrect(boolean correct) {
+<span class="fc" id="L68">        isCorrect = correct;</span>
+<span class="fc" id="L69">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

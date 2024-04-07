@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend</a> &gt; <a href="index.source.html" class="el_package">ntnu.fullstacksuperteam.backend.service</a> &gt; <span class="el_source">AuthService.java</span></div><h1>AuthService.java</h1><pre class="source lang-java linenums">package ntnu.fullstacksuperteam.backend.service;
+
+import ntnu.fullstacksuperteam.backend.dto.RegisterDTO;
+import ntnu.fullstacksuperteam.backend.dto.LoginDTO;
+import ntnu.fullstacksuperteam.backend.model.Token;
+import ntnu.fullstacksuperteam.backend.model.User;
+import ntnu.fullstacksuperteam.backend.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
+
+@Service
+<span class="fc" id="L17">public class AuthService {</span>
+
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private TokenService tokenService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public Token register(RegisterDTO registerDTO) throws ResponseStatusException {
+        // Check if user already exists
+<span class="nc" id="L28">        Optional&lt;User&gt; existingUser = userRepository.findFirstByUsernameOrEmail(registerDTO.getUsername(), registerDTO.getEmail()).stream().findFirst();</span>
+<span class="nc bnc" id="L29" title="All 4 branches missed.">        if (existingUser.isPresent() &amp;&amp; existingUser.get().getUsername().equals(registerDTO.getUsername())) {</span>
+<span class="nc" id="L30">            throw new ResponseStatusException(HttpStatus.CONFLICT, &quot;Username already exists&quot;);</span>
+        }
+<span class="nc bnc" id="L32" title="All 4 branches missed.">        if (existingUser.isPresent() &amp;&amp; existingUser.get().getEmail().equals(registerDTO.getEmail())) {</span>
+<span class="nc" id="L33">            throw new ResponseStatusException(HttpStatus.CONFLICT, &quot;Email already exists&quot;);</span>
+        }
+
+        // If not then save
+<span class="nc" id="L37">        User newUser = new User();</span>
+<span class="nc" id="L38">        newUser.setFirstName(registerDTO.getFirstName());</span>
+<span class="nc" id="L39">        newUser.setLastName(registerDTO.getLastName());</span>
+<span class="nc" id="L40">        newUser.setUsername(registerDTO.getUsername());</span>
+<span class="nc" id="L41">        newUser.setEmail(registerDTO.getEmail());</span>
+<span class="nc" id="L42">        newUser.setPassword(passwordEncoder.encode(registerDTO.getPassword()));</span>
+<span class="nc" id="L43">        User savedUser = userRepository.save(newUser);</span>
+<span class="nc" id="L44">        return new Token(tokenService.generateToken(savedUser.getId()));</span>
+    }
+
+    public Token login(LoginDTO loginDTO) throws ResponseStatusException {
+        // Check if username and password is correct
+<span class="nc" id="L49">        User user = userRepository.findByEmail(loginDTO.getEmail());</span>
+<span class="nc bnc" id="L50" title="All 4 branches missed.">        if (user == null || !passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {</span>
+<span class="nc" id="L51">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, &quot;Wrong credentials...&quot;);</span>
+        }
+
+<span class="nc" id="L54">        return new Token(tokenService.generateToken(user.getId()));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

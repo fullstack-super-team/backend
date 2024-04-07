@@ -1,0 +1,7 @@
+ntnu.fullstacksuperteam.backend
+ntnu.fullstacksuperteam.backend.controller
+ntnu.fullstacksuperteam.backend.dto
+ntnu.fullstacksuperteam.backend.model
+ntnu.fullstacksuperteam.backend.repository
+ntnu.fullstacksuperteam.backend.security
+ntnu.fullstacksuperteam.backend.service

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>QuestionDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend</a> &gt; <a href="index.source.html" class="el_package">ntnu.fullstacksuperteam.backend.dto</a> &gt; <span class="el_source">QuestionDTO.java</span></div><h1>QuestionDTO.java</h1><pre class="source lang-java linenums">package ntnu.fullstacksuperteam.backend.dto;
+
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import ntnu.fullstacksuperteam.backend.model.Category;
+
+/**
+ * The {@code QuestionDTO} class serves as a general data transfer object for questions,
+ * supporting different types of questions like text, slide, and true or false.
+ * It uses Jackson annotations to manage polymorphic JSON structures,
+ * enabling the deserialization of JSON into specific {@code QuestionDTO} subclasses based on the 'type' property.
+ */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXISTING_PROPERTY, property = &quot;type&quot;)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = TextQuestionDTO.class, name = &quot;TEXT&quot;),
+        @JsonSubTypes.Type(value = SlideQuestionDTO.class, name = &quot;SLIDE&quot;),
+        @JsonSubTypes.Type(value = TrueOrFalseQuestionDTO.class, name = &quot;TRUE_OR_FALSE&quot;)
+})
+<span class="fc" id="L19">public class QuestionDTO {</span>
+    private long id;
+    private String text;
+    private int points;
+    private String multimediaUrl;
+    private String type;
+
+    /**
+     * Gets the question ID.
+     *
+     * @return The ID of the question.
+     */
+    public long getId() {
+<span class="fc" id="L32">        return id;</span>
+    }
+
+    /**
+     * Gets the question text.
+     *
+     * @return The text of the question.
+     */
+    public String getText() {
+<span class="fc" id="L41">        return text;</span>
+    }
+
+    /**
+     * Gets the number of points the question is worth.
+     *
+     * @return The point value of the question.
+     */
+    public int getPoints() {
+<span class="fc" id="L50">        return points;</span>
+    }
+
+    /**
+     * Gets the URL for any multimedia associated with the question.
+     *
+     * @return The multimedia URL, if any.
+     */
+    public String getMultimediaUrl() {
+<span class="fc" id="L59">        return multimediaUrl;</span>
+    }
+
+    /**
+     * Gets the type of question.
+     *
+     * @return The type of the question.
+     */
+    public String getType() {
+<span class="fc" id="L68">        return type;</span>
+    }
+
+    /**
+     * Sets the question ID.
+     *
+     * @param id The new ID for the question.
+     */
+    public void setId(long id) {
+<span class="fc" id="L77">        this.id = id;</span>
+<span class="fc" id="L78">    }</span>
+
+    /**
+     * Sets the question text.
+     *
+     * @param text The new text for the question.
+     */
+    public void setText(String text) {
+<span class="fc" id="L86">        this.text = text;</span>
+<span class="fc" id="L87">    }</span>
+
+    /**
+     * Sets the points the question is worth.
+     *
+     * @param points The new point value for the question.
+     */
+    public void setPoints(int points) {
+<span class="fc" id="L95">        this.points = points;</span>
+<span class="fc" id="L96">    }</span>
+
+    /**
+     * Sets the multimedia URL for the question.
+     *
+     * @param multimediaUrl The new multimedia URL.
+     */
+    public void setMultimediaUrl(String multimediaUrl) {
+<span class="fc" id="L104">        this.multimediaUrl = multimediaUrl;</span>
+<span class="fc" id="L105">    }</span>
+
+    /**
+     * Sets the type of question.
+     *
+     * @param type The new type of the question.
+     */
+    public void setType(String type) {
+<span class="fc" id="L113">        this.type = type;</span>
+<span class="fc" id="L114">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

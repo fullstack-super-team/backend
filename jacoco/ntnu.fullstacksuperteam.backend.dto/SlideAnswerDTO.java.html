@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SlideAnswerDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend</a> &gt; <a href="index.source.html" class="el_package">ntnu.fullstacksuperteam.backend.dto</a> &gt; <span class="el_source">SlideAnswerDTO.java</span></div><h1>SlideAnswerDTO.java</h1><pre class="source lang-java linenums">package ntnu.fullstacksuperteam.backend.dto;
+
+/**
+ * The {@code SlideAnswerDTO} class represents a data transfer object for answers that are based on a sliding scale.
+ */
+public class SlideAnswerDTO {
+    private long id;
+    private int min;
+    private int max;
+    private int correctValue;
+    private int stepSize;
+
+    /**
+     * Default constructor for {@code SlideAnswerDTO}.
+     */
+<span class="fc" id="L16">    public SlideAnswerDTO() {}</span>
+
+    /**
+     * Gets the identifier of the slide answer.
+     *
+     * @return The identifier of the slide answer.
+     */
+    public long getId() {
+<span class="fc" id="L24">        return id;</span>
+    }
+
+    /**
+     * Gets the minimum value of the sliding scale.
+     *
+     * @return The minimum value of the scale.
+     */
+    public int getMin() {
+<span class="fc" id="L33">        return min;</span>
+    }
+
+    /**
+     * Gets the maximum value of the sliding scale.
+     *
+     * @return The maximum value of the scale.
+     */
+    public int getMax() {
+<span class="fc" id="L42">        return max;</span>
+    }
+
+    /**
+     * Gets the correct value within the sliding scale.
+     *
+     * @return The correct value.
+     */
+    public int getCorrectValue() {
+<span class="fc" id="L51">        return correctValue;</span>
+    }
+
+    /**
+     * Gets the step size of the sliding scale.
+     *
+     * @return The step size for the slider.
+     */
+    public int getStepSize() {
+<span class="fc" id="L60">        return stepSize;</span>
+    }
+
+    /**
+     * Sets the identifier of the slide answer.
+     *
+     * @param id The new identifier for the slide answer.
+     */
+    public void setId(long id) {
+<span class="fc" id="L69">        this.id = id;</span>
+<span class="fc" id="L70">    }</span>
+
+    /**
+     * Sets the minimum value of the sliding scale.
+     *
+     * @param min The new minimum value of the scale.
+     */
+    public void setMin(int min) {
+<span class="fc" id="L78">        this.min = min;</span>
+<span class="fc" id="L79">    }</span>
+
+    /**
+     * Sets the maximum value of the sliding scale.
+     *
+     * @param max The new maximum value of the scale.
+     */
+    public void setMax(int max) {
+<span class="fc" id="L87">        this.max = max;</span>
+<span class="fc" id="L88">    }</span>
+
+    /**
+     * Sets the correct value within the sliding scale.
+     *
+     * @param correctValue The new correct value.
+     */
+    public void setCorrectValue(int correctValue) {
+<span class="fc" id="L96">        this.correctValue = correctValue;</span>
+<span class="fc" id="L97">    }</span>
+
+    /**
+     * Sets the step size of the sliding scale.
+     *
+     * @param stepSize The new step size for the slider.
+     */
+    public void setStepSize(int stepSize) {
+<span class="fc" id="L105">        this.stepSize = stepSize;</span>
+<span class="fc" id="L106">    }</span>
+
+    /**
+     * Provides a string representation of the {@code SlideAnswerDTO}.
+     *
+     * @return A string representation of the slide answer details.
+     */
+    public String toString() {
+<span class="fc" id="L114">        StringBuilder stringBuilder = new StringBuilder();</span>
+<span class="fc" id="L115">        stringBuilder.append(&quot;SlideAnswerDTO{&quot;);</span>
+<span class="fc" id="L116">        stringBuilder.append(&quot;min=&quot;).append(this.min);</span>
+<span class="fc" id="L117">        stringBuilder.append(&quot;, &quot;);</span>
+<span class="fc" id="L118">        stringBuilder.append(&quot;max=&quot;).append(this.max);</span>
+<span class="fc" id="L119">        stringBuilder.append(&quot;, &quot;);</span>
+<span class="fc" id="L120">        stringBuilder.append(&quot;correctValue=&quot;).append(this.correctValue);</span>
+<span class="fc" id="L121">        stringBuilder.append(&quot;, &quot;);</span>
+<span class="fc" id="L122">        stringBuilder.append(&quot;steps=&quot;).append(this.stepSize);</span>
+<span class="fc" id="L123">        stringBuilder.append(&quot;}&quot;);</span>
+
+<span class="fc" id="L125">        return stringBuilder.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

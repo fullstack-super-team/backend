@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>QuizController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend</a> &gt; <a href="index.source.html" class="el_package">ntnu.fullstacksuperteam.backend.controller</a> &gt; <span class="el_source">QuizController.java</span></div><h1>QuizController.java</h1><pre class="source lang-java linenums">package ntnu.fullstacksuperteam.backend.controller;
+
+import ntnu.fullstacksuperteam.backend.dto.QuizDTO;
+import ntnu.fullstacksuperteam.backend.service.QuizService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+
+/**
+ * The {@code QuizController} class manages quiz-related operations within the application.
+*/
+@RestController
+@RequestMapping(&quot;/quizzes&quot;)
+<span class="fc" id="L19">public class QuizController {</span>
+    @Autowired
+    private QuizService quizService;
+
+<span class="fc" id="L23">    private final Logger logger = LoggerFactory.getLogger(QuizController.class);</span>
+
+    /**
+     * Retrieves all quizzes available in the system.
+     *
+     * @return A {@code ResponseEntity} containing a list of all quizzes.
+     */
+    @GetMapping
+    public ResponseEntity&lt;?&gt; getAllQuizzes() {
+<span class="fc" id="L32">        logger.info(&quot;Getting all quizzes&quot;);</span>
+<span class="fc" id="L33">        return ResponseEntity.status(HttpStatus.OK).body(quizService.getAllQuizzes());</span>
+    }
+
+    /**
+     * Searches for quizzes based on a query string, and optionally, category and difficulty level.
+     *
+     * @param query The search query string.
+     * @param category The category to filter quizzes (optional).
+     * @param difficultyLevel The difficulty level to filter quizzes (optional).
+     * @return A {@code ResponseEntity} containing the search results.
+     */
+    @GetMapping(&quot;/search&quot;)
+    public ResponseEntity&lt;?&gt; searchQuizzes(@RequestParam String query, @RequestParam(required = false) String category, @RequestBody(required = false) String difficultyLevel) {
+<span class="fc" id="L46">        logger.info(&quot;Searching for quizzes with query: &quot; + query + category + difficultyLevel);</span>
+<span class="fc" id="L47">        return ResponseEntity.status(HttpStatus.OK).body(quizService.searchQuizzes(query));</span>
+    }
+
+    /**
+     * Retrieves quizzes created by the currently authenticated user.
+     *
+     * @param authentication Provides information about the current user.
+     * @return A {@code ResponseEntity} containing a list of quizzes created by the user.
+     */
+    @GetMapping(&quot;/my&quot;)
+    public ResponseEntity&lt;?&gt; getMyQuizzes(Authentication authentication) {
+<span class="fc" id="L58">        long userId = Long.parseLong((String) authentication.getPrincipal());</span>
+<span class="fc" id="L59">        logger.info(&quot;Getting all quizzes&quot;);</span>
+<span class="fc" id="L60">        return ResponseEntity.status(HttpStatus.OK).body(quizService.getMyQuizzes(userId));</span>
+    }
+
+    /**
+     * Creates a new quiz with the given details.
+     *
+     * @param authentication Provides information about the current user.
+     * @param quizDTO The data transfer object containing the new quiz's details.
+     * @return A {@code ResponseEntity} with the created quiz.
+     */
+    @PostMapping()
+    public ResponseEntity&lt;?&gt; createQuiz(Authentication authentication, @RequestBody QuizDTO quizDTO) {
+<span class="fc" id="L72">        long userId = Long.parseLong((String) authentication.getPrincipal());</span>
+<span class="fc" id="L73">        return ResponseEntity.status(HttpStatus.CREATED).body(quizService.createQuiz(userId, quizDTO));</span>
+    }
+
+
+    /**
+     * Updates an existing quiz with new details.
+     *
+     * @param authentication Provides information about the current user.
+     * @param quizId The ID of the quiz to update.
+     * @param quizDTO The data transfer object containing the updated quiz's details.
+     * @return A {@code ResponseEntity} with the updated quiz.
+     */
+    @PutMapping(&quot;/{quizId}&quot;)
+    public ResponseEntity&lt;?&gt; updateQuiz(Authentication authentication, @PathVariable long quizId,
+                                        @RequestBody QuizDTO quizDTO) {
+<span class="fc" id="L88">        logger.info(&quot;Updating quiz with id: &quot; + quizId);</span>
+
+        try {
+<span class="fc" id="L91">            long userId = Long.parseLong((String) authentication.getPrincipal());</span>
+<span class="fc" id="L92">            return ResponseEntity.status(HttpStatus.OK).body(quizService.updateQuiz(userId, quizId, quizDTO));</span>
+<span class="nc" id="L93">        } catch (Exception exception) {</span>
+<span class="nc" id="L94">            logger.error(exception.getMessage());</span>
+<span class="nc" id="L95">            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(&quot;Something went wrong&quot;);</span>
+        }
+    }
+
+    /**
+     * Retrieves quizzes that the currently authenticated user has recently played.
+     *
+     * @param authentication Provides information about the current user.
+     * @return A {@code ResponseEntity} containing a list of recently played quizzes.
+     */
+    @GetMapping(&quot;/recent&quot;)
+    public ResponseEntity&lt;?&gt; getRecentlyPlayedQuizzes(Authentication authentication) {
+<span class="nc" id="L107">        long userId = Long.parseLong((String) authentication.getPrincipal());</span>
+<span class="nc" id="L108">        logger.info(&quot;Getting all recently played quizzes&quot;);</span>
+<span class="nc" id="L109">        return ResponseEntity.status(HttpStatus.OK).body(quizService.getRecentlyPlayedQuizzes(userId));</span>
+    }
+
+    /**
+     * Retrieves a specific play-version of quiz by its ID.
+     *
+     * @param quizId The ID of the quiz to retrieve.
+     * @return A {@code ResponseEntity} containing the requested play-version quiz.
+     */
+    @GetMapping(&quot;/{quizId}/play&quot;)
+    public ResponseEntity&lt;?&gt; playQuizById(@PathVariable long quizId) {
+        try {
+<span class="nc" id="L121">            return ResponseEntity.status(HttpStatus.OK).body(quizService.getQuizPlayVersionById(quizId));</span>
+<span class="nc" id="L122">        } catch (Exception exception) {</span>
+<span class="nc" id="L123">            logger.error(exception.getMessage());</span>
+<span class="nc" id="L124">            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(&quot;Something went wrong&quot;);</span>
+        }
+    }
+
+    /**
+     * Retrieves a specific quiz by its ID.
+     *
+     * @param quizId The ID of the quiz to retrieve.
+     * @return A {@code ResponseEntity} containing the requested quiz.
+     */
+    @GetMapping(&quot;/{quizId}&quot;)
+    public ResponseEntity&lt;?&gt; getQuizById(@PathVariable long quizId) {
+        try {
+<span class="fc" id="L137">            return ResponseEntity.status(HttpStatus.OK).body(quizService.getQuizById(quizId));</span>
+<span class="nc" id="L138">        } catch (Exception exception) {</span>
+<span class="nc" id="L139">            logger.error(exception.getMessage());</span>
+<span class="nc" id="L140">            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(&quot;Something went wrong&quot;);</span>
+        }
+    }
+
+    /**
+     * Deletes a quiz specified by its ID.
+     *
+     * @param authentication Provides information about the current user.
+     * @param quizId The ID of the quiz to delete.
+     * @return A {@code ResponseEntity} confirming the deletion of the quiz.
+     */
+    @DeleteMapping(&quot;/{quizId}&quot;)
+    public ResponseEntity&lt;?&gt; deleteQuiz(Authentication authentication, @PathVariable long quizId) {
+        try {
+<span class="nc" id="L154">            long userId = Long.parseLong((String) authentication.getPrincipal());</span>
+<span class="nc" id="L155">            quizService.deleteQuiz(userId, quizId);</span>
+<span class="nc" id="L156">            return ResponseEntity.status(HttpStatus.OK).body(&quot;Quiz deleted&quot;);</span>
+<span class="nc" id="L157">        } catch (Exception exception) {</span>
+<span class="nc" id="L158">            logger.error(exception.getMessage());</span>
+<span class="nc" id="L159">            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(&quot;Something went wrong&quot;);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

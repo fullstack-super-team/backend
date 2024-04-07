@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RegisterDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend</a> &gt; <a href="index.source.html" class="el_package">ntnu.fullstacksuperteam.backend.dto</a> &gt; <span class="el_source">RegisterDTO.java</span></div><h1>RegisterDTO.java</h1><pre class="source lang-java linenums">package ntnu.fullstacksuperteam.backend.dto;
+
+/**
+ * The {@code RegisterDTO} class represents a data transfer object for user registration.
+ */
+public class RegisterDTO {
+    private final String firstName;
+    private final String lastName;
+    private final String username;
+    private final String email;
+    private final String password;
+
+    /**
+     * Constructs a new {@code RegisterDTO} with the specified user details.
+     *
+     * @param firstName The first name of the user.
+     * @param lastName The last name of the user.
+     * @param username The username chosen by the user.
+     * @param email The email address of the user.
+     * @param password The password chosen by the user.
+     */
+<span class="nc" id="L22">    public RegisterDTO(String firstName, String lastName, String username, String email, String password) {</span>
+<span class="nc" id="L23">        this.firstName = firstName;</span>
+<span class="nc" id="L24">        this.lastName = lastName;</span>
+<span class="nc" id="L25">        this.username = username;</span>
+<span class="nc" id="L26">        this.email = email;</span>
+<span class="nc" id="L27">        this.password = password;</span>
+<span class="nc" id="L28">    }</span>
+
+    /**
+     * Gets the first name of the user.
+     *
+     * @return The first name of the user.
+     */
+    public String getFirstName() {
+<span class="nc" id="L36">        return firstName;</span>
+    }
+
+    /**
+     * Gets the last name of the user.
+     *
+     * @return The last name of the user.
+     */
+    public String getLastName() {
+<span class="nc" id="L45">        return lastName;</span>
+    }
+
+    /**
+     * Gets the username of the user.
+     *
+     * @return The username of the user.
+     */
+    public String getUsername() {
+<span class="nc" id="L54">        return username;</span>
+    }
+
+    /**
+     * Gets the email address of the user.
+     *
+     * @return The email address of the user.
+     */
+    public String getEmail() {
+<span class="nc" id="L63">        return email;</span>
+    }
+
+    /**
+     * Gets the password of the user.
+     *
+     * @return The password of the user.
+     */
+    public String getPassword() {
+<span class="nc" id="L72">        return password;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

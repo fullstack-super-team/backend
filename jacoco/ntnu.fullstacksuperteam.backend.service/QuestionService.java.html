@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>QuestionService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend</a> &gt; <a href="index.source.html" class="el_package">ntnu.fullstacksuperteam.backend.service</a> &gt; <span class="el_source">QuestionService.java</span></div><h1>QuestionService.java</h1><pre class="source lang-java linenums">package ntnu.fullstacksuperteam.backend.service;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
+import ntnu.fullstacksuperteam.backend.dto.*;
+import ntnu.fullstacksuperteam.backend.model.*;
+import ntnu.fullstacksuperteam.backend.repository.QuestionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+<span class="fc" id="L17">public class QuestionService {</span>
+    @Autowired
+    private QuestionRepository questionRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+<span class="fc" id="L24">    private final Logger logger = LoggerFactory.getLogger(QuestionService.class);</span>
+
+    public List&lt;Question&gt; getQuestionsByQuizId(long quizId) {
+<span class="fc" id="L27">        logger.info(&quot;Getting questions by quiz id: &quot; + quizId);</span>
+<span class="fc" id="L28">        List&lt;Question&gt; questions = questionRepository.findByQuizId(quizId);</span>
+<span class="fc" id="L29">        return questions;</span>
+    }
+
+    public Question createQuestion(long quizId, QuestionDTO questionDTO) {
+<span class="fc" id="L33">        Quiz quiz = entityManager.getReference(Quiz.class, quizId);</span>
+<span class="fc" id="L34">        Question question = new Question();</span>
+<span class="fc" id="L35">        question.setQuiz(quiz);</span>
+<span class="fc" id="L36">        question.setText(questionDTO.getText());</span>
+<span class="fc" id="L37">        question.setPoints(questionDTO.getPoints());</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        if (questionDTO instanceof TextQuestionDTO) {</span>
+<span class="fc" id="L39">            TextQuestion textQuestion = new TextQuestion(question);</span>
+<span class="fc" id="L40">            question = createTextQuestion(textQuestion, (TextQuestionDTO) questionDTO);</span>
+<span class="pc bnc" id="L41" title="All 2 branches missed.">        } else if (questionDTO instanceof SlideQuestionDTO) {</span>
+<span class="nc" id="L42">            SlideQuestion slideQuestion = new SlideQuestion(question);</span>
+<span class="nc" id="L43">            question = createSlideQuestion(slideQuestion, (SlideQuestionDTO) questionDTO);</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        } else if (questionDTO instanceof TrueOrFalseQuestionDTO) {</span>
+<span class="nc" id="L45">            TrueOrFalseQuestion trueOrFalseQuestion = new TrueOrFalseQuestion(question);</span>
+<span class="nc" id="L46">            question = createTrueOrFalseQuestion(trueOrFalseQuestion, (TrueOrFalseQuestionDTO) questionDTO);</span>
+<span class="nc" id="L47">        } else {</span>
+<span class="nc" id="L48">            throw new IllegalArgumentException(&quot;Unknown question type&quot;);</span>
+        }
+<span class="fc" id="L50">        return this.questionRepository.save(question);</span>
+    }
+
+    public Question updateQuestion(QuestionDTO questionDTO) {
+<span class="fc" id="L54">        Question question = questionRepository.findById(questionDTO.getId()).orElseThrow();</span>
+<span class="fc" id="L55">        question.setText(questionDTO.getText());</span>
+<span class="fc" id="L56">        question.setPoints(questionDTO.getPoints());</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">        if (questionDTO instanceof TextQuestionDTO) {</span>
+<span class="fc" id="L58">            TextQuestion textQuestion = new TextQuestion(question);</span>
+<span class="fc" id="L59">            question = createTextQuestion(textQuestion, (TextQuestionDTO) questionDTO);</span>
+<span class="pc bnc" id="L60" title="All 2 branches missed.">        } else if (questionDTO instanceof SlideQuestionDTO) {</span>
+<span class="nc" id="L61">            SlideQuestion slideQuestion = new SlideQuestion(question);</span>
+<span class="nc" id="L62">            question = createSlideQuestion(slideQuestion, (SlideQuestionDTO) questionDTO);</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        } else if (questionDTO instanceof TrueOrFalseQuestionDTO) {</span>
+<span class="nc" id="L64">            TrueOrFalseQuestion trueOrFalseQuestion = new TrueOrFalseQuestion(question);</span>
+<span class="nc" id="L65">            question = createTrueOrFalseQuestion(trueOrFalseQuestion, (TrueOrFalseQuestionDTO) questionDTO);</span>
+<span class="nc" id="L66">        } else {</span>
+<span class="nc" id="L67">            throw new IllegalArgumentException(&quot;Unknown question type&quot;);</span>
+        }
+<span class="fc" id="L69">        return this.questionRepository.save(question);</span>
+    }
+
+    public SubmittedAnswerDTO&lt;?&gt; submitAnswer(long questionId, SubmitAnswerDTO submitAnswerDTO) {
+<span class="fc" id="L73">        Question question = questionRepository.findById(questionId).orElseThrow();</span>
+
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">        if (question instanceof TextQuestion textQuestion) {</span>
+<span class="fc" id="L76">            String answer = submitAnswerDTO.getAnswer();</span>
+<span class="fc" id="L77">            List&lt;String&gt; correctAnswers = textQuestion.getAnswers().stream()</span>
+<span class="fc" id="L78">                    .filter(TextAnswer::isIsCorrect).map(TextAnswer::getText).toList();</span>
+
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">            if (correctAnswers.contains(answer)) {</span>
+<span class="nc" id="L81">                return new SubmittedAnswerDTO&lt;&gt;(answer, correctAnswers, textQuestion.getPoints());</span>
+            }
+
+<span class="fc" id="L84">            return new SubmittedAnswerDTO&lt;&gt;(answer, correctAnswers, 0);</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        } else if (question instanceof SlideQuestion slideQuestion) {</span>
+<span class="nc" id="L86">            int answer = Integer.parseInt(submitAnswerDTO.getAnswer());</span>
+<span class="nc" id="L87">            int correctAnswer = slideQuestion.getAnswer().getCorrectValue();</span>
+
+<span class="nc bnc" id="L89" title="All 2 branches missed.">            if (answer == correctAnswer) {</span>
+<span class="nc" id="L90">                return new SubmittedAnswerDTO&lt;&gt;(answer, correctAnswer, slideQuestion.getPoints());</span>
+            }
+
+<span class="nc" id="L93">            return new SubmittedAnswerDTO&lt;&gt;(answer, correctAnswer, 0);</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        } else if (question instanceof TrueOrFalseQuestion trueOrFalseQuestion) {</span>
+<span class="nc" id="L95">            String answer = submitAnswerDTO.getAnswer();</span>
+<span class="nc" id="L96">            List&lt;String&gt; correctAnswers = trueOrFalseQuestion.getAnswers().stream()</span>
+<span class="nc" id="L97">                    .filter(TrueOrFalseAnswer::isIsCorrect).map(TrueOrFalseAnswer::getText).toList();</span>
+
+<span class="nc bnc" id="L99" title="All 2 branches missed.">            if (correctAnswers.contains(answer)) {</span>
+<span class="nc" id="L100">                return new SubmittedAnswerDTO&lt;&gt;(answer, correctAnswers, trueOrFalseQuestion.getPoints());</span>
+            }
+
+<span class="nc" id="L103">            return new SubmittedAnswerDTO&lt;&gt;(answer, correctAnswers, 0);</span>
+        } else {
+<span class="nc" id="L105">            throw new IllegalArgumentException(&quot;Unknown question type&quot;);</span>
+        }
+    }
+
+    private Question createTextQuestion(TextQuestion textQuestion, TextQuestionDTO textQuestionDTO) {
+<span class="fc bfc" id="L110" title="All 2 branches covered.">        for (TextAnswerDTO textAnswerDTO : textQuestionDTO.getTextAnswerDTOS()) {</span>
+<span class="fc" id="L111">            TextAnswer textAnswer = new TextAnswer();</span>
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">            if (textAnswerDTO.getId() != 0) {</span>
+<span class="nc" id="L113">                textAnswer.setId(textAnswerDTO.getId());</span>
+            }
+<span class="fc" id="L115">            textAnswer.setText(textAnswerDTO.getText());</span>
+<span class="fc" id="L116">            textAnswer.setIsCorrect(textAnswerDTO.getIsCorrect());</span>
+<span class="fc" id="L117">            textAnswer.setQuestion(textQuestion);</span>
+<span class="fc" id="L118">            logger.info(textAnswer.toString());</span>
+<span class="fc" id="L119">            textQuestion.addAnswer(textAnswer);</span>
+<span class="fc" id="L120">        }</span>
+
+<span class="fc" id="L122">        return questionRepository.save(textQuestion);</span>
+    }
+
+    private Question createSlideQuestion(SlideQuestion slideQuestion, SlideQuestionDTO createSlideQuestionDTO) {
+<span class="nc" id="L126">        SlideAnswerDTO slideAnswerDTO = createSlideQuestionDTO.getSlideAnswerDTO();</span>
+<span class="nc" id="L127">        SlideAnswer slideAnswer = new SlideAnswer();</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        if (slideAnswerDTO.getId() != 0) {</span>
+<span class="nc" id="L129">            slideAnswer.setId(slideAnswerDTO.getId());</span>
+        }
+<span class="nc" id="L131">        slideAnswer.setCorrectValue(slideAnswerDTO.getCorrectValue());</span>
+<span class="nc" id="L132">        slideAnswer.setMin(slideAnswerDTO.getMin());</span>
+<span class="nc" id="L133">        slideAnswer.setMax(slideAnswerDTO.getMax());</span>
+<span class="nc" id="L134">        slideAnswer.setStepSize(slideAnswerDTO.getStepSize());</span>
+<span class="nc" id="L135">        slideAnswer.setQuestion(slideQuestion);</span>
+<span class="nc" id="L136">        slideQuestion.setAnswer(slideAnswer);</span>
+
+<span class="nc" id="L138">        return questionRepository.save(slideQuestion);</span>
+    }
+
+    private Question createTrueOrFalseQuestion(TrueOrFalseQuestion trueOrFalseQuestion, TrueOrFalseQuestionDTO createTrueOrFalseQuestionDTO) {
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        for (TrueOrFalseAnswerDTO trueOrFalseAnswerDTO : createTrueOrFalseQuestionDTO.getTextAnswerDTOS()) {</span>
+<span class="nc" id="L143">            TrueOrFalseAnswer trueOrFalseAnswer = new TrueOrFalseAnswer();</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">            if (trueOrFalseAnswerDTO.getId() != 0) {</span>
+<span class="nc" id="L145">                trueOrFalseAnswer.setId(trueOrFalseAnswerDTO.getId());</span>
+            }
+<span class="nc" id="L147">            trueOrFalseAnswer.setText(trueOrFalseAnswerDTO.getText());</span>
+<span class="nc" id="L148">            trueOrFalseAnswer.setIsCorrect(trueOrFalseAnswerDTO.getIsCorrect());</span>
+<span class="nc" id="L149">            trueOrFalseAnswer.setQuestion(trueOrFalseQuestion);</span>
+<span class="nc" id="L150">            trueOrFalseQuestion.addAnswer(trueOrFalseAnswer);</span>
+<span class="nc" id="L151">        }</span>
+
+<span class="nc" id="L153">        return questionRepository.save(trueOrFalseQuestion);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

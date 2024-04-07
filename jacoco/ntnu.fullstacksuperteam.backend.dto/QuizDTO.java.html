@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>QuizDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend</a> &gt; <a href="index.source.html" class="el_package">ntnu.fullstacksuperteam.backend.dto</a> &gt; <span class="el_source">QuizDTO.java</span></div><h1>QuizDTO.java</h1><pre class="source lang-java linenums">package ntnu.fullstacksuperteam.backend.dto;
+
+import ntnu.fullstacksuperteam.backend.model.Category;
+import ntnu.fullstacksuperteam.backend.model.DifficultyLevel;
+
+import java.util.List;
+
+/**
+ * The {@code QuizDTO} class is a data transfer object that encapsulates the data of a quiz.
+ */
+<span class="fc" id="L11">public class QuizDTO {</span>
+    private String title;
+    private String description;
+    private boolean randomize;
+    private DifficultyLevel difficultyLevel;
+    private Category category;
+    private List&lt;QuestionDTO&gt; questions;
+    /**
+     * Gets the title of the quiz.
+     *
+     * @return The title of the quiz.
+     */
+    public String getTitle() {
+<span class="fc" id="L24">        return title;</span>
+    }
+
+    /**
+     * Gets the description of the quiz.
+     *
+     * @return The description of the quiz.
+     */
+    public String getDescription() {
+<span class="fc" id="L33">        return description;</span>
+    }
+
+    /**
+     * Checks if the quiz questions are to be randomized.
+     *
+     * @return {@code true} if the questions are to be randomized, otherwise {@code false}.
+     */
+    public boolean getRandomize() {
+<span class="fc" id="L42">        return randomize;</span>
+    }
+
+    /**
+     * Gets the difficulty level of the quiz.
+     *
+     * @return The difficulty level of the quiz.
+     */
+    public DifficultyLevel getDifficultyLevel() {
+<span class="fc" id="L51">        return difficultyLevel;</span>
+    }
+
+    /**
+     * Gets the category of the quiz.
+     *
+     * @return The category of the quiz.
+     */
+    public Category getCategory() {
+<span class="fc" id="L60">        return category;</span>
+    }
+
+    /**
+     * Gets the list of questions in the quiz.
+     *
+     * @return The list of questions.
+     */
+    public List&lt;QuestionDTO&gt; getQuestions() {
+<span class="fc" id="L69">        return questions;</span>
+    }
+
+    /**
+     * Sets the title of the quiz.
+     *
+     * @param title The new title of the quiz.
+     */
+    public void setTitle(String title) {
+<span class="fc" id="L78">        this.title = title;</span>
+<span class="fc" id="L79">    }</span>
+
+    /**
+     * Sets the description of the quiz.
+     *
+     * @param description The new description of the quiz.
+     */
+    public void setDescription(String description) {
+<span class="fc" id="L87">        this.description = description;</span>
+<span class="fc" id="L88">    }</span>
+
+    /**
+     * Sets whether the quiz questions should be randomized.
+     *
+     * @param randomize {@code true} to randomize the questions, otherwise {@code false}.
+     */
+    public void setRandomize(boolean randomize) {
+<span class="fc" id="L96">        this.randomize = randomize;</span>
+<span class="fc" id="L97">    }</span>
+
+    /**
+     * Sets the difficulty level of the quiz.
+     *
+     * @param difficultyLevel The new difficulty level of the quiz.
+     */
+    public void setDifficultyLevel(DifficultyLevel difficultyLevel) {
+<span class="fc" id="L105">        this.difficultyLevel = difficultyLevel;</span>
+<span class="fc" id="L106">    }</span>
+
+    /**
+     * Sets the category of the quiz.
+     *
+     * @param category The new category of the quiz.
+     */
+    public void setCategory(Category category) {
+<span class="fc" id="L114">        this.category = category;</span>
+<span class="fc" id="L115">    }</span>
+
+    /**
+     * Sets the list of questions for the quiz.
+     *
+     * @param questions The new list of questions.
+     */
+    public void setQuestions(List&lt;QuestionDTO&gt; questions) {
+<span class="fc" id="L123">        this.questions = questions;</span>
+<span class="fc" id="L124">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
