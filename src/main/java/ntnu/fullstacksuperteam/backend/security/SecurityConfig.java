@@ -39,7 +39,7 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
   /**
    * Configures the {@link HttpSecurity} object to specify the web security configuration,
    * applying various security settings such as CORS, CSRF, session management, and custom

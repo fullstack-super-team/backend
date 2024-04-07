@@ -14,6 +14,9 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The QuizService class is responsible for managing quiz data within the application.
+ */
 @Service
 public class QuizService {
     @Autowired
@@ -30,19 +33,43 @@ public class QuizService {
 
     private final Logger logger = LoggerFactory.getLogger(QuizService.class);
 
+    /**
+     * Fetches a list of all quizzes in the database.
+     *
+     * @return a list of {@link Quiz} objects
+     */
     public List<Quiz> getAllQuizzes() {
         return quizRepository.findAll();
     }
 
+    /**
+     * Searches quizzes by their title.
+     *
+     * @param query the search query string
+     * @return a list of {@link Quiz} objects that match the query
+     */
     public List<Quiz> searchQuizzes(String query) {
         return quizRepository.findAllByTitleContaining(query);
     }
 
+    /**
+     * Retrieves all quizzes created by a specific user.
+     *
+     * @param id the user's ID
+     * @return a list of {@link Quiz} objects authored by the user
+     */
     public List<Quiz> getMyQuizzes(long id) {
         User user = userService.getUserById(id);
         return quizRepository.findAllByAuthor(user);
     }
 
+    /**
+     * Fetches a specific quiz by its ID.
+     *
+     * @param id the ID of the quiz
+     * @return the {@link Quiz} object if found
+     * @throws ResponseStatusException if the quiz is not found
+     */
     public Quiz getQuizById(long id) {
         Quiz quiz = quizRepository.findById(id).orElse(null);
         if (quiz == null) {
@@ -51,6 +78,13 @@ public class QuizService {
         return quiz;
     }
 
+    /**
+     * Gets a quiz for playing by ID, optionally randomizing its questions and answers.
+     *
+     * @param id the ID of the quiz
+     * @return the {@link Quiz} object, with questions and answers randomized if applicable
+     * @throws ResponseStatusException if the quiz is not found
+     */
     public Quiz getQuizPlayVersionById(long id) {
         Quiz quiz = quizRepository.findById(id).orElse(null);
         if (quiz == null) {
@@ -85,6 +119,13 @@ public class QuizService {
         return quiz;
     }
 
+    /**
+     * Creates a new quiz with the provided details.
+     *
+     * @param userId the ID of the user creating the quiz
+     * @param quizDTO the data transfer object containing quiz details
+     * @return the created {@link Quiz} object
+     */
     public Quiz createQuiz(long userId, QuizDTO quizDTO) {
         User author = userService.getUserById(userId);
         Quiz quiz = new Quiz();
@@ -106,6 +147,15 @@ public class QuizService {
         return savedQuiz;
     }
 
+    /**
+     * Updates an existing quiz with new details.
+     *
+     * @param userId the ID of the user updating the quiz
+     * @param quizId the ID of the quiz to update
+     * @param quizDTO the new quiz details
+     * @return the updated {@link Quiz} object
+     * @throws ResponseStatusException if the quiz is not found or if the user is not the author
+     */
     public Quiz updateQuiz(long userId, long quizId, QuizDTO quizDTO) {
         Quiz quiz = quizRepository.findById(quizId).orElse(null);
         if (quiz == null) {
@@ -144,6 +194,13 @@ public class QuizService {
         return quizRepository.save(quiz);
     }
 
+    /**
+     * Deletes a quiz by its ID.
+     *
+     * @param userId the ID of the user attempting to delete the quiz
+     * @param quizId the ID of the quiz to be deleted
+     * @throws ResponseStatusException if the quiz is not found or if the user is not the author
+     */
     public void deleteQuiz(long userId, long quizId) {
         Quiz quiz = quizRepository.findById(quizId).orElse(null);
         if (quiz == null) {
@@ -155,6 +212,13 @@ public class QuizService {
         quizRepository.delete(quiz);
     }
 
+    /**
+     * Retrieves a list of the most recently played quizzes by a user.
+     *
+     * @param userId the ID of the user
+     * @return a list of recently played {@link Quiz} objects
+     * @throws ResponseStatusException if the user is not found
+     */
     public List<Quiz> getRecentlyPlayedQuizzes(long userId) {
         User user = userService.getUserById(userId);
         if (user == null) {
