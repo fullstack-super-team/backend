@@ -1,4 +1,4 @@
-name: Docker
+name: Build and deploy Docker image
 
 on:
   push:
@@ -35,5 +35,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/quizzebassen_backend:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
           platforms: linux/amd64, linux/arm64
