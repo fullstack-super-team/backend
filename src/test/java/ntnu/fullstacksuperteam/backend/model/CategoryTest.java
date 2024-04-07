@@ -9,10 +9,10 @@ class CategoryTest {
   @Test
   void testFromStringValidCategories() {
     assertEquals(Category.FOOD, Category.fromString("food"), "String 'food' should map to Category.FOOD");
-    assertEquals(Category.DRINK, Category.fromString("drink"), "String 'drink' should map to Category.DRINK");
-    assertEquals(Category.CLOTHING, Category.fromString("clothing"), "String 'clothing' should map to Category.CLOTHING");
-    assertEquals(Category.ELECTRONICS, Category.fromString("electronics"), "String 'electronics' should map to Category.ELECTRONICS");
-    assertEquals(Category.BOOKS, Category.fromString("books"), "String 'books' should map to Category.BOOKS");
+    assertEquals(Category.SPORT, Category.fromString("sport"), "String 'sport' should map to Category.SPORT");
+    assertEquals(Category.SCIENCE, Category.fromString("science"), "String 'science' should map to Category.SCIENCE");
+    assertEquals(Category.HISTORY, Category.fromString("history"), "String 'history' should map to Category.HISTORY");
+    assertEquals(Category.CULTURE, Category.fromString("culture"), "String 'culture' should map to Category.CULTURE");
   }
 
   @Test
