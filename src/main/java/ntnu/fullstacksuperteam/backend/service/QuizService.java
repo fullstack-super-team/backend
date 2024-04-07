@@ -2,10 +2,7 @@ package ntnu.fullstacksuperteam.backend.service;
 
 import ntnu.fullstacksuperteam.backend.dto.QuestionDTO;
 import ntnu.fullstacksuperteam.backend.dto.QuizDTO;
-import ntnu.fullstacksuperteam.backend.model.Question;
-import ntnu.fullstacksuperteam.backend.model.Quiz;
-import ntnu.fullstacksuperteam.backend.model.Score;
-import ntnu.fullstacksuperteam.backend.model.User;
+import ntnu.fullstacksuperteam.backend.model.*;
 import ntnu.fullstacksuperteam.backend.repository.QuizRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +48,41 @@ public class QuizService {
         if (quiz == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Quiz not found");
         }
-        return quizRepository.findById(id).orElse(null);
+        return quiz;
+    }
+
+    public Quiz getQuizPlayVersionById(long id) {
+        Quiz quiz = quizRepository.findById(id).orElse(null);
+        if (quiz == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Quiz not found");
+        }
+        if (!quiz.getRandomize()) {
+            return quiz;
+        }
+        logger.info("Randomizing quiz questions and answers");
+        List<Question> questions = quiz.getQuestions();
+        // Randomize question answers order if question type is multiple choice
+        for (Question question : questions) {
+            if (question instanceof TextQuestion textQuestion) {
+                List<TextAnswer> randomizedAnswers = new ArrayList<>();
+                while (!textQuestion.getAnswers().isEmpty()) {
+                    int randomIndex = (int) (Math.random() * textQuestion.getAnswers().size());
+                    randomizedAnswers.add(textQuestion.getAnswers().get(randomIndex));
+                    textQuestion.getAnswers().remove(randomIndex);
+                }
+                textQuestion.setAnswers(randomizedAnswers);
+            }
+        }
+
+        List<Question> randomizedQuestions = new ArrayList<>();
+        while (!questions.isEmpty()) {
+            int randomIndex = (int) (Math.random() * questions.size());
+            randomizedQuestions.add(questions.get(randomIndex));
+            questions.remove(randomIndex);
+        }
+        quiz.setQuestions(randomizedQuestions);
+
+        return quiz;
     }
 
     public Quiz createQuiz(long userId, QuizDTO quizDTO) {

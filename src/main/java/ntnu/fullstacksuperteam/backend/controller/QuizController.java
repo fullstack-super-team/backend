@@ -110,6 +110,22 @@ public class QuizController {
     }
 
     /**
+     * Retrieves a specific play-version of quiz by its ID.
+     *
+     * @param quizId The ID of the quiz to retrieve.
+     * @return A {@code ResponseEntity} containing the requested play-version quiz.
+     */
+    @GetMapping("/{quizId}/play")
+    public ResponseEntity<?> playQuizById(@PathVariable long quizId) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(quizService.getQuizPlayVersionById(quizId));
+        } catch (Exception exception) {
+            logger.error(exception.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something went wrong");
+        }
+    }
+
+    /**
      * Retrieves a specific quiz by its ID.
      *
      * @param quizId The ID of the quiz to retrieve.
