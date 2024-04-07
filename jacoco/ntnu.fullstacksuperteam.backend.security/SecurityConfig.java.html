@@ -32,7 +32,7 @@ import java.util.Arrays;
 <span class="fc" id="L32">                .csrf(csrf -&gt; csrf.disable()) // Disable CSRF protection</span>
 <span class="fc" id="L33">                .cors(cors -&gt; cors.configurationSource(request -&gt; {</span>
 <span class="nc" id="L34">                    CorsConfiguration config = new CorsConfiguration();</span>
-<span class="nc" id="L35">                    config.setAllowedOrigins(Arrays.asList(&quot;http://localhost:5173&quot;)); // Allow your frontend origin</span>
+<span class="nc" id="L35">                    config.setAllowedOrigins(Arrays.asList(&quot;http://localhost:5173&quot;, &quot;https://quizzebassen.com&quot;)); // Allow your frontend origin</span>
 <span class="nc" id="L36">                    config.setAllowedMethods(Arrays.asList(&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;DELETE&quot;, &quot;OPTIONS&quot;));</span>
 <span class="nc" id="L37">                    config.setAllowedHeaders(Arrays.asList(&quot;Authorization&quot;, &quot;Content-Type&quot;));</span>
 <span class="nc" id="L38">                    return config;</span>
