@@ -18,7 +18,7 @@ import java.io.IOException;
 
 @Component
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
-    private TokenService tokenService;
+    private final TokenService tokenService;
     private final Logger logger = LoggerFactory.getLogger(JWTAuthorizationFilter.class);
 
     @Autowired
