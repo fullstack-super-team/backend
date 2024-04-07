@@ -36,4 +36,28 @@ public class QuizDTO {
     public List<QuestionDTO> getQuestions() {
         return questions;
     }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setRandomize(boolean randomize) {
+        this.randomize = randomize;
+    }
+
+    public void setDifficultyLevel(DifficultyLevel difficultyLevel) {
+        this.difficultyLevel = difficultyLevel;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public void setQuestions(List<QuestionDTO> questions) {
+        this.questions = questions;
+    }
 }
