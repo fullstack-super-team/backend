@@ -92,7 +92,7 @@ public class QuizServiceTest {
     Quiz foundQuiz = quizService.getQuizById(quizId);
 
     assertEquals(quiz, foundQuiz);
-    verify(quizRepository, times(2)).findById(quizId);
+    verify(quizRepository, times(1)).findById(quizId);
   }
 
   @Test
