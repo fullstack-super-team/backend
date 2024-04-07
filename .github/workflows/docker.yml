@@ -26,5 +26,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: username/my-app:latest
-          platforms: linux/amd64
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/quizzebassen_backend:latest
+          platforms: linux/amd64, linux/arm64
