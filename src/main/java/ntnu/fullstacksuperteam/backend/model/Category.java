@@ -4,20 +4,20 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 public enum Category {
     FOOD,
-    DRINK,
-    CLOTHING,
-    ELECTRONICS,
-    BOOKS,
+    SPORT,
+    SCIENCE,
+    HISTORY,
+    CULTURE,
     GENERAL;
 
     @JsonCreator
     public static Category fromString(String category) {
         return switch (category) {
             case "food" -> FOOD;
-            case "drink" -> DRINK;
-            case "clothing" -> CLOTHING;
-            case "electronics" -> ELECTRONICS;
-            case "books" -> BOOKS;
+            case "sport" -> SPORT;
+            case "science" -> SCIENCE;
+            case "history" -> HISTORY;
+            case "culture" -> CULTURE;
             default -> GENERAL;
         };
     }
