@@ -18,4 +18,16 @@ public class TrueOrFalseAnswerDTO {
     public boolean getIsCorrect() {
         return isCorrect;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setCorrect(boolean correct) {
+        isCorrect = correct;
+    }
 }

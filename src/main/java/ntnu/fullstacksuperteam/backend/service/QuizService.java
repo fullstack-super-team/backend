@@ -90,7 +90,6 @@ public class QuizService {
         quiz.setDescription(quizDTO.getDescription());
         quiz.setRandomize(quizDTO.getRandomize());
 
-        // Temporarily hold updated and new questions
         List<Question> updatedQuestions = new ArrayList<>();
         for (QuestionDTO questionDTO : quizDTO.getQuestions()) {
             if (questionDTO.getId() > 0) {
@@ -103,10 +102,8 @@ public class QuizService {
             updatedQuestions.add(updatedOrNewQuestion);
         }
 
-        // Remove questions not in the updated list
         quiz.getQuestions().removeIf(question -> !updatedQuestions.contains(question));
 
-        // Add or update questions
         for (Question question : updatedQuestions) {
             if (!quiz.getQuestions().contains(question)) {
                 quiz.getQuestions().add(question);

@@ -19,6 +19,18 @@ public class TextAnswerDTO {
         return isCorrect;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public void setCorrect(boolean correct) {
+        isCorrect = correct;
+    }
+
     public String toString() {
         return "TextAnswerDTO{" +
                 "text='" + text + '\'' +

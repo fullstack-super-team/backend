@@ -29,6 +29,26 @@ public class SlideAnswerDTO {
         return stepSize;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public void setMin(int min) {
+        this.min = min;
+    }
+
+    public void setMax(int max) {
+        this.max = max;
+    }
+
+    public void setCorrectValue(int correctValue) {
+        this.correctValue = correctValue;
+    }
+
+    public void setStepSize(int stepSize) {
+        this.stepSize = stepSize;
+    }
+
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("SlideAnswerDTO{");
