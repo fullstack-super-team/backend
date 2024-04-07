@@ -93,17 +93,14 @@ public class QuestionService {
             return new SubmittedAnswerDTO<>(answer, correctAnswer, 0);
         } else if (question instanceof TrueOrFalseQuestion trueOrFalseQuestion) {
             String answer = submitAnswerDTO.getAnswer();
-            String correctAnswer = trueOrFalseQuestion.getAnswers().stream()
-                    .filter(TrueOrFalseAnswer::isIsCorrect)
-                    .map(TrueOrFalseAnswer::getText)
-                    .findFirst()
-                    .orElse("No correct answer found");
+            List<String> correctAnswers = trueOrFalseQuestion.getAnswers().stream()
+                    .filter(TrueOrFalseAnswer::isIsCorrect).map(TrueOrFalseAnswer::getText).toList();
 
-            if (answer.equals(correctAnswer)) {
-                return new SubmittedAnswerDTO<>(answer, correctAnswer, trueOrFalseQuestion.getPoints());
+            if (correctAnswers.contains(answer)) {
+                return new SubmittedAnswerDTO<>(answer, correctAnswers, trueOrFalseQuestion.getPoints());
             }
 
-            return new SubmittedAnswerDTO<>(answer, correctAnswer, 0);
+            return new SubmittedAnswerDTO<>(answer, correctAnswers, 0);
         } else {
             throw new IllegalArgumentException("Unknown question type");
         }
