@@ -7,17 +7,18 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
 
-@Service
+@Component
 public class TokenService {
     @Value("${jwt.secret}")
     public String keyStr;
-    private static final Duration JWT_TOKEN_VALIDITY = Duration.ofMinutes(5);
     private final Logger logger = LoggerFactory.getLogger(TokenService.class);
+    private static final Duration JWT_TOKEN_VALIDITY = Duration.ofDays(90);
 
     public String generateToken(final Long userId) {
         final Instant now = Instant.now();

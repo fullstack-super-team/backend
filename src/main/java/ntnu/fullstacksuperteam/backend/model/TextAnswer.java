@@ -1,16 +1,17 @@
 package ntnu.fullstacksuperteam.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("TEXT")
 public class TextAnswer extends Answer {
     private String text;
-    private boolean correct;
+
+    private boolean isCorrect;
 
     public TextAnswer() {}
-
-    public TextAnswer(long id, String text, boolean correct) {
-        super(id);
-        this.text = text;
-        this.correct = correct;
-    }
 
     public String getText() {
         return text;
@@ -20,11 +21,22 @@ public class TextAnswer extends Answer {
         this.text = text;
     }
 
-    public boolean isCorrect() {
-        return correct;
+    public boolean isIsCorrect() {
+        return isCorrect;
     }
 
-    public void setCorrect(boolean correct) {
-        this.correct = correct;
+    public void setIsCorrect(boolean correct) {
+        this.isCorrect = correct;
+    }
+
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("TextAnswer{");
+        stringBuilder.append("text=").append(this.text);
+        stringBuilder.append(", ");
+        stringBuilder.append("correct=").append(this.isCorrect);
+        stringBuilder.append("}");
+
+        return stringBuilder.toString();
     }
 }

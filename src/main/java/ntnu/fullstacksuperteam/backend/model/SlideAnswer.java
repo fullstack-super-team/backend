@@ -1,19 +1,18 @@
 package ntnu.fullstacksuperteam.backend.model;
 
-public class SlideAnswer {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
+@Entity
+@DiscriminatorValue("SLIDE")
+public class SlideAnswer extends Answer {
     private int min;
     private int max;
-    private int correct;
-    private int step;
+    private int correctValue;
+    private int stepSize;
 
     public SlideAnswer() {}
-
-    public SlideAnswer(int min, int max, int correct, int step) {
-        this.min = min;
-        this.max = max;
-        this.correct = correct;
-        this.step = step;
-    }
 
     public int getMin() {
         return min;
@@ -31,19 +30,19 @@ public class SlideAnswer {
         this.max = max;
     }
 
-    public int getCorrect() {
-        return correct;
+    public int getCorrectValue() {
+        return correctValue;
     }
 
-    public void setCorrect(int correct) {
-        this.correct = correct;
+    public void setCorrectValue(int correctValue) {
+        this.correctValue = correctValue;
     }
 
-    public int getStep() {
-        return step;
+    public int getStepSize() {
+        return stepSize;
     }
 
-    public void setStep(int step) {
-        this.step = step;
+    public void setStepSize(int steps) {
+        this.stepSize = steps;
     }
 }
