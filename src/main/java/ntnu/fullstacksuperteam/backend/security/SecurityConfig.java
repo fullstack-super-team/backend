@@ -15,17 +15,40 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
 
+
+/**
+ * Configuration class for Spring Security.
+ * Enables web security and configures the application's security settings, including CORS, CSRF,
+ * session management, and the registration of custom security filters. This configuration is
+ * essential for securing the application's endpoints and ensuring that only authenticated users
+ * can access certain resources.
+ */
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
     @Autowired
     private TokenService tokenService;
 
+  /**
+   * Defines the password encoder bean to use for encoding passwords.
+   * Utilizes {@link BCryptPasswordEncoder} for hashing passwords securely.
+   *
+   * @return the password encoder
+   */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+    
+  /**
+   * Configures the {@link HttpSecurity} object to specify the web security configuration,
+   * applying various security settings such as CORS, CSRF, session management, and custom
+   * security filters.
+   *
+   * @param http the {@link HttpSecurity} to configure
+   * @return the configured {@link SecurityFilterChain}
+   * @throws Exception if an error occurs during configuration
+   */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

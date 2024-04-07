@@ -16,19 +16,39 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+
+/**
+ * Filter for JWT (JSON Web Token) authorization that ensures only requests with a valid Bearer token
+ * are authenticated.
+ *
+ * This class extends {@link OncePerRequestFilter} to ensure the filtering logic is applied once per request.
+ */
 @Component
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private final TokenService tokenService;
     private final Logger logger = LoggerFactory.getLogger(JWTAuthorizationFilter.class);
 
+    /**
+     * Constructs a new JWTAuthorizationFilter with the specified {@link TokenService}.
+     *
+     * @param tokenService the TokenService to use for token verification.
+     */
     @Autowired
     public JWTAuthorizationFilter(TokenService tokenService) {
         this.tokenService = tokenService;
     }
 
+    /**
+     * Filters incoming HTTP requests for JWT Bearer tokens in the Authorization header.
+     *
+     * @param request the request to filter
+     * @param response the response associated with the request
+     * @param filterChain the filter chain for request processing
+     * @throws ServletException if an error occurs during request processing
+     * @throws IOException if an I/O error occurs during request processing
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // check Bearer auth header
         final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (header == null || !header.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -36,28 +56,20 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        // if Bearer auth header exists, validate token, and extract userId from token.
-        // Note that we have added userId as subject to the token when it is generated
-        // Note also that the token comes in this format 'Bearer token'
         String token = header.substring(7);
         final String userId = tokenService.verifyTokenAndGetUserId(token);
         if (userId == null) {
-            // validation failed or token expired
             filterChain.doFilter(request, response);
             logger.warn("Token validation failed");
             return;
         }
 
-        // if token is valid, add user details to the authentication context
-        // Note that user details should be fetched from the database in real scenarios
-        // this is case we will retrieve use details from mock
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                 userId,
                 null,
                 null);
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        // then, continue with authenticated user context
         filterChain.doFilter(request, response);
     }
 }
