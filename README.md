@@ -3,16 +3,15 @@
 ## Table of contents
 1. [Introduction](#1-introduction)
 2. [Technologies used](#2-technologies-used)
-3. [Recommended IDE Setup](#3-recommended-ide-setup)
+3. [IDE Setup](#3-ide-setup)
 4. [Project Structure](#4-project-structure)
 5. [Documentation](#5-documentation)
     - [Javadoc documentation](#javadoc-documentation)
     - [API documentation with Swagger](#API-documentation-with-Swagger)
-   - [Database Documentation](#database-documentation)
 6. [Installation](#6-installation)
-   - [Install dependencies](#install-dependencies)
-   - [Compile and Hot-Reload for Development](#compile-and-hot-reload-for-development)
-   - [Compile and Minify for Production](#compile-and-minify-for-production)
+   1. [Install dependencies](#61-install-dependencies)
+   2. [Compile and Hot-Reload for Development](#62-compile-and-hot-reload-for-development)
+   3. [Compile and Minify for Production](#63-compile-and-minify-for-production)
 7. [Contributors](#7-contributors)
 
 
@@ -21,7 +20,7 @@
 
 Welcome to Quizzebassen! 
 This is the backend for the voluntary fullstack project in the course IDATT2105.
-We have developed a web application for playing and creating quizzes. Whether you are here to challenge your intellect,
+We have developed a web application for creating and playing quizzes. Whether you are here to challenge your intellect,
 create challenging quizzes or just have fun with trivia, you have come to the right place!
 
 ## 2. Technologies used
@@ -37,7 +36,7 @@ create challenging quizzes or just have fun with trivia, you have come to the ri
 * Swagger
 * Jacoco
 
-## 3. Recommended IDE Setup
+## 3. IDE Setup
 
 While you can use any IDE you prefer, we recommend using [Intellij IDEA](https://www.jetbrains.com/idea/) by JetBrains.
 Intellij comes with support for Spring Boot and Java development.
@@ -74,21 +73,16 @@ The JavaDoc for our project provides detailed information on the classes, method
 ### API Documentation with Swagger
 
 To access our API documentation, you'll need to have the backend up and running. 
-Follow the instructions in the 'Setting up backend' section to get started. Once the backend API is operational, you can explore the documentation by clicking on the Swagger link below:
+Follow the instructions in the '6. Installation' section to get started. 
+Once the backend API is operational, you can explore the documentation by clicking on the Swagger link below:
 
-- [Setting up backend](LINK_TO_SETUP_INSTRUCTIONS)
-- [Swagger API Documentation](LINK_TO_SWAGGER_UI)
-
-### Database Documentation
-
-The database schema and documentation are crucial for understanding the underlying data model. We maintain a comprehensive domain model, which you can view here:
-[Domain Model PDF](URL_TO_YOUR_DOMAIN_MODEL_PDF)
+- [Swagger API Documentation](http://localhost:8080/swagger-ui/index.html)
 
 ## 6. Installation
 
 To get the backend up and running, you'll need to follow these steps:
 
-### Install dependencies
+### 6.1 Install dependencies
 
 With Maven wrapped in the project, you don't need to install anything globally.
 Run the following command to install the project dependencies:
@@ -97,7 +91,7 @@ Run the following command to install the project dependencies:
 ./mvnw clean install
 ```
 
-### Run the application for development
+### 6.2 Run the application for development
 
 Run the following command to start the application:
 
@@ -105,7 +99,7 @@ Run the following command to start the application:
 ./mvnw spring-boot:run
 ```
 
-### Testing
+### 6.3 Testing
 
 To run the tests, use the following command:
 
