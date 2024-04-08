@@ -13,8 +13,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
+/**
+ * Service class for handling operations related to quiz questions.
+ */
 @Service
 public class QuestionService {
+
+
     @Autowired
     private QuestionRepository questionRepository;
 
@@ -23,12 +29,26 @@ public class QuestionService {
 
     private final Logger logger = LoggerFactory.getLogger(QuestionService.class);
 
+    /**
+     * Retrieves a list of questions associated with a specific quiz ID.
+     *
+     * @param quizId The ID of the quiz.
+     * @return A list of Question entities.
+     */
     public List<Question> getQuestionsByQuizId(long quizId) {
         logger.info("Getting questions by quiz id: " + quizId);
         List<Question> questions = questionRepository.findByQuizId(quizId);
         return questions;
     }
 
+    /**
+     * Creates a new question for a quiz based on provided details in QuestionDTO.
+     *
+     * @param quizId The ID of the quiz to which the question belongs.
+     * @param questionDTO The data transfer object containing question details.
+     * @return The created Question entity.
+     * @throws IllegalArgumentException If the question type is unknown.
+     */
     public Question createQuestion(long quizId, QuestionDTO questionDTO) {
         Quiz quiz = entityManager.getReference(Quiz.class, quizId);
         Question question = new Question();
@@ -50,6 +70,13 @@ public class QuestionService {
         return this.questionRepository.save(question);
     }
 
+    /**
+     * Updates an existing question based on provided details in QuestionDTO.
+     *
+     * @param questionDTO The data transfer object containing new question details.
+     * @return The updated Question entity.
+     * @throws IllegalArgumentException If the question type is unknown.
+     */
     public Question updateQuestion(QuestionDTO questionDTO) {
         Question question = questionRepository.findById(questionDTO.getId()).orElseThrow();
         question.setText(questionDTO.getText());
@@ -69,6 +96,14 @@ public class QuestionService {
         return this.questionRepository.save(question);
     }
 
+    /**
+     * Submits an answer to a specific question and evaluates its correctness.
+     *
+     * @param questionId The ID of the question being answered.
+     * @param submitAnswerDTO The data transfer object containing the answer details.
+     * @return A DTO containing the evaluation of the submitted answer.
+     * @throws IllegalArgumentException If the question type is unknown.
+     */
     public SubmittedAnswerDTO<?> submitAnswer(long questionId, SubmitAnswerDTO submitAnswerDTO) {
         Question question = questionRepository.findById(questionId).orElseThrow();
 
@@ -106,6 +141,13 @@ public class QuestionService {
         }
     }
 
+    /**
+     * Creates and saves a TextQuestion based on the provided DTO and existing question template.
+     *
+     * @param textQuestion The TextQuestion entity to be populated and saved.
+     * @param textQuestionDTO The DTO containing information for creating text answers.
+     * @return The saved TextQuestion entity with its answers.
+     */
     private Question createTextQuestion(TextQuestion textQuestion, TextQuestionDTO textQuestionDTO) {
         for (TextAnswerDTO textAnswerDTO : textQuestionDTO.getTextAnswerDTOS()) {
             TextAnswer textAnswer = new TextAnswer();
@@ -122,6 +164,13 @@ public class QuestionService {
         return questionRepository.save(textQuestion);
     }
 
+    /**
+     * Creates and saves a SlideQuestion based on the provided DTO and existing question template.
+     *
+     * @param slideQuestion The SlideQuestion entity to be populated and saved.
+     * @param createSlideQuestionDTO The DTO containing information for creating a slide answer.
+     * @return The saved SlideQuestion entity with its slide answer.
+     */
     private Question createSlideQuestion(SlideQuestion slideQuestion, SlideQuestionDTO createSlideQuestionDTO) {
         SlideAnswerDTO slideAnswerDTO = createSlideQuestionDTO.getSlideAnswerDTO();
         SlideAnswer slideAnswer = new SlideAnswer();
@@ -138,6 +187,13 @@ public class QuestionService {
         return questionRepository.save(slideQuestion);
     }
 
+    /**
+     * Creates and saves a TrueOrFalseQuestion based on the provided DTO and existing question template.
+     *
+     * @param trueOrFalseQuestion The TrueOrFalseQuestion entity to be populated and saved.
+     * @param createTrueOrFalseQuestionDTO The DTO containing information for creating true or false answers.
+     * @return The saved TrueOrFalseQuestion entity with its answers.
+     */
     private Question createTrueOrFalseQuestion(TrueOrFalseQuestion trueOrFalseQuestion, TrueOrFalseQuestionDTO createTrueOrFalseQuestionDTO) {
         for (TrueOrFalseAnswerDTO trueOrFalseAnswerDTO : createTrueOrFalseQuestionDTO.getTextAnswerDTOS()) {
             TrueOrFalseAnswer trueOrFalseAnswer = new TrueOrFalseAnswer();

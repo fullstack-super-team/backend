@@ -10,11 +10,20 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
+/**
+ * Service class for managing user entities.
+ */
 @Service
 public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Retrieves a user by their ID.
+     *
+     * @param id The ID of the user to retrieve.
+     * @return The {@link User} object corresponding to the given ID.
+     */
     public User getUserById(long id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
@@ -23,6 +32,14 @@ public class UserService {
         return user.get();
     }
 
+    /**
+     * Updates the information of an existing user identified by {@code userId} with the new information provided
+     * in {@code newUserInfo}.
+     *
+     * @param userId The ID of the user to update.
+     * @param newUserInfo An {@link User} object containing the new information for the user.
+     * @return The updated {@link User} object.
+     */
     public User updateUser(long userId, User newUserInfo) {
         Optional<User> userOptional = userRepository.findById(userId);
         if (userOptional.isEmpty()) {
