@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,10 +30,24 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
           platforms: linux/amd64, linux/arm64
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to DigitalOcean
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.DROPLET_USER }}@${{ secrets.DROPLET_IP }} <<'ENDSSH'
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
+          docker stop backend-app || true
+          docker rm backend-app || true
+          docker run --name backend-app -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/backend:latest
+          ENDSSH
