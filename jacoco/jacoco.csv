@@ -1,7 +1,7 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 backend,ntnu.fullstacksuperteam.backend.service,ScoresService,5,43,0,0,1,9,1,4,1,4
 backend,ntnu.fullstacksuperteam.backend.service,TokenService,0,55,0,0,0,17,0,4,0,4
-backend,ntnu.fullstacksuperteam.backend.service,QuizService,201,242,26,14,41,52,19,12,2,9
+backend,ntnu.fullstacksuperteam.backend.service,QuizService,201,240,27,15,41,54,20,12,2,9
 backend,ntnu.fullstacksuperteam.backend.service,QuestionService,249,184,27,7,51,40,18,7,2,6
 backend,ntnu.fullstacksuperteam.backend.service,FeedbackService,0,23,0,0,0,7,0,2,0,2
 backend,ntnu.fullstacksuperteam.backend.service,AuthService,117,3,12,0,17,1,8,1,2,1

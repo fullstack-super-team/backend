@@ -4,28 +4,56 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
+/**
+ * The {@code TrueOrFalseAnswer} class represents a specific type of answer
+ * for questions that are based on a true or false response. It extends the
+ * {@code Answer} class, inheriting its basic properties and functionalities.
+ */
 @Entity
 @DiscriminatorValue(&quot;TRUE_OR_FALSE&quot;)
 public class TrueOrFalseAnswer extends Answer {
     private String text;
     private boolean isCorrect;
 
-<span class="fc" id="L13">    public TrueOrFalseAnswer() {}</span>
+    /**
+     * Default constructor for JPA and general purpose use.
+     */
+<span class="fc" id="L21">    public TrueOrFalseAnswer() {}</span>
 
+    /**
+     * Retrieves the text of this answer.
+     *
+     * @return The text of the answer.
+     */
     public String getText() {
-<span class="fc" id="L16">        return text;</span>
+<span class="fc" id="L29">        return text;</span>
     }
 
+    /**
+     * Sets the text for this answer.
+     *
+     * @param text The text to be set for this answer.
+     */
     public void setText(String text) {
-<span class="fc" id="L20">        this.text = text;</span>
-<span class="fc" id="L21">    }</span>
+<span class="fc" id="L38">        this.text = text;</span>
+<span class="fc" id="L39">    }</span>
 
+    /**
+     * Checks if this answer is marked as correct.
+     *
+     * @return {@code true} if the answer is correct, otherwise {@code false}.
+     */
     public boolean isIsCorrect() {
-<span class="fc" id="L24">        return isCorrect;</span>
+<span class="fc" id="L47">        return isCorrect;</span>
     }
 
+    /**
+     * Marks this answer as correct or incorrect.
+     *
+     * @param correct {@code true} to mark this answer as correct, {@code false} otherwise.
+     */
     public void setIsCorrect(boolean correct) {
-<span class="fc" id="L28">        this.isCorrect = correct;</span>
-<span class="fc" id="L29">    }</span>
+<span class="fc" id="L56">        this.isCorrect = correct;</span>
+<span class="fc" id="L57">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

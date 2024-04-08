@@ -13,32 +13,48 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.Instant;
 
+/**
+ * Service class for generating and verifying JWT (JSON Web Tokens) tokens.
+ *
+ */
 @Component
-<span class="fc" id="L17">public class TokenService {</span>
+<span class="fc" id="L21">public class TokenService {</span>
     @Value(&quot;${jwt.secret}&quot;)
     public String keyStr;
-<span class="fc" id="L20">    private final Logger logger = LoggerFactory.getLogger(TokenService.class);</span>
-<span class="fc" id="L21">    private static final Duration JWT_TOKEN_VALIDITY = Duration.ofDays(90);</span>
+<span class="fc" id="L24">    private final Logger logger = LoggerFactory.getLogger(TokenService.class);</span>
+<span class="fc" id="L25">    private static final Duration JWT_TOKEN_VALIDITY = Duration.ofDays(90);</span>
 
+    /**
+     * Generates a JWT token for a specified user ID with a validity of 90 days.
+     *
+     * @param userId The user ID for which the token will be generated.
+     * @return A JWT token as a String.
+     */
     public String generateToken(final Long userId) {
-<span class="fc" id="L24">        final Instant now = Instant.now();</span>
-<span class="fc" id="L25">        final Algorithm hmac512 = Algorithm.HMAC512(keyStr);</span>
-<span class="fc" id="L26">        return JWT.create()</span>
-<span class="fc" id="L27">                .withSubject(userId.toString())</span>
-<span class="fc" id="L28">                .withIssuer(&quot;fst_token_issuer_app&quot;) // fst - fullstack super team</span>
-<span class="fc" id="L29">                .withIssuedAt(now)</span>
-<span class="fc" id="L30">                .withExpiresAt(now.plusMillis(JWT_TOKEN_VALIDITY.toMillis()))</span>
-<span class="fc" id="L31">                .sign(hmac512);</span>
+<span class="fc" id="L34">        final Instant now = Instant.now();</span>
+<span class="fc" id="L35">        final Algorithm hmac512 = Algorithm.HMAC512(keyStr);</span>
+<span class="fc" id="L36">        return JWT.create()</span>
+<span class="fc" id="L37">                .withSubject(userId.toString())</span>
+<span class="fc" id="L38">                .withIssuer(&quot;fst_token_issuer_app&quot;) // fst - fullstack super team</span>
+<span class="fc" id="L39">                .withIssuedAt(now)</span>
+<span class="fc" id="L40">                .withExpiresAt(now.plusMillis(JWT_TOKEN_VALIDITY.toMillis()))</span>
+<span class="fc" id="L41">                .sign(hmac512);</span>
     }
 
+    /**
+     * Verifies the given JWT token's validity and returns the user ID encoded within it.
+     *
+     * @param token The JWT token to verify.
+     * @return The user ID as a String if the token is valid, otherwise {@code null}.
+     */
     public String verifyTokenAndGetUserId(final String token) {
         try {
-<span class="fc" id="L36">            final Algorithm hmac512 = Algorithm.HMAC512(keyStr);</span>
-<span class="fc" id="L37">            final JWTVerifier verifier = JWT.require(hmac512).build();</span>
-<span class="fc" id="L38">            return verifier.verify(token).getSubject();</span>
-<span class="fc" id="L39">        } catch (final JWTVerificationException verificationException) {</span>
-<span class="fc" id="L40">            logger.warn(&quot;Token is invalid: {}&quot;, verificationException.getMessage());</span>
-<span class="fc" id="L41">            return null;</span>
+<span class="fc" id="L52">            final Algorithm hmac512 = Algorithm.HMAC512(keyStr);</span>
+<span class="fc" id="L53">            final JWTVerifier verifier = JWT.require(hmac512).build();</span>
+<span class="fc" id="L54">            return verifier.verify(token).getSubject();</span>
+<span class="fc" id="L55">        } catch (final JWTVerificationException verificationException) {</span>
+<span class="fc" id="L56">            logger.warn(&quot;Token is invalid: {}&quot;, verificationException.getMessage());</span>
+<span class="fc" id="L57">            return null;</span>
         }
     }
 }

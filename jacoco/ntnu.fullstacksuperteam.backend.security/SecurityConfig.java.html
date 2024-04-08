@@ -15,38 +15,61 @@ import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Arrays;
 
+
+/**
+ * Configuration class for Spring Security.
+ * Enables web security and configures the application's security settings, including CORS, CSRF,
+ * session management, and the registration of custom security filters. This configuration is
+ * essential for securing the application's endpoints and ensuring that only authenticated users
+ * can access certain resources.
+ */
 @EnableWebSecurity
 @Configuration
-<span class="fc" id="L20">public class SecurityConfig {</span>
+<span class="fc" id="L28">public class SecurityConfig {</span>
     @Autowired
     private TokenService tokenService;
 
+  /**
+   * Defines the password encoder bean to use for encoding passwords.
+   * Utilizes {@link BCryptPasswordEncoder} for hashing passwords securely.
+   *
+   * @return the password encoder
+   */
     @Bean
     public PasswordEncoder passwordEncoder() {
-<span class="fc" id="L26">        return new BCryptPasswordEncoder();</span>
+<span class="fc" id="L40">        return new BCryptPasswordEncoder();</span>
     }
 
+  /**
+   * Configures the {@link HttpSecurity} object to specify the web security configuration,
+   * applying various security settings such as CORS, CSRF, session management, and custom
+   * security filters.
+   *
+   * @param http the {@link HttpSecurity} to configure
+   * @return the configured {@link SecurityFilterChain}
+   * @throws Exception if an error occurs during configuration
+   */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-<span class="fc" id="L31">        http</span>
-<span class="fc" id="L32">                .csrf(csrf -&gt; csrf.disable()) // Disable CSRF protection</span>
-<span class="fc" id="L33">                .cors(cors -&gt; cors.configurationSource(request -&gt; {</span>
-<span class="nc" id="L34">                    CorsConfiguration config = new CorsConfiguration();</span>
-<span class="nc" id="L35">                    config.setAllowedOrigins(Arrays.asList(&quot;http://localhost:5173&quot;, &quot;http://quizzebassen.com&quot;, &quot;https://quizzebassen.com&quot;)); // Allow your frontend origin</span>
-<span class="nc" id="L36">                    config.setAllowedMethods(Arrays.asList(&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;DELETE&quot;, &quot;OPTIONS&quot;));</span>
-<span class="nc" id="L37">                    config.setAllowedHeaders(Arrays.asList(&quot;Authorization&quot;, &quot;Content-Type&quot;));</span>
-<span class="nc" id="L38">                    return config;</span>
+<span class="fc" id="L54">        http</span>
+<span class="fc" id="L55">                .csrf(csrf -&gt; csrf.disable()) // Disable CSRF protection</span>
+<span class="fc" id="L56">                .cors(cors -&gt; cors.configurationSource(request -&gt; {</span>
+<span class="nc" id="L57">                    CorsConfiguration config = new CorsConfiguration();</span>
+<span class="nc" id="L58">                    config.setAllowedOrigins(Arrays.asList(&quot;http://localhost:5173&quot;, &quot;http://quizzebassen.com&quot;, &quot;https://quizzebassen.com&quot;)); // Allow your frontend origin</span>
+<span class="nc" id="L59">                    config.setAllowedMethods(Arrays.asList(&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;DELETE&quot;, &quot;OPTIONS&quot;));</span>
+<span class="nc" id="L60">                    config.setAllowedHeaders(Arrays.asList(&quot;Authorization&quot;, &quot;Content-Type&quot;));</span>
+<span class="nc" id="L61">                    return config;</span>
                 })) // Configure CORS as needed, if at all
-<span class="fc" id="L40">                .authorizeHttpRequests(authz -&gt; authz</span>
-<span class="fc" id="L41">                        .requestMatchers(&quot;/auth/login&quot;, &quot;/auth/register&quot;, &quot;/swagger-ui.html&quot;, &quot;/swagger-ui/**&quot;, &quot;/v3/api-docs/**&quot;).permitAll() // Allow access to /token without authentication</span>
-<span class="fc" id="L42">                        .anyRequest().authenticated() // Require authentication for all other requests</span>
+<span class="fc" id="L63">                .authorizeHttpRequests(authz -&gt; authz</span>
+<span class="fc" id="L64">                        .requestMatchers(&quot;/auth/login&quot;, &quot;/auth/register&quot;, &quot;/swagger-ui.html&quot;, &quot;/swagger-ui/**&quot;, &quot;/v3/api-docs/**&quot;).permitAll() // Allow access to /token without authentication</span>
+<span class="fc" id="L65">                        .anyRequest().authenticated() // Require authentication for all other requests</span>
                 )
-<span class="fc" id="L44">                .sessionManagement(session -&gt; session</span>
-<span class="fc" id="L45">                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Use stateless sessions</span>
+<span class="fc" id="L67">                .sessionManagement(session -&gt; session</span>
+<span class="fc" id="L68">                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Use stateless sessions</span>
                 )
-<span class="fc" id="L47">                .addFilterBefore(new JWTAuthorizationFilter(tokenService), UsernamePasswordAuthenticationFilter.class); // Register your custom filter</span>
+<span class="fc" id="L70">                .addFilterBefore(new JWTAuthorizationFilter(tokenService), UsernamePasswordAuthenticationFilter.class); // Register your custom filter</span>
 
-<span class="fc" id="L49">        return http.build();</span>
+<span class="fc" id="L72">        return http.build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

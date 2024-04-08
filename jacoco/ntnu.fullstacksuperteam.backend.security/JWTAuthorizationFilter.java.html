@@ -16,49 +16,61 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+
+/**
+ * Filter for JWT (JSON Web Token) authorization that ensures only requests with a valid Bearer token
+ * are authenticated.
+ *
+ * This class extends {@link OncePerRequestFilter} to ensure the filtering logic is applied once per request.
+ */
 @Component
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
     private final TokenService tokenService;
-<span class="fc" id="L22">    private final Logger logger = LoggerFactory.getLogger(JWTAuthorizationFilter.class);</span>
+<span class="fc" id="L29">    private final Logger logger = LoggerFactory.getLogger(JWTAuthorizationFilter.class);</span>
 
+    /**
+     * Constructs a new JWTAuthorizationFilter with the specified {@link TokenService}.
+     *
+     * @param tokenService the TokenService to use for token verification.
+     */
     @Autowired
-<span class="fc" id="L25">    public JWTAuthorizationFilter(TokenService tokenService) {</span>
-<span class="fc" id="L26">        this.tokenService = tokenService;</span>
-<span class="fc" id="L27">    }</span>
+<span class="fc" id="L37">    public JWTAuthorizationFilter(TokenService tokenService) {</span>
+<span class="fc" id="L38">        this.tokenService = tokenService;</span>
+<span class="fc" id="L39">    }</span>
 
+    /**
+     * Filters incoming HTTP requests for JWT Bearer tokens in the Authorization header.
+     *
+     * @param request the request to filter
+     * @param response the response associated with the request
+     * @param filterChain the filter chain for request processing
+     * @throws ServletException if an error occurs during request processing
+     * @throws IOException if an I/O error occurs during request processing
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // check Bearer auth header
-<span class="nc" id="L32">        final String header = request.getHeader(HttpHeaders.AUTHORIZATION);</span>
-<span class="nc bnc" id="L33" title="All 4 branches missed.">        if (header == null || !header.startsWith(&quot;Bearer &quot;)) {</span>
-<span class="nc" id="L34">            filterChain.doFilter(request, response);</span>
-<span class="nc" id="L35">            logger.warn(&quot;No Bearer token found in request&quot;);</span>
-<span class="nc" id="L36">            return;</span>
+<span class="nc" id="L52">        final String header = request.getHeader(HttpHeaders.AUTHORIZATION);</span>
+<span class="nc bnc" id="L53" title="All 4 branches missed.">        if (header == null || !header.startsWith(&quot;Bearer &quot;)) {</span>
+<span class="nc" id="L54">            filterChain.doFilter(request, response);</span>
+<span class="nc" id="L55">            logger.warn(&quot;No Bearer token found in request&quot;);</span>
+<span class="nc" id="L56">            return;</span>
         }
 
-        // if Bearer auth header exists, validate token, and extract userId from token.
-        // Note that we have added userId as subject to the token when it is generated
-        // Note also that the token comes in this format 'Bearer token'
-<span class="nc" id="L42">        String token = header.substring(7);</span>
-<span class="nc" id="L43">        final String userId = tokenService.verifyTokenAndGetUserId(token);</span>
-<span class="nc bnc" id="L44" title="All 2 branches missed.">        if (userId == null) {</span>
-            // validation failed or token expired
-<span class="nc" id="L46">            filterChain.doFilter(request, response);</span>
-<span class="nc" id="L47">            logger.warn(&quot;Token validation failed&quot;);</span>
-<span class="nc" id="L48">            return;</span>
+<span class="nc" id="L59">        String token = header.substring(7);</span>
+<span class="nc" id="L60">        final String userId = tokenService.verifyTokenAndGetUserId(token);</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (userId == null) {</span>
+<span class="nc" id="L62">            filterChain.doFilter(request, response);</span>
+<span class="nc" id="L63">            logger.warn(&quot;Token validation failed&quot;);</span>
+<span class="nc" id="L64">            return;</span>
         }
 
-        // if token is valid, add user details to the authentication context
-        // Note that user details should be fetched from the database in real scenarios
-        // this is case we will retrieve use details from mock
-<span class="nc" id="L54">        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(</span>
+<span class="nc" id="L67">        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(</span>
                 userId,
                 null,
                 null);
-<span class="nc" id="L58">        SecurityContextHolder.getContext().setAuthentication(auth);</span>
+<span class="nc" id="L71">        SecurityContextHolder.getContext().setAuthentication(auth);</span>
 
-        // then, continue with authenticated user context
-<span class="nc" id="L61">        filterChain.doFilter(request, response);</span>
-<span class="nc" id="L62">    }</span>
+<span class="nc" id="L73">        filterChain.doFilter(request, response);</span>
+<span class="nc" id="L74">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

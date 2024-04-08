@@ -10,6 +10,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Represents a question within the quiz system.
+ */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -21,14 +24,23 @@ public class Question {
     private long id;
     private String text;
 
+    /**
+     * The quiz to which this question belongs. This relationship is managed to avoid JSON circular
+     * references through {@code @JsonIgnore}.
+     */
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = &quot;quiz_id&quot;)
     private Quiz quiz;
 
     private int points;
+
     private String multimediaUrl;
 
+    /**
+     * Represents the type of the question. This field is managed by the discriminator column in the database
+     * and is not directly insertable or updatable.
+     */
     @Column(name = &quot;question_type&quot;, insertable = false, updatable = false)
     @JsonView()
     private String type;
@@ -44,66 +56,134 @@ public class Question {
     private Date updatedAt;
 
 
-<span class="fc" id="L47">    public Question() {}</span>
+    /**
+     * Default constructor for creating an instance of a question.
+     */
+<span class="fc" id="L62">    public Question() {}</span>
 
-<span class="fc" id="L49">    public Question(Question question) {</span>
-<span class="fc" id="L50">        this.id = question.id;</span>
-<span class="fc" id="L51">        this.text = question.text;</span>
-<span class="fc" id="L52">        this.quiz = question.quiz;</span>
-<span class="fc" id="L53">        this.points = question.points;</span>
-<span class="fc" id="L54">        this.multimediaUrl = question.multimediaUrl;</span>
-<span class="fc" id="L55">        this.type = question.type;</span>
-<span class="fc" id="L56">        this.createdAt = question.createdAt;</span>
-<span class="fc" id="L57">        this.updatedAt = question.updatedAt;</span>
-<span class="fc" id="L58">    }</span>
+    /**
+     * Copy constructor that creates a new instance of a question by duplicating the properties of
+     * the given question.
+     *
+     * @param question The question whose properties are to be copied.
+     */
+<span class="fc" id="L70">    public Question(Question question) {</span>
+<span class="fc" id="L71">        this.id = question.id;</span>
+<span class="fc" id="L72">        this.text = question.text;</span>
+<span class="fc" id="L73">        this.quiz = question.quiz;</span>
+<span class="fc" id="L74">        this.points = question.points;</span>
+<span class="fc" id="L75">        this.multimediaUrl = question.multimediaUrl;</span>
+<span class="fc" id="L76">        this.type = question.type;</span>
+<span class="fc" id="L77">        this.createdAt = question.createdAt;</span>
+<span class="fc" id="L78">        this.updatedAt = question.updatedAt;</span>
+<span class="fc" id="L79">    }</span>
 
-
+    /**
+     * Returns the ID of the question.
+     *
+     * @return The ID of the question.
+     */
     public long getId() {
-<span class="fc" id="L62">        return id;</span>
+<span class="fc" id="L87">        return id;</span>
     }
 
+    /**
+     * Sets the ID of the question.
+     *
+     * @param id The new ID of the question.
+     */
     public void setId(long id) {
-<span class="fc" id="L66">        this.id = id;</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L96">        this.id = id;</span>
+<span class="fc" id="L97">    }</span>
 
+    /**
+     * Returns the text content of the question.
+     *
+     * @return The text content of the question.
+     */
     public String getText() {
-<span class="fc" id="L70">        return text;</span>
+<span class="fc" id="L105">        return text;</span>
     }
 
+    /**
+     * Sets the text content of the question.
+     *
+     * @param text The new text content of the question.
+     */
     public void setText(String text) {
-<span class="fc" id="L74">        this.text = text;</span>
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L114">        this.text = text;</span>
+<span class="fc" id="L115">    }</span>
 
+    /**
+     * Returns the quiz associated with this question.
+     *
+     * @return The quiz associated with this question.
+     */
     public Quiz getQuiz() {
-<span class="fc" id="L78">        return quiz;</span>
+<span class="fc" id="L123">        return quiz;</span>
     }
 
+    /**
+     * Associates this question with a quiz.
+     *
+     * @param quiz The quiz to associate with this question.
+     */
     public void setQuiz(Quiz quiz) {
-<span class="fc" id="L82">        this.quiz = quiz;</span>
-<span class="fc" id="L83">    }</span>
+<span class="fc" id="L132">        this.quiz = quiz;</span>
+<span class="fc" id="L133">    }</span>
 
+    /**
+     * Returns the points value of the question.
+     *
+     * @return The points value of the question.
+     */
     public int getPoints() {
-<span class="fc" id="L86">        return points;</span>
+<span class="fc" id="L141">        return points;</span>
     }
 
+    /**
+     * Sets the points value of the question.
+     *
+     * @param points The new points value of the question.
+     */
     public void setPoints(int points) {
-<span class="fc" id="L90">        this.points = points;</span>
-<span class="fc" id="L91">    }</span>
+<span class="fc" id="L150">        this.points = points;</span>
+<span class="fc" id="L151">    }</span>
 
+    /**
+     * Returns the multimedia URL of the question.
+     *
+     * @return The multimedia URL of the question.
+     */
     public String getMultimediaUrl() {
-<span class="fc" id="L94">        return multimediaUrl;</span>
+<span class="fc" id="L159">        return multimediaUrl;</span>
     }
 
+    /**
+     * Sets the multimedia URL for the question.
+     *
+     * @param multimediaUrl The new multimedia URL of the question.
+     */
     public void setMultimediaUrl(String multimediaUrl) {
-<span class="fc" id="L98">        this.multimediaUrl = multimediaUrl;</span>
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L168">        this.multimediaUrl = multimediaUrl;</span>
+<span class="fc" id="L169">    }</span>
 
+    /**
+     * Returns the creation timestamp of the question.
+     *
+     * @return The creation timestamp of the question.
+     */
     public Date getCreatedAt() {
-<span class="fc" id="L102">        return createdAt;</span>
+<span class="fc" id="L177">        return createdAt;</span>
     }
 
+    /**
+     * Returns the last updated timestamp of the question.
+     *
+     * @return The last updated timestamp of the question.
+     */
     public Date getUpdatedAt() {
-<span class="fc" id="L106">        return updatedAt;</span>
+<span class="fc" id="L186">        return updatedAt;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

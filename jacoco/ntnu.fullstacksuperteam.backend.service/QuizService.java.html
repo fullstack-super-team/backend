@@ -14,8 +14,11 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The QuizService class is responsible for managing quiz data within the application.
+ */
 @Service
-<span class="fc" id="L18">public class QuizService {</span>
+<span class="fc" id="L21">public class QuizService {</span>
     @Autowired
     private QuizRepository quizRepository;
 
@@ -28,147 +31,212 @@ import java.util.List;
     @Autowired
     private QuestionService questionService;
 
-<span class="fc" id="L31">    private final Logger logger = LoggerFactory.getLogger(QuizService.class);</span>
+<span class="fc" id="L34">    private final Logger logger = LoggerFactory.getLogger(QuizService.class);</span>
 
+    /**
+     * Fetches a list of all quizzes in the database.
+     *
+     * @return a list of {@link Quiz} objects
+     */
     public List&lt;Quiz&gt; getAllQuizzes() {
-<span class="fc" id="L34">        return quizRepository.findAll();</span>
+<span class="fc" id="L42">        return quizRepository.findAll();</span>
     }
 
+    /**
+     * Searches quizzes by their title.
+     *
+     * @param query the search query string
+     * @return a list of {@link Quiz} objects that match the query
+     */
     public List&lt;Quiz&gt; searchQuizzes(String query) {
-<span class="fc" id="L38">        return quizRepository.findAllByTitleContaining(query);</span>
+<span class="fc" id="L52">        return quizRepository.findAllByTitleContaining(query);</span>
     }
 
+    /**
+     * Retrieves all quizzes created by a specific user.
+     *
+     * @param id the user's ID
+     * @return a list of {@link Quiz} objects authored by the user
+     */
     public List&lt;Quiz&gt; getMyQuizzes(long id) {
-<span class="fc" id="L42">        User user = userService.getUserById(id);</span>
-<span class="fc" id="L43">        return quizRepository.findAllByAuthor(user);</span>
+<span class="fc" id="L62">        User user = userService.getUserById(id);</span>
+<span class="fc" id="L63">        return quizRepository.findAllByAuthor(user);</span>
     }
 
+    /**
+     * Fetches a specific quiz by its ID.
+     *
+     * @param id the ID of the quiz
+     * @return the {@link Quiz} object if found
+     * @throws ResponseStatusException if the quiz is not found
+     */
     public Quiz getQuizById(long id) {
-<span class="fc" id="L47">        Quiz quiz = quizRepository.findById(id).orElse(null);</span>
-<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (quiz == null) {</span>
-<span class="fc" id="L49">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Quiz not found&quot;);</span>
+<span class="fc" id="L74">        Quiz quiz = quizRepository.findById(id).orElse(null);</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (quiz == null) {</span>
+<span class="fc" id="L76">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Quiz not found&quot;);</span>
         }
-<span class="fc" id="L51">        return quiz;</span>
+<span class="fc" id="L78">        return quiz;</span>
     }
 
+    /**
+     * Gets a quiz for playing by ID, optionally randomizing its questions and answers.
+     *
+     * @param id the ID of the quiz
+     * @return the {@link Quiz} object, with questions and answers randomized if applicable
+     * @throws ResponseStatusException if the quiz is not found
+     */
     public Quiz getQuizPlayVersionById(long id) {
-<span class="nc" id="L55">        Quiz quiz = quizRepository.findById(id).orElse(null);</span>
-<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (quiz == null) {</span>
-<span class="nc" id="L57">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Quiz not found&quot;);</span>
+<span class="nc" id="L89">        Quiz quiz = quizRepository.findById(id).orElse(null);</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (quiz == null) {</span>
+<span class="nc" id="L91">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Quiz not found&quot;);</span>
         }
-<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (!quiz.getRandomize()) {</span>
-<span class="nc" id="L60">            return quiz;</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        if (!quiz.getRandomize()) {</span>
+<span class="nc" id="L94">            return quiz;</span>
         }
-<span class="nc" id="L62">        logger.info(&quot;Randomizing quiz questions and answers&quot;);</span>
-<span class="nc" id="L63">        List&lt;Question&gt; questions = quiz.getQuestions();</span>
+<span class="nc" id="L96">        logger.info(&quot;Randomizing quiz questions and answers&quot;);</span>
+<span class="nc" id="L97">        List&lt;Question&gt; questions = quiz.getQuestions();</span>
         // Randomize question answers order if question type is multiple choice
-<span class="nc bnc" id="L65" title="All 2 branches missed.">        for (Question question : questions) {</span>
-<span class="nc bnc" id="L66" title="All 2 branches missed.">            if (question instanceof TextQuestion textQuestion) {</span>
-<span class="nc" id="L67">                List&lt;TextAnswer&gt; randomizedAnswers = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L68" title="All 2 branches missed.">                while (!textQuestion.getAnswers().isEmpty()) {</span>
-<span class="nc" id="L69">                    int randomIndex = (int) (Math.random() * textQuestion.getAnswers().size());</span>
-<span class="nc" id="L70">                    randomizedAnswers.add(textQuestion.getAnswers().get(randomIndex));</span>
-<span class="nc" id="L71">                    textQuestion.getAnswers().remove(randomIndex);</span>
-<span class="nc" id="L72">                }</span>
-<span class="nc" id="L73">                textQuestion.setAnswers(randomizedAnswers);</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        for (Question question : questions) {</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">            if (question instanceof TextQuestion textQuestion) {</span>
+<span class="nc" id="L101">                List&lt;TextAnswer&gt; randomizedAnswers = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">                while (!textQuestion.getAnswers().isEmpty()) {</span>
+<span class="nc" id="L103">                    int randomIndex = (int) (Math.random() * textQuestion.getAnswers().size());</span>
+<span class="nc" id="L104">                    randomizedAnswers.add(textQuestion.getAnswers().get(randomIndex));</span>
+<span class="nc" id="L105">                    textQuestion.getAnswers().remove(randomIndex);</span>
+<span class="nc" id="L106">                }</span>
+<span class="nc" id="L107">                textQuestion.setAnswers(randomizedAnswers);</span>
             }
-<span class="nc" id="L75">        }</span>
+<span class="nc" id="L109">        }</span>
 
-<span class="nc" id="L77">        List&lt;Question&gt; randomizedQuestions = new ArrayList&lt;&gt;();</span>
-<span class="nc bnc" id="L78" title="All 2 branches missed.">        while (!questions.isEmpty()) {</span>
-<span class="nc" id="L79">            int randomIndex = (int) (Math.random() * questions.size());</span>
-<span class="nc" id="L80">            randomizedQuestions.add(questions.get(randomIndex));</span>
-<span class="nc" id="L81">            questions.remove(randomIndex);</span>
-<span class="nc" id="L82">        }</span>
-<span class="nc" id="L83">        quiz.setQuestions(randomizedQuestions);</span>
+<span class="nc" id="L111">        List&lt;Question&gt; randomizedQuestions = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">        while (!questions.isEmpty()) {</span>
+<span class="nc" id="L113">            int randomIndex = (int) (Math.random() * questions.size());</span>
+<span class="nc" id="L114">            randomizedQuestions.add(questions.get(randomIndex));</span>
+<span class="nc" id="L115">            questions.remove(randomIndex);</span>
+<span class="nc" id="L116">        }</span>
+<span class="nc" id="L117">        quiz.setQuestions(randomizedQuestions);</span>
 
-<span class="nc" id="L85">        return quiz;</span>
+<span class="nc" id="L119">        return quiz;</span>
     }
 
+    /**
+     * Creates a new quiz with the provided details.
+     *
+     * @param userId the ID of the user creating the quiz
+     * @param quizDTO the data transfer object containing quiz details
+     * @return the created {@link Quiz} object
+     */
     public Quiz createQuiz(long userId, QuizDTO quizDTO) {
-<span class="fc" id="L89">        User author = userService.getUserById(userId);</span>
-<span class="fc" id="L90">        Quiz quiz = new Quiz();</span>
-<span class="fc" id="L91">        quiz.setAuthor(author);</span>
-<span class="fc" id="L92">        quiz.setTitle(quizDTO.getTitle());</span>
-<span class="fc" id="L93">        quiz.setCategory(quizDTO.getCategory());</span>
-<span class="fc" id="L94">        quiz.setDifficultyLevel(quizDTO.getDifficultyLevel());</span>
-<span class="fc" id="L95">        quiz.setDescription(quizDTO.getDescription());</span>
-<span class="fc" id="L96">        quiz.setRandomize(quizDTO.getRandomize());</span>
+<span class="fc" id="L130">        User author = userService.getUserById(userId);</span>
+<span class="fc" id="L131">        Quiz quiz = new Quiz();</span>
+<span class="fc" id="L132">        quiz.setAuthor(author);</span>
+<span class="fc" id="L133">        quiz.setTitle(quizDTO.getTitle());</span>
+<span class="fc" id="L134">        quiz.setCategory(quizDTO.getCategory());</span>
+<span class="fc" id="L135">        quiz.setDifficultyLevel(quizDTO.getDifficultyLevel());</span>
+<span class="fc" id="L136">        quiz.setDescription(quizDTO.getDescription());</span>
+<span class="fc" id="L137">        quiz.setRandomize(quizDTO.getRandomize());</span>
 
-<span class="fc" id="L98">        Quiz savedQuiz = quizRepository.save(quiz);</span>
+<span class="fc" id="L139">        Quiz savedQuiz = quizRepository.save(quiz);</span>
 
-<span class="fc" id="L100">        List&lt;Question&gt; questions = new ArrayList&lt;&gt;();</span>
-<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        for (QuestionDTO questionDTO : quizDTO.getQuestions()) {</span>
-<span class="nc" id="L102">            questions.add(this.questionService.createQuestion(savedQuiz.getId(), questionDTO));</span>
-<span class="nc" id="L103">        }</span>
-<span class="fc" id="L104">        savedQuiz.setQuestions(questions);</span>
+<span class="fc" id="L141">        List&lt;Question&gt; questions = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">        for (QuestionDTO questionDTO : quizDTO.getQuestions()) {</span>
+<span class="nc" id="L143">            questions.add(this.questionService.createQuestion(savedQuiz.getId(), questionDTO));</span>
+<span class="nc" id="L144">        }</span>
+<span class="fc" id="L145">        savedQuiz.setQuestions(questions);</span>
 
-<span class="fc" id="L106">        return savedQuiz;</span>
+<span class="fc" id="L147">        return savedQuiz;</span>
     }
 
+    /**
+     * Updates an existing quiz with new details.
+     *
+     * @param userId the ID of the user updating the quiz
+     * @param quizId the ID of the quiz to update
+     * @param quizDTO the new quiz details
+     * @return the updated {@link Quiz} object
+     * @throws ResponseStatusException if the quiz is not found or if the user is not the author
+     */
     public Quiz updateQuiz(long userId, long quizId, QuizDTO quizDTO) {
-<span class="fc" id="L110">        Quiz quiz = quizRepository.findById(quizId).orElse(null);</span>
-<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (quiz == null) {</span>
-<span class="fc" id="L112">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Quiz not found&quot;);</span>
+<span class="fc" id="L160">        Quiz quiz = quizRepository.findById(quizId).orElse(null);</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        if (quiz == null) {</span>
+<span class="fc" id="L162">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Quiz not found&quot;);</span>
         }
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        if (quiz.getAuthor().getId() != userId) {</span>
-<span class="nc" id="L115">            throw new ResponseStatusException(HttpStatus.FORBIDDEN, &quot;You are not the author of this quiz&quot;);</span>
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">        if (quiz.getAuthor().getId() != userId) {</span>
+<span class="nc" id="L165">            throw new ResponseStatusException(HttpStatus.FORBIDDEN, &quot;You are not the author of this quiz&quot;);</span>
         }
 
-<span class="fc" id="L118">        quiz.setTitle(quizDTO.getTitle());</span>
-<span class="fc" id="L119">        quiz.setCategory(quizDTO.getCategory());</span>
-<span class="fc" id="L120">        quiz.setDifficultyLevel(quizDTO.getDifficultyLevel());</span>
-<span class="fc" id="L121">        quiz.setDescription(quizDTO.getDescription());</span>
-<span class="fc" id="L122">        quiz.setRandomize(quizDTO.getRandomize());</span>
+<span class="fc" id="L168">        quiz.setTitle(quizDTO.getTitle());</span>
+<span class="fc" id="L169">        quiz.setCategory(quizDTO.getCategory());</span>
+<span class="fc" id="L170">        quiz.setDifficultyLevel(quizDTO.getDifficultyLevel());</span>
+<span class="fc" id="L171">        quiz.setDescription(quizDTO.getDescription());</span>
+<span class="fc" id="L172">        quiz.setRandomize(quizDTO.getRandomize());</span>
 
-<span class="fc" id="L124">        List&lt;Question&gt; updatedQuestions = new ArrayList&lt;&gt;();</span>
-<span class="pc bpc" id="L125" title="1 of 2 branches missed.">        for (QuestionDTO questionDTO : quizDTO.getQuestions()) {</span>
-<span class="nc bnc" id="L126" title="All 2 branches missed.">            if (questionDTO.getId() &gt; 0) {</span>
+<span class="fc" id="L174">        List&lt;Question&gt; updatedQuestions = new ArrayList&lt;&gt;();</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">        for (QuestionDTO questionDTO : quizDTO.getQuestions()) {</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">            if (questionDTO.getId() &gt; 0) {</span>
                 // Update existing question
-<span class="nc" id="L128">                Question updatedQuestion = questionService.updateQuestion(questionDTO);</span>
-<span class="nc" id="L129">                updatedQuestions.add(updatedQuestion);</span>
-<span class="nc" id="L130">                continue;</span>
+<span class="nc" id="L178">                Question updatedQuestion = questionService.updateQuestion(questionDTO);</span>
+<span class="nc" id="L179">                updatedQuestions.add(updatedQuestion);</span>
+<span class="nc" id="L180">                continue;</span>
             }
-<span class="nc" id="L132">            Question updatedOrNewQuestion = questionService.createQuestion(quizId, questionDTO);</span>
-<span class="nc" id="L133">            updatedQuestions.add(updatedOrNewQuestion);</span>
-<span class="nc" id="L134">        }</span>
+<span class="nc" id="L182">            Question updatedOrNewQuestion = questionService.createQuestion(quizId, questionDTO);</span>
+<span class="nc" id="L183">            updatedQuestions.add(updatedOrNewQuestion);</span>
+<span class="nc" id="L184">        }</span>
 
-<span class="pc bnc" id="L136" title="All 2 branches missed.">        quiz.getQuestions().removeIf(question -&gt; !updatedQuestions.contains(question));</span>
+<span class="pc bnc" id="L186" title="All 2 branches missed.">        quiz.getQuestions().removeIf(question -&gt; !updatedQuestions.contains(question));</span>
 
-<span class="pc bpc" id="L138" title="1 of 2 branches missed.">        for (Question question : updatedQuestions) {</span>
-<span class="nc bnc" id="L139" title="All 2 branches missed.">            if (!quiz.getQuestions().contains(question)) {</span>
-<span class="nc" id="L140">                quiz.getQuestions().add(question);</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">        for (Question question : updatedQuestions) {</span>
+<span class="nc bnc" id="L189" title="All 2 branches missed.">            if (!quiz.getQuestions().contains(question)) {</span>
+<span class="nc" id="L190">                quiz.getQuestions().add(question);</span>
             }
-<span class="nc" id="L142">        }</span>
+<span class="nc" id="L192">        }</span>
 
-<span class="fc" id="L144">        return quizRepository.save(quiz);</span>
+<span class="fc" id="L194">        return quizRepository.save(quiz);</span>
     }
 
+    /**
+     * Deletes a quiz by its ID.
+     *
+     * @param userId the ID of the user attempting to delete the quiz
+     * @param quizId the ID of the quiz to be deleted
+     * @throws ResponseStatusException if the quiz is not found or if the user is not the author
+     */
     public void deleteQuiz(long userId, long quizId) {
-<span class="fc" id="L148">        Quiz quiz = quizRepository.findById(quizId).orElse(null);</span>
-<span class="pc bpc" id="L149" title="1 of 2 branches missed.">        if (quiz == null) {</span>
-<span class="nc" id="L150">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Quiz not found&quot;);</span>
+<span class="fc" id="L205">        Quiz quiz = quizRepository.findById(quizId).orElse(null);</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">        if (quiz == null) {</span>
+<span class="nc" id="L207">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;Quiz not found&quot;);</span>
         }
-<span class="pc bpc" id="L152" title="1 of 2 branches missed.">        if (quiz.getAuthor().getId() != userId) {</span>
-<span class="nc" id="L153">            throw new ResponseStatusException(HttpStatus.FORBIDDEN, &quot;You are not the author of this quiz&quot;);</span>
+<span class="pc bpc" id="L209" title="1 of 2 branches missed.">        if (quiz.getAuthor().getId() != userId) {</span>
+<span class="nc" id="L210">            throw new ResponseStatusException(HttpStatus.FORBIDDEN, &quot;You are not the author of this quiz&quot;);</span>
         }
-<span class="fc" id="L155">        quizRepository.delete(quiz);</span>
-<span class="fc" id="L156">    }</span>
+<span class="fc" id="L212">        quizRepository.delete(quiz);</span>
+<span class="fc" id="L213">    }</span>
 
+    /**
+     * Retrieves a list of the most recently played quizzes by a user.
+     *
+     * @param userId the ID of the user
+     * @return a list of recently played {@link Quiz} objects
+     * @throws ResponseStatusException if the user is not found
+     */
     public List&lt;Quiz&gt; getRecentlyPlayedQuizzes(long userId) {
-<span class="fc" id="L159">        User user = userService.getUserById(userId);</span>
-<span class="pc bpc" id="L160" title="1 of 2 branches missed.">        if (user == null) {</span>
-<span class="nc" id="L161">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;User not found&quot;);</span>
+<span class="fc" id="L223">        User user = userService.getUserById(userId);</span>
+<span class="pc bpc" id="L224" title="1 of 2 branches missed.">        if (user == null) {</span>
+<span class="nc" id="L225">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;User not found&quot;);</span>
         }
-<span class="fc" id="L163">        List&lt;Score&gt; scores = scoresService.getScoresByUserId(userId);</span>
-<span class="fc" id="L164">        List&lt;Score&gt; recentScores = scores.subList(0, Math.min(scores.size(), 3));</span>
-<span class="fc" id="L165">        List&lt;Quiz&gt; quizzes = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L166" title="All 2 branches covered.">        for (Score score : recentScores) {</span>
-<span class="pc bpc" id="L167" title="1 of 2 branches missed.">            if (!quizzes.contains(score.getQuiz())) {</span>
-<span class="fc" id="L168">                quizzes.add(score.getQuiz());</span>
+<span class="fc" id="L227">        List&lt;Score&gt; scores = scoresService.getScoresByUserId(userId);</span>
+<span class="fc" id="L228">        List&lt;Quiz&gt; quizzes = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L230">        int index = 0;</span>
+<span class="pc bpc" id="L231" title="1 of 4 branches missed.">        while (quizzes.size() &lt; 3 &amp;&amp; index &lt; scores.size()) {</span>
+<span class="fc" id="L232">            Score score = scores.get(index);</span>
+<span class="pc bpc" id="L233" title="1 of 2 branches missed.">            if (!quizzes.contains(score.getQuiz())) {</span>
+<span class="fc" id="L234">                quizzes.add(score.getQuiz());</span>
             }
-<span class="fc" id="L170">        }</span>
-<span class="fc" id="L171">        return quizzes;</span>
+<span class="fc" id="L236">            index++;</span>
+<span class="fc" id="L237">        }</span>
+<span class="fc" id="L238">        return quizzes;</span>
+
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

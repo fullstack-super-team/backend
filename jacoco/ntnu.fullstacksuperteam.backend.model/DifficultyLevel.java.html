@@ -2,18 +2,28 @@
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-<span class="fc" id="L5">public enum DifficultyLevel {</span>
-<span class="fc" id="L6">    EASY,</span>
-<span class="fc" id="L7">    MEDIUM,</span>
-<span class="fc" id="L8">    HARD;</span>
+/**
+ * Enum representing the difficulty level of a quiz.
+ */
+<span class="fc" id="L8">public enum DifficultyLevel {</span>
+<span class="fc" id="L9">    EASY,</span>
+<span class="fc" id="L10">    MEDIUM,</span>
+<span class="fc" id="L11">    HARD;</span>
 
+    /**
+     * Converts an integer value into its corresponding {@code DifficultyLevel} enum constant.
+     *
+     * @param difficultyLevel The integer representation of the difficulty level.
+     * @return The {@code DifficultyLevel} enum constant corresponding to the provided integer value.
+     * @throws IllegalArgumentException If the provided integer does not correspond to a valid difficulty level.
+     */
     @JsonCreator
     public static DifficultyLevel fromInt(int difficultyLevel) {
-<span class="nc bnc" id="L12" title="All 4 branches missed.">        return switch (difficultyLevel) {</span>
-<span class="nc" id="L13">            case 1 -&gt; EASY;</span>
-<span class="nc" id="L14">            case 2 -&gt; MEDIUM;</span>
-<span class="nc" id="L15">            case 3 -&gt; HARD;</span>
-<span class="nc" id="L16">            default -&gt; throw new IllegalArgumentException(&quot;Invalid difficulty level&quot;);</span>
+<span class="nc bnc" id="L22" title="All 4 branches missed.">        return switch (difficultyLevel) {</span>
+<span class="nc" id="L23">            case 1 -&gt; EASY;</span>
+<span class="nc" id="L24">            case 2 -&gt; MEDIUM;</span>
+<span class="nc" id="L25">            case 3 -&gt; HARD;</span>
+<span class="nc" id="L26">            default -&gt; throw new IllegalArgumentException(&quot;Invalid difficulty level&quot;);</span>
         };
     }
 }

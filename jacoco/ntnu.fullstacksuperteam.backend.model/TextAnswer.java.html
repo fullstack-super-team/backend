@@ -4,40 +4,73 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
+/**
+ * Represents a text-based answer within the quiz system. This class extends the generic {@link Answer}
+ * entity to specifically handle answers where the response is given as text.
+ */
 @Entity
 @DiscriminatorValue(&quot;TEXT&quot;)
 public class TextAnswer extends Answer {
+
     private String text;
 
     private boolean isCorrect;
 
-<span class="fc" id="L14">    public TextAnswer() {}</span>
+    /**
+     * Constructs a new, empty TextAnswer instance. This is the default constructor required by JPA.
+     */
+<span class="fc" id="L22">    public TextAnswer() {}</span>
 
+    /**
+     * Retrieves the text of the answer.
+     *
+     * @return The answer text.
+     */
     public String getText() {
-<span class="fc" id="L17">        return text;</span>
+<span class="fc" id="L30">        return text;</span>
     }
 
+    /**
+     * Sets the text of the answer.
+     *
+     * @param text The new text for the answer.
+     */
     public void setText(String text) {
-<span class="fc" id="L21">        this.text = text;</span>
-<span class="fc" id="L22">    }</span>
+<span class="fc" id="L39">        this.text = text;</span>
+<span class="fc" id="L40">    }</span>
 
+    /**
+     * Checks if the answer is marked as correct.
+     *
+     * @return True if the answer is correct, false otherwise.
+     */
     public boolean isIsCorrect() {
-<span class="fc" id="L25">        return isCorrect;</span>
+<span class="fc" id="L48">        return isCorrect;</span>
     }
 
+    /**
+     * Marks the answer as correct or incorrect.
+     *
+     * @param correct True to mark the answer as correct, false to mark it as incorrect.
+     */
     public void setIsCorrect(boolean correct) {
-<span class="fc" id="L29">        this.isCorrect = correct;</span>
-<span class="fc" id="L30">    }</span>
+<span class="fc" id="L57">        this.isCorrect = correct;</span>
+<span class="fc" id="L58">    }</span>
 
+    /**
+     * Generates a string representation of the TextAnswer instance.
+     *
+     * @return A string representation of the TextAnswer instance.
+     */
     public String toString() {
-<span class="fc" id="L33">        StringBuilder stringBuilder = new StringBuilder();</span>
-<span class="fc" id="L34">        stringBuilder.append(&quot;TextAnswer{&quot;);</span>
-<span class="fc" id="L35">        stringBuilder.append(&quot;text=&quot;).append(this.text);</span>
-<span class="fc" id="L36">        stringBuilder.append(&quot;, &quot;);</span>
-<span class="fc" id="L37">        stringBuilder.append(&quot;correct=&quot;).append(this.isCorrect);</span>
-<span class="fc" id="L38">        stringBuilder.append(&quot;}&quot;);</span>
+<span class="fc" id="L66">        StringBuilder stringBuilder = new StringBuilder();</span>
+<span class="fc" id="L67">        stringBuilder.append(&quot;TextAnswer{&quot;);</span>
+<span class="fc" id="L68">        stringBuilder.append(&quot;text=&quot;).append(this.text);</span>
+<span class="fc" id="L69">        stringBuilder.append(&quot;, &quot;);</span>
+<span class="fc" id="L70">        stringBuilder.append(&quot;correct=&quot;).append(this.isCorrect);</span>
+<span class="fc" id="L71">        stringBuilder.append(&quot;}&quot;);</span>
 
-<span class="fc" id="L40">        return stringBuilder.toString();</span>
+<span class="fc" id="L73">        return stringBuilder.toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

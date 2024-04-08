@@ -10,35 +10,52 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
+/**
+ * Service class for managing user entities.
+ */
 @Service
-<span class="fc" id="L14">public class UserService {</span>
+<span class="fc" id="L17">public class UserService {</span>
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Retrieves a user by their ID.
+     *
+     * @param id The ID of the user to retrieve.
+     * @return The {@link User} object corresponding to the given ID.
+     */
     public User getUserById(long id) {
-<span class="fc" id="L19">        Optional&lt;User&gt; user = userRepository.findById(id);</span>
-<span class="fc bfc" id="L20" title="All 2 branches covered.">        if (user.isEmpty()) {</span>
-<span class="fc" id="L21">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;User not found&quot;);</span>
+<span class="fc" id="L28">        Optional&lt;User&gt; user = userRepository.findById(id);</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (user.isEmpty()) {</span>
+<span class="fc" id="L30">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;User not found&quot;);</span>
         }
-<span class="fc" id="L23">        return user.get();</span>
+<span class="fc" id="L32">        return user.get();</span>
     }
 
+    /**
+     * Updates the information of an existing user identified by {@code userId} with the new information provided
+     * in {@code newUserInfo}.
+     *
+     * @param userId The ID of the user to update.
+     * @param newUserInfo An {@link User} object containing the new information for the user.
+     * @return The updated {@link User} object.
+     */
     public User updateUser(long userId, User newUserInfo) {
-<span class="nc" id="L27">        Optional&lt;User&gt; userOptional = userRepository.findById(userId);</span>
-<span class="nc bnc" id="L28" title="All 2 branches missed.">        if (userOptional.isEmpty()) {</span>
-<span class="nc" id="L29">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;User not found&quot;);</span>
+<span class="nc" id="L44">        Optional&lt;User&gt; userOptional = userRepository.findById(userId);</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        if (userOptional.isEmpty()) {</span>
+<span class="nc" id="L46">            throw new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;User not found&quot;);</span>
         }
-<span class="nc" id="L31">        User user = userOptional.get();</span>
-<span class="nc" id="L32">        Optional&lt;User&gt; existingUser = userRepository.findFirstByUsernameOrEmail(newUserInfo.getUsername(), newUserInfo.getEmail());</span>
-<span class="nc bnc" id="L33" title="All 4 branches missed.">        if (existingUser.isPresent() &amp;&amp; existingUser.get().getId() != userId) {</span>
-<span class="nc" id="L34">            throw new ResponseStatusException(HttpStatus.CONFLICT, &quot;Username or email already exists&quot;);</span>
+<span class="nc" id="L48">        User user = userOptional.get();</span>
+<span class="nc" id="L49">        Optional&lt;User&gt; existingUser = userRepository.findFirstByUsernameOrEmail(newUserInfo.getUsername(), newUserInfo.getEmail());</span>
+<span class="nc bnc" id="L50" title="All 4 branches missed.">        if (existingUser.isPresent() &amp;&amp; existingUser.get().getId() != userId) {</span>
+<span class="nc" id="L51">            throw new ResponseStatusException(HttpStatus.CONFLICT, &quot;Username or email already exists&quot;);</span>
         }
-<span class="nc" id="L36">        System.out.println(newUserInfo.getFirstName());</span>
-<span class="nc" id="L37">        user.setFirstName(newUserInfo.getFirstName());</span>
-<span class="nc" id="L38">        user.setLastName(newUserInfo.getLastName());</span>
-<span class="nc" id="L39">        user.setUsername(newUserInfo.getUsername());</span>
-<span class="nc" id="L40">        user.setEmail(newUserInfo.getEmail());</span>
-<span class="nc" id="L41">        return userRepository.save(user);</span>
+<span class="nc" id="L53">        System.out.println(newUserInfo.getFirstName());</span>
+<span class="nc" id="L54">        user.setFirstName(newUserInfo.getFirstName());</span>
+<span class="nc" id="L55">        user.setLastName(newUserInfo.getLastName());</span>
+<span class="nc" id="L56">        user.setUsername(newUserInfo.getUsername());</span>
+<span class="nc" id="L57">        user.setEmail(newUserInfo.getEmail());</span>
+<span class="nc" id="L58">        return userRepository.save(user);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

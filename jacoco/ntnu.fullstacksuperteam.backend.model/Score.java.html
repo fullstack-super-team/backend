@@ -7,6 +7,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
 
+/**
+ * Represents a score achieved by a user on a quiz. This entity links together the user who took the quiz,
+ * the quiz taken, the points scored, and the date when the score was recorded. It's part of the system's
+ * mechanism to track and manage users' performances across different quizzes.
+ */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = &quot;scores&quot;)
@@ -15,53 +20,109 @@ public class Score {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    /**
+     * The user who achieved this score. The relationship is eagerly fetched, meaning the user information
+     * is loaded together with the score.
+     */
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = &quot;user_id&quot;)
     private User user;
+
     private int points;
 
+    /**
+     * The quiz on which this score was achieved. This field is marked to be ignored by JSON serialization
+     * to prevent circular reference issues.
+     */
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = &quot;quiz_id&quot;)
     private Quiz quiz;
 
+    /**
+     * The date when this score was recorded, automatically set to the current date and time when the score
+     * is created.
+     */
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date date;
 
-<span class="fc" id="L33">    public Score() {}</span>
+    /**
+     * Default constructor for creating a Score instance.
+     */
+<span class="fc" id="L54">    public Score() {}</span>
 
+    /**
+     * Retrieves the unique identifier of the score.
+     *
+     * @return The ID of the score.
+     */
     public long getId() {
-<span class="fc" id="L36">        return id;</span>
+<span class="fc" id="L62">        return id;</span>
     }
 
+    /**
+     * Retrieves the user who achieved the score.
+     *
+     * @return The user associated with this score.
+     */
     public User getUser() {
-<span class="fc" id="L40">        return user;</span>
+<span class="fc" id="L71">        return user;</span>
     }
 
+    /**
+     * Retrieves the points scored in the quiz.
+     *
+     * @return The points scored.
+     */
     public int getPoints() {
-<span class="fc" id="L44">        return points;</span>
+<span class="fc" id="L80">        return points;</span>
     }
 
+    /**
+     * Retrieves the quiz on which the score was achieved.
+     *
+     * @return The quiz associated with this score.
+     */
     public Quiz getQuiz() {
-<span class="fc" id="L48">        return quiz;</span>
+<span class="fc" id="L89">        return quiz;</span>
     }
 
+    /**
+     * Retrieves the date when the score was recorded.
+     *
+     * @return The date of recording the score.
+     */
     public Date getDate() {
-<span class="fc" id="L52">        return date;</span>
+<span class="fc" id="L98">        return date;</span>
     }
 
+    /**
+     * Sets the user who achieved the score.
+     *
+     * @param user The user who achieved the score.
+     */
     public void setUser(User user) {
-<span class="fc" id="L56">        this.user = user;</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L107">        this.user = user;</span>
+<span class="fc" id="L108">    }</span>
 
+    /**
+     * Sets the points scored in the quiz.
+     *
+     * @param points The points scored.
+     */
     public void setPoints(int points) {
-<span class="fc" id="L60">        this.points = points;</span>
-<span class="fc" id="L61">    }</span>
+<span class="fc" id="L116">        this.points = points;</span>
+<span class="fc" id="L117">    }</span>
 
+    /**
+     * Sets the quiz on which the score was achieved.
+     *
+     * @param quiz The quiz associated with the score.
+     */
     public void setQuiz(Quiz quiz) {
-<span class="fc" id="L64">        this.quiz = quiz;</span>
-<span class="fc" id="L65">    }</span>
+<span class="fc" id="L125">        this.quiz = quiz;</span>
+<span class="fc" id="L126">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

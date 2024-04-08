@@ -7,6 +7,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
 
+/**
+ * The {@code Feedback} class represents feedback provided by users.
+ */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = &quot;feedbacks&quot;)
@@ -16,48 +19,98 @@ public class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    /**
+     * The user who provided the feedback. It is linked to the {@code User} entity.
+     */
     @ManyToOne
     @JoinColumn(name = &quot;user_id&quot;)
     private User user;
+
     private String comment;
 
+    /**
+     * The timestamp when the feedback was created. It is automatically set when the feedback is persisted.
+     */
     @Column(nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date createdAt;
 
-<span class="fc" id="L29">    public Feedback() {}</span>
+    /**
+     * Default constructor for JPA and other uses.
+     */
+<span class="fc" id="L42">    public Feedback() {}</span>
 
+    /**
+     * Gets the ID of the feedback.
+     *
+     * @return the feedback ID.
+     */
     public long getId() {
-<span class="fc" id="L32">        return id;</span>
+<span class="fc" id="L50">        return id;</span>
     }
 
+    /**
+     * Gets the user who submitted the feedback.
+     *
+     * @return the user.
+     */
     public User getUser() {
-<span class="fc" id="L36">        return user;</span>
+<span class="fc" id="L59">        return user;</span>
     }
 
+    /**
+     * Gets the comment of the feedback.
+     *
+     * @return the feedback comment.
+     */
     public String getComment() {
-<span class="fc" id="L40">        return comment;</span>
+<span class="fc" id="L68">        return comment;</span>
     }
 
+    /**
+     * Gets the creation timestamp of the feedback.
+     *
+     * @return the creation timestamp.
+     */
     public Date getCreatedAt() {
-<span class="nc" id="L44">        return createdAt;</span>
+<span class="nc" id="L77">        return createdAt;</span>
     }
 
+    /**
+     * Sets the ID of the feedback.
+     *
+     * @param id the new feedback ID.
+     */
     public void setId(long id) {
-<span class="fc" id="L48">        this.id = id;</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L86">        this.id = id;</span>
+<span class="fc" id="L87">    }</span>
 
+    /**
+     * Sets the user who submitted the feedback.
+     *
+     * @param user the user.
+     */
     public void setUser(User user) {
-<span class="fc" id="L52">        this.user = user;</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L95">        this.user = user;</span>
+<span class="fc" id="L96">    }</span>
 
+    /**
+     * Sets the comment of the feedback.
+     *
+     * @param comment the new feedback comment.
+     */
     public void setComment(String comment) {
-<span class="fc" id="L56">        this.comment = comment;</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L104">        this.comment = comment;</span>
+<span class="fc" id="L105">    }</span>
 
+    /**
+     * Provides a string representation of this feedback entity, including its ID, user, and comment.
+     *
+     * @return a string representation of the feedback.
+     */
     public String toString() {
-<span class="fc" id="L60">        return &quot;Feedback: id=&quot; + id + &quot;, user=&quot; + user + &quot;, comment=&quot; + comment;</span>
+<span class="fc" id="L113">        return &quot;Feedback: id=&quot; + id + &quot;, user=&quot; + user + &quot;, comment=&quot; + comment;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

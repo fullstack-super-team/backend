@@ -13,8 +13,13 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
+/**
+ * Service for handling authentication processes, including user registration and login.
+ * Utilizes the UserRepository to interact with the database, PasswordEncoder for hashing passwords,
+ * and TokenService for JWT generation and validation.
+ */
 @Service
-<span class="fc" id="L17">public class AuthService {</span>
+<span class="fc" id="L22">public class AuthService {</span>
 
     @Autowired
     private UserRepository userRepository;
@@ -23,35 +28,52 @@ import java.util.Optional;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Registers a new user in the system based on provided registration details.
+     * Validates the uniqueness of username and email before saving a new user.
+     *
+     * @param registerDTO Data Transfer Object containing the user's registration details.
+     * @return A Token object containing a JWT for the newly registered user.
+     * @throws ResponseStatusException with HttpStatus.CONFLICT if username or email is already in use.
+     */
     public Token register(RegisterDTO registerDTO) throws ResponseStatusException {
         // Check if user already exists
-<span class="nc" id="L28">        Optional&lt;User&gt; existingUser = userRepository.findFirstByUsernameOrEmail(registerDTO.getUsername(), registerDTO.getEmail()).stream().findFirst();</span>
-<span class="nc bnc" id="L29" title="All 4 branches missed.">        if (existingUser.isPresent() &amp;&amp; existingUser.get().getUsername().equals(registerDTO.getUsername())) {</span>
-<span class="nc" id="L30">            throw new ResponseStatusException(HttpStatus.CONFLICT, &quot;Username already exists&quot;);</span>
+<span class="nc" id="L41">        Optional&lt;User&gt; existingUser = userRepository.findFirstByUsernameOrEmail(registerDTO.getUsername(), registerDTO.getEmail()).stream().findFirst();</span>
+<span class="nc bnc" id="L42" title="All 4 branches missed.">        if (existingUser.isPresent() &amp;&amp; existingUser.get().getUsername().equals(registerDTO.getUsername())) {</span>
+<span class="nc" id="L43">            throw new ResponseStatusException(HttpStatus.CONFLICT, &quot;Username already exists&quot;);</span>
         }
-<span class="nc bnc" id="L32" title="All 4 branches missed.">        if (existingUser.isPresent() &amp;&amp; existingUser.get().getEmail().equals(registerDTO.getEmail())) {</span>
-<span class="nc" id="L33">            throw new ResponseStatusException(HttpStatus.CONFLICT, &quot;Email already exists&quot;);</span>
+<span class="nc bnc" id="L45" title="All 4 branches missed.">        if (existingUser.isPresent() &amp;&amp; existingUser.get().getEmail().equals(registerDTO.getEmail())) {</span>
+<span class="nc" id="L46">            throw new ResponseStatusException(HttpStatus.CONFLICT, &quot;Email already exists&quot;);</span>
         }
 
         // If not then save
-<span class="nc" id="L37">        User newUser = new User();</span>
-<span class="nc" id="L38">        newUser.setFirstName(registerDTO.getFirstName());</span>
-<span class="nc" id="L39">        newUser.setLastName(registerDTO.getLastName());</span>
-<span class="nc" id="L40">        newUser.setUsername(registerDTO.getUsername());</span>
-<span class="nc" id="L41">        newUser.setEmail(registerDTO.getEmail());</span>
-<span class="nc" id="L42">        newUser.setPassword(passwordEncoder.encode(registerDTO.getPassword()));</span>
-<span class="nc" id="L43">        User savedUser = userRepository.save(newUser);</span>
-<span class="nc" id="L44">        return new Token(tokenService.generateToken(savedUser.getId()));</span>
+<span class="nc" id="L50">        User newUser = new User();</span>
+<span class="nc" id="L51">        newUser.setFirstName(registerDTO.getFirstName());</span>
+<span class="nc" id="L52">        newUser.setLastName(registerDTO.getLastName());</span>
+<span class="nc" id="L53">        newUser.setUsername(registerDTO.getUsername());</span>
+<span class="nc" id="L54">        newUser.setEmail(registerDTO.getEmail());</span>
+<span class="nc" id="L55">        newUser.setPassword(passwordEncoder.encode(registerDTO.getPassword()));</span>
+<span class="nc" id="L56">        User savedUser = userRepository.save(newUser);</span>
+<span class="nc" id="L57">        return new Token(tokenService.generateToken(savedUser.getId()));</span>
     }
 
+    /**
+     * Authenticates a user based on their login credentials.
+     * Verifies the email and password against stored values.
+     * Throws a ResponseStatusException if authentication fails.
+     *
+     * @param loginDTO Data Transfer Object containing the user's login credentials.
+     * @return A Token object containing a JWT for the authenticated user.
+     * @throws ResponseStatusException with HttpStatus.UNAUTHORIZED if authentication fails.
+     */
     public Token login(LoginDTO loginDTO) throws ResponseStatusException {
         // Check if username and password is correct
-<span class="nc" id="L49">        User user = userRepository.findByEmail(loginDTO.getEmail());</span>
-<span class="nc bnc" id="L50" title="All 4 branches missed.">        if (user == null || !passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {</span>
-<span class="nc" id="L51">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, &quot;Wrong credentials...&quot;);</span>
+<span class="nc" id="L71">        User user = userRepository.findByEmail(loginDTO.getEmail());</span>
+<span class="nc bnc" id="L72" title="All 4 branches missed.">        if (user == null || !passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {</span>
+<span class="nc" id="L73">            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, &quot;Wrong credentials...&quot;);</span>
         }
 
-<span class="nc" id="L54">        return new Token(tokenService.generateToken(user.getId()));</span>
+<span class="nc" id="L76">        return new Token(tokenService.generateToken(user.getId()));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -3,6 +3,10 @@
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+
+/**
+ * The {@code Answer} class is an abstract base class for different types of answers within the quiz system.
+*/
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = &quot;answer_type&quot;, discriminatorType = DiscriminatorType.STRING)
@@ -12,27 +16,54 @@ public abstract class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    /**
+     * The question to which this answer belongs.
+     * It is annotated with {@code @JsonIgnore} to prevent circular references during serialization.
+     */
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = &quot;question_id&quot;)
     private Question question;
 
-<span class="fc" id="L20">    public Answer() {}</span>
+    /**
+     * Default constructor for JPA and other uses.
+     */
+<span class="fc" id="L31">    public Answer() {}</span>
 
+    /**
+     * Gets the unique identifier of the answer.
+     *
+     * @return The ID of the answer.
+     */
     public long getId() {
-<span class="fc" id="L23">        return id;</span>
+<span class="fc" id="L39">        return id;</span>
     }
 
+    /**
+     * Sets the unique identifier of the answer.
+     *
+     * @param id The new ID for the answer.
+     */
     public void setId(long id) {
-<span class="fc" id="L27">        this.id = id;</span>
-<span class="fc" id="L28">    }</span>
+<span class="fc" id="L48">        this.id = id;</span>
+<span class="fc" id="L49">    }</span>
 
+    /**
+     * Gets the question associated with this answer.
+     *
+     * @return The {@code Question} object associated with this answer.
+     */
     public Question getQuestion() {
-<span class="fc" id="L31">        return question;</span>
+<span class="fc" id="L57">        return question;</span>
     }
 
+    /**
+     * Sets the question associated with this answer.
+     *
+     * @param question The {@code Question} to associate with this answer.
+     */
     public void setQuestion(Question question) {
-<span class="fc" id="L35">        this.question = question;</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L66">        this.question = question;</span>
+<span class="fc" id="L67">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
