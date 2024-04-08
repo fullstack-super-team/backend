@@ -33,7 +33,7 @@ public interface ScoresRepository extends JpaRepository<Score, Long> {
     /**
      * Retrieves a list of Score records for a specific user, ordered by the date they were recorded in descending order.
      *
-     * @param user The unique identifier of the user.
+     * @param userId The unique identifier of the user.
      * @return A list of Score objects for the specified user, showing their scoring history from most recent to oldest.
      */
     List<Score> findAllByUserIdOrderByDateDesc(long userId);
