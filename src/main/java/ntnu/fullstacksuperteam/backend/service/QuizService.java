@@ -225,13 +225,17 @@ public class QuizService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
         List<Score> scores = scoresService.getScoresByUserId(userId);
-        List<Score> recentScores = scores.subList(0, Math.min(scores.size(), 3));
         List<Quiz> quizzes = new ArrayList<>();
-        for (Score score : recentScores) {
+
+        int index = 0;
+        while (quizzes.size() < 3 && index < scores.size()) {
+            Score score = scores.get(index);
             if (!quizzes.contains(score.getQuiz())) {
                 quizzes.add(score.getQuiz());
             }
+            index++;
         }
         return quizzes;
+
     }
 }
